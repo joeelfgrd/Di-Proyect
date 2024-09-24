@@ -18,10 +18,22 @@
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>250</y>
-      <width>75</width>
-      <height>23</height>
+      <y>230</y>
+      <width>80</width>
+      <height>25</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>80</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>80</width>
+      <height>25</height>
+     </size>
     </property>
     <property name="text">
      <string>Aceptar</string>
@@ -30,8 +42,8 @@
    <widget class="QLabel" name="lblTitulo">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>70</y>
+      <x>250</x>
+      <y>140</y>
       <width>281</width>
       <height>51</height>
      </rect>
@@ -58,8 +70,20 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuArchivo">
+    <property name="title">
+     <string>Archivo</string>
+    </property>
+    <addaction name="actionSalir"/>
+   </widget>
+   <addaction name="menuArchivo"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSalir">
+   <property name="text">
+    <string>Salir</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
