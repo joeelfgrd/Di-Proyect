@@ -1,8 +1,11 @@
+import conexion
 import eventos
 from VenPrincipal import *
 import sys
 import var
 from VenPrincipal import Ui_venPrincipal
+import styles
+import clientes
 
 class Main(QtWidgets.QMainWindow):
 
@@ -10,10 +13,23 @@ class Main(QtWidgets.QMainWindow):
         super(Main, self).__init__()
         var.ui = Ui_venPrincipal()
         var.ui.setupUi(self)
+        self.setStyleSheet(styles.load_stylesheet())
+        conexion.Conexion.db_conexion(self)
         '''
         ZONA DE EVENTOS DEL MENUBAR
         '''
         var.ui.actionSalir.triggered.connect(eventos.Eventos.mensajeSalir)
+        eventos.Eventos.cargarProv(self)
+
+        '''
+        EVENTOS DE BOTONES
+        '''
+        var.ui.btnGrabarCli.clicked.connect(clientes.Clientes.altaCliente)
+        '''
+        EVENTOS DE CAJAS DE TEXTO
+        '''
+        var.ui.txtDniCli.editingFinished.connect(lambda:clientes.Clientes.checkDNI(var.ui.txtDniCli.text()))
+
 
 
 
