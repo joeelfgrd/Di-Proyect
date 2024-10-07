@@ -6,12 +6,15 @@ import var
 from VenPrincipal import Ui_venPrincipal
 import styles
 import clientes
+from venAux import Calendar
+
 
 class Main(QtWidgets.QMainWindow):
 
     def __init__(self):
         super(Main, self).__init__()
         var.ui = Ui_venPrincipal()
+        var.uicalendar = Calendar()
         var.ui.setupUi(self)
         self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
@@ -25,6 +28,7 @@ class Main(QtWidgets.QMainWindow):
         EVENTOS DE BOTONES
         '''
         var.ui.btnGrabarCli.clicked.connect(clientes.Clientes.altaCliente)
+        var.ui.btnAltaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0))
         '''
         EVENTOS DE CAJAS DE TEXTO
         '''

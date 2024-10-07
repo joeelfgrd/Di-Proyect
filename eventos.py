@@ -2,6 +2,7 @@ import sys
 from PyQt6 import QtWidgets
 import conexion
 import var
+import time
 
 class Eventos():
     def mensajeSalir(self=None):
@@ -51,3 +52,21 @@ class Eventos():
 
         except Exception as error:
             print("error en validar dni ", error)
+
+    def abrirCalendar(op):
+        try:
+            var.panel = op
+            var.uicalendar.show()
+        except Exception as error:
+            print("error en abrir calendar ", error)
+
+    def cargaFecha(qDate):
+        try:
+            data = ('{:02d}/{:02d}/{:4d}'.format(qDate.day(), qDate.month(), qDate.year()))
+            if var.panel == var.ui.panPrincipal.currentIndex():
+                var.ui.txtAltacli.setText(str(data))
+            time.sleep(0.5)
+            var.uicalendar.hide()
+            return data
+        except Exception as error:
+            print("error en cargar fecha: ", error)

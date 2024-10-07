@@ -491,7 +491,7 @@
            </spacer>
           </item>
           <item row="0" column="7">
-           <widget class="QPushButton" name="btnCalendarCli">
+           <widget class="QPushButton" name="btnAltaCli">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -515,7 +515,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>img/calendar.png</normaloff>img/calendar.png</iconset>
+              <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
             </property>
            </widget>
           </item>
