@@ -1,14 +1,16 @@
 import os
 from PyQt6 import QtSql, QtWidgets
+from PyQt6.QtGui import QIcon
+from PyQt6.uic.Compiler.qtproxies import  QtGui
 
 class Conexion:
 
     '''
 
-    método de una clase que no depende de una instancia específica de esa clase. 
-    Se puede llamarlo directamente a través de la clase, sin necesidad de crear un objeto de esa clase. 
+    método de una clase que no depende de una instancia específica de esa clase.
+    Se puede llamarlo directamente a través de la clase, sin necesidad de crear un objeto de esa clase.
     Es útil en comportamientos o funcionalidades que son más a una clase en general que a una instancia en particular.
-    
+
     '''
 
     @staticmethod
@@ -44,8 +46,46 @@ class Conexion:
     def listaProv(self):
         listaprov = []
         query = QtSql.QSqlQuery()
-        query.prepare('SELECT * FROM provincias')
+        query.prepare("SELECT * FROM provincias")
         if query.exec():
             while query.next():
                 listaprov.append(query.value(1))
         return listaprov
+
+    @staticmethod
+    def listaMuniprov(provincia):
+        listamunicipios = []
+        query = QtSql.QSqlQuery()
+        query.prepare(
+            "SELECT * FROM municipios where idprov = (select idprov from provincias where provincia = :provincia)")
+        query.bindValue(":provincia", provincia)
+        if query.exec():
+            while query.next():
+                listamunicipios.append(query.value(1))
+        return listamunicipios
+
+    @staticmethod
+    def altaCliente(nuevocli):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare(
+                "INSERT INTO CLIENTES (dnicli, altacli, apelcli, nomecli, emailcli, movilcli, dircli, provcli, municli) "
+                "VALUES (:dnicli, :altacli, :apelcli, :nomecli, :emailcli, :movilcli, :dircli, :provcli, :municli)")
+            query.bindValue(":dnicli", str(nuevocli[0]))
+            query.bindValue(":altacli", str(nuevocli[1]))
+            query.bindValue(":apelcli", str(nuevocli[2]))
+            query.bindValue(":nomecli", str(nuevocli[3]))
+            query.bindValue(":emailcli", str(nuevocli[4]))
+            query.bindValue(":movilcli", str(nuevocli[5]))
+            query.bindValue(":dircli", str(nuevocli[6]))
+            query.bindValue(":provcli", str(nuevocli[7]))
+            query.bindValue(":municli", str(nuevocli[8]))
+
+            # NO ENTRA EN EL IF
+            if query.exec():
+                return True
+            else:
+                return False
+
+        except Exception as e:
+            print("error altaCliente", e)

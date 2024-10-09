@@ -9,16 +9,28 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>762</width>
-    <height>587</height>
+    <width>312</width>
+    <height>185</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>312</width>
+    <height>185</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>312</width>
+    <height>185</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Selecciona Fecha</string>
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../img/logo.ico</normaloff>../img/logo.ico</iconset>
+    <normaloff>../../../../.designer/img/logo.ico</normaloff>../../../../.designer/img/logo.ico</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -26,22 +38,22 @@
   <widget class="QCalendarWidget" name="calendar">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>140</y>
+     <x>0</x>
+     <y>0</y>
      <width>312</width>
-     <height>183</height>
+     <height>185</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
      <width>312</width>
-     <height>183</height>
+     <height>185</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
      <width>312</width>
-     <height>183</height>
+     <height>185</height>
     </size>
    </property>
    <property name="verticalHeaderFormat">

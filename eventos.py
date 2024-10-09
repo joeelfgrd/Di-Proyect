@@ -1,5 +1,7 @@
 import sys
-from PyQt6 import QtWidgets
+import re
+
+from PyQt6 import QtWidgets, QtSql
 import conexion
 import var
 import time
@@ -8,6 +10,7 @@ class Eventos():
     def mensajeSalir(self=None):
         mbox = QtWidgets.QMessageBox()
         mbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
+        # mbox.setWindowIcon(QtGui.QIcon('./img/icono.ico')) # PONER UN ICONO .SVG
         mbox.setWindowTitle('Salir')
         mbox.setText('Desea usted Salir?')
         mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
@@ -24,6 +27,13 @@ class Eventos():
         var.ui.cmbProvCli.clear()
         listado = conexion.Conexion.listaProv(self)
         var.ui.cmbProvCli.addItems(listado)
+
+    def cargaMuniCli(self):
+        listado = []
+        provincia = var.ui.cmbProvCli.currentText()
+        listado = conexion.Conexion.listaMuniprov(str(provincia))
+        var.ui.cmbMuniCli.clear()
+        var.ui.cmbMuniCli.addItems(listado)
 
     def validarDNIcli(dni):
         try:
@@ -64,9 +74,19 @@ class Eventos():
         try:
             data = ('{:02d}/{:02d}/{:4d}'.format(qDate.day(), qDate.month(), qDate.year()))
             if var.panel == var.ui.panPrincipal.currentIndex():
-                var.ui.txtAltacli.setText(str(data))
+                var.ui.txtAltaCli.setText(str(data))
             time.sleep(0.5)
             var.uicalendar.hide()
             return data
         except Exception as error:
             print("error en cargar fecha: ", error)
+
+    def validarMail(mail):
+        mail = mail.lower()
+        regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
+        if re.match(regex, mail):
+            return True
+        else:
+            return False
+
+

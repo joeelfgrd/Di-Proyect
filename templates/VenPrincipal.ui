@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1164</width>
+    <width>1306</width>
     <height>874</height>
    </rect>
   </property>
@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../../.designer/backup/img/logo.ico</normaloff>../../../.designer/backup/img/logo.ico</iconset>
+    <normaloff>../img/logo.ico</normaloff>../img/logo.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
@@ -484,7 +484,7 @@
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>40</width>
+              <width>400</width>
               <height>20</height>
              </size>
             </property>
@@ -683,7 +683,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1164</width>
+     <width>1306</width>
      <height>21</height>
     </rect>
    </property>
