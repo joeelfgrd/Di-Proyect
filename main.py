@@ -6,7 +6,7 @@ import var
 from VenPrincipal import Ui_venPrincipal
 import styles
 import clientes
-from venAux import Calendar
+from venAux import Calendar, FileDialogAbrir
 
 
 class Main(QtWidgets.QMainWindow):
@@ -16,16 +16,23 @@ class Main(QtWidgets.QMainWindow):
         var.ui = Ui_venPrincipal()
         var.ui.setupUi(self)
         var.uicalendar = Calendar()
+        var.dlgabrir = FileDialogAbrir()
         self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
-        eventos.Eventos.cargarProv(self)
+        #conexionserver.ConexionServer.crear_conexion(self)
         eventos.Eventos.cargaMuniCli(self)
+        clientes.Clientes.cargaTablaClientes(self)
+        eventos.Eventos.resizeTableClientes(self)
 
 
         '''
         ZONA DE EVENTOS DEL MENUBAR
         '''
         var.ui.actionSalir.triggered.connect(eventos.Eventos.mensajeSalir)
+        var.ui.actionCrear_Backup.triggered.connect(eventos.Eventos.crearBackup)
+        var.ui.actionRestaurar_Backup.triggered.connect(eventos.Eventos.restaurarBackup)
+
+
 
 
         '''
@@ -43,6 +50,7 @@ class Main(QtWidgets.QMainWindow):
         '''
         EVENTOS COMOBOX 
         '''
+        eventos.Eventos.cargarProv(self)
         var.ui.cmbProvCli.currentIndexChanged.connect(eventos.Eventos.cargaMuniCli)
 
 if __name__ == '__main__':

@@ -1,19 +1,15 @@
 from multiprocessing.connection import Client
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets , QtCore
 from PyQt6.QtGui import QIcon
 
 import conexion
 import eventos
 import var
-from eventos import Eventos
 
 
 class Clientes:
     @staticmethod
     def altaCliente(self):
-
-
-
         try:
             nuevoCli = [var.ui.txtDniCli.text(), var.ui.txtAltaCli.text(), var.ui.txtApelCli.text(),
                         var.ui.txtNomCli.text(), var.ui.txtEmailCli.text(), var.ui.txtMovilCli.text(),
@@ -31,13 +27,15 @@ class Clientes:
                     mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
                     mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
                     mbox.exec()
+                    Clientes.cargaTablaClientes(self)
                     print("Cliente dado de alta")
-                    return "True"
             else:
-                QtWidgets.QMessageBox.critical(None, 'Error', 'Error al dar de alta el cliente',
-                                                QtWidgets.QMessageBox.StandardButton.Cancel)
-                return "False"
-
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowTitle('Aviso')
+                mbox.setWindowIcon(QIcon('./img/logo.ico'))
+                mbox.setText("Error al dar de alta el cliente")
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
+                mbox.exec()
         except Exception as e:
             print("error altaCliente", e)
 
@@ -72,5 +70,34 @@ class Clientes:
 
         except Exception as error:
             print("error check cliente", error)
+    def cargaTablaClientes(self):
+        try:
+            listado = conexion.Conexion.listadoClientes(self)
+            #listado = conexionserver.ConexionServer.listadoClientes(self)
+            print(listado)
+            index = 0
+            for registro in listado:
+                var.ui.tabClientes.setRowCount(index + 1)
+                var.ui.tabClientes.setItem(index, 0, QtWidgets.QTableWidgetItem(str(registro[2])))
+                var.ui.tabClientes.setItem(index, 1, QtWidgets.QTableWidgetItem(str(registro[3])))
+                var.ui.tabClientes.setItem(index, 2, QtWidgets.QTableWidgetItem(str(registro[5])))
+                var.ui.tabClientes.setItem(index, 3, QtWidgets.QTableWidgetItem(str(registro[7])))
+                var.ui.tabClientes.setItem(index, 4, QtWidgets.QTableWidgetItem(str(registro[8])))
+                var.ui.tabClientes.setItem(index, 5, QtWidgets.QTableWidgetItem(str(registro[9])))
 
+
+                var.ui.tabClientes.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tabClientes.item(index, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                index += 1
+
+
+
+
+
+        except Exception as e:
+            print("error cargaTablaClientes", e)
 

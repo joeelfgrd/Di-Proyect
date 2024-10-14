@@ -14,3 +14,6 @@ class Calendar(QtWidgets.QDialog):
 
         var.uicalendar.calendar.setSelectedDate(QtCore.QDate(ano, mes, dia))
         var.uicalendar.calendar.clicked.connect(eventos.Eventos.cargaFecha)
+class FileDialogAbrir(QtWidgets.QFileDialog):
+    def __init__(self):
+        super(FileDialogAbrir,self).__init__()
