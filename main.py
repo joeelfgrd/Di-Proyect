@@ -21,9 +21,16 @@ class Main(QtWidgets.QMainWindow):
         conexion.Conexion.db_conexion(self)
         #conexionserver.ConexionServer.crear_conexion(self)
         eventos.Eventos.cargaMuniCli(self)
-        clientes.Clientes.cargaTablaClientes(self)
-        eventos.Eventos.resizeTableClientes(self)
 
+
+
+
+        clientes.Clientes.cargaTablaClientes(self)
+        '''
+        EVENTOS DE TABLAS
+        '''
+        eventos.Eventos.resizeTableClientes(self)
+        var.ui.tabClientes.clicked.connect(clientes.Clientes.cargaCliente)
 
         '''
         ZONA DE EVENTOS DEL MENUBAR
@@ -39,7 +46,10 @@ class Main(QtWidgets.QMainWindow):
         EVENTOS DE BOTONES
         '''
         var.ui.btnGrabarCli.clicked.connect(clientes.Clientes.altaCliente)
-        var.ui.btnAltaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0))
+        var.ui.btnAltaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0,0))
+        var.ui.btnBajaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0,1))
+        var.ui.btnModifCli.clicked.connect(clientes.Clientes.modifCliente)
+        var.ui.btnDelCli.clicked.connect(clientes.Clientes.bajaCliente)
 
         '''
         EVENTOS DE CAJAS DE TEXTO
@@ -52,6 +62,12 @@ class Main(QtWidgets.QMainWindow):
         '''
         eventos.Eventos.cargarProv(self)
         var.ui.cmbProvCli.currentIndexChanged.connect(eventos.Eventos.cargaMuniCli)
+
+        '''
+        EVENTOS DEL TOOLBAR
+        '''
+        var.ui.actionbarSalir.triggered.connect(eventos.Eventos.mensajeSalir)
+        var.ui.actionbarLimpiar.triggered.connect(eventos.Eventos.limpiarPanel)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

@@ -78,9 +78,10 @@ class Eventos():
         except Exception as error:
             print("error en validar dni ", error)
 
-    def abrirCalendar(op):
+    def abrirCalendar(pan,btn):
         try:
-            var.panel = op
+            var.panel = pan
+            var.btn = btn
             var.uicalendar.show()
         except Exception as error:
             print("error en abrir calendar ", error)
@@ -88,9 +89,11 @@ class Eventos():
     def cargaFecha(qDate):
         try:
             data = ('{:02d}/{:02d}/{:4d}'.format(qDate.day(), qDate.month(), qDate.year()))
-            if var.panel == var.ui.panPrincipal.currentIndex():
+            if var.panel == var.ui.panPrincipal.currentIndex() and var.btn == 0:
                 var.ui.txtAltaCli.setText(str(data))
-            time.sleep(0.5)
+            elif var.panel == var.ui.panPrincipal.currentIndex() and var.btn == 1:
+                var.ui.txtBajaCli.setText(str(data))
+            time.sleep(0.125)
             var.uicalendar.hide()
             return data
         except Exception as error:
@@ -107,7 +110,7 @@ class Eventos():
         try:
             header = var.ui.tabClientes.horizontalHeader()
             for i in range(header.count()):
-                if i in (0, 1, 3, 4):
+                if i in (1, 2, 4,5):
                     header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
                 else:
                     header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
