@@ -78,6 +78,17 @@ class Eventos():
         except Exception as error:
             print("error en validar dni ", error)
 
+    def validarTelefono(telefono):
+        try:
+            regex = r'^[6-7]\d{8}$'
+            if re.match(regex, telefono):
+                return True
+            else:
+                return False
+        except Exception as error:
+            print("error en validar telefono: ", error)
+            return False
+
     def abrirCalendar(pan,btn):
         try:
             var.panel = pan
@@ -102,7 +113,8 @@ class Eventos():
     def validarMail(mail):
         mail = mail.lower()
         regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
-        if re.match(regex, mail):
+        if re.match(regex, mail) or mail =="":
+
             return True
         else:
             return False
@@ -136,7 +148,7 @@ class Eventos():
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
                 mbox.setWindowTitle('Backup')
-                mbox.setText('Base de Datos Creada')
+                mbox.setText('Backup Creado')
                 mbox.setStandardButtons(
                     QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
@@ -175,4 +187,26 @@ class Eventos():
 
         except Exception as e:
             print(e)
+
+    def limpiarPanel(self):
+        try:
+            if var.ui.panPrincipal.currentIndex() == 0:
+                listado = [var.ui.txtDniCli, var.ui.txtAltaCli,
+                           var.ui.txtApelCli, var.ui.txtNomCli,
+                           var.ui.txtEmailCli, var.ui.txtMovilCli,
+                           var.ui.txtDirCli, var.ui.cmbProvCli, var.ui.cmbMuniCli,
+                           var.ui.txtBajaCli]
+
+                for i, dato in enumerate(listado):
+                    if i in (7, 8):
+                        pass
+                    dato.setText('')
+
+                Eventos.cargarProv(self)
+                var.ui.cmbMuniCli.clear()
+
+        except Exception as error:
+            print("Error en limpiar panel: ", error)
+
+
 

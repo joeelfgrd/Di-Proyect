@@ -146,8 +146,9 @@ class Conexion:
         try:
             query = QtSql.QSqlQuery()
             query.prepare("UPDATE clientes SET bajacli = :bajacli WHERE dnicli = :dnicli")
-            query.bindValue(":dnicli", str(datos[1]))
             query.bindValue(":bajacli", str(datos[0]))
+            query.bindValue(":dnicli", str(datos[1]))
+
             if query.exec():
                 return True
             else:

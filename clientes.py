@@ -147,6 +147,18 @@ class Clientes:
             print("error modifCliente", e)
 
     @staticmethod
+    def checkTelefono(telefono):
+        try:
+            telefono = str(var.ui.txtMovilCli.text())
+            if eventos.Eventos.validarTelefono(telefono):
+                var.ui.txtMovilCli.setStyleSheet('background-color: rgb(255, 255, 255);')
+            else:
+                var.ui.txtMovilCli.setStyleSheet('background-color:#FFC0CB; font-style: italic;')
+                var.ui.txtMovilCli.setText(None)
+                var.ui.txtMovilCli.setFocus()
+        except Exception as error:
+            print("error check cliente", error)
+    @staticmethod
     def bajaCliente(self):
         try:
             datos = [var.ui.txtBajaCli.text(), var.ui.txtDniCli.text()]

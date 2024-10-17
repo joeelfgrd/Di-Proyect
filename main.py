@@ -51,11 +51,13 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnModifCli.clicked.connect(clientes.Clientes.modifCliente)
         var.ui.btnDelCli.clicked.connect(clientes.Clientes.bajaCliente)
 
+
         '''
         EVENTOS DE CAJAS DE TEXTO
         '''
         var.ui.txtDniCli.editingFinished.connect(lambda:clientes.Clientes.checkDNI(var.ui.txtDniCli.text()))
         var.ui.txtEmailCli.editingFinished.connect(lambda:clientes.Clientes.checkEmail(var.ui.txtEmailCli.text()))
+        var.ui.txtMovilCli.editingFinished.connect(lambda: clientes.Clientes.checkTelefono(var.ui.txtMovilCli.text()))
 
         '''
         EVENTOS COMOBOX 

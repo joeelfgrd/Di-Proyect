@@ -1,6 +1,6 @@
 /*--Estilo para QMainWindow-*/
 QMainWindow {
-    background-color: #d7eff6;
+    background-color: #e9f6ff;
     }
 /*--Estilo para QTabWidget--*/
 QTabWidget {
@@ -12,21 +12,21 @@ QMenuBar {
     }
 /*--Ejemplo de estilo para QPushButton no lo usaremos--*/
 QPushButton {
-    background-color:lightgrey;
-    color: dimgray;
+    background-color:#d5d5d5;
+    color:black;
     border: 0.5px solid grey;
     border-radius: 2px;
 
     }
 QHeaderView::section {
-    background-color : #FFFBE7;
+    background-color : #e5eeed;
     color:black;
     font-size:16px;
     font-weight:bold;
     padding:5px;
     border:1px solid black;}
 QToolBar {
-    background-color: #FFFBE7;
+    background-color: #e5eeed;
     border: 1px solid black;
     }
 
