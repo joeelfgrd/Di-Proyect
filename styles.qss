@@ -1,32 +1,112 @@
-/*--Estilo para QMainWindow-*/
+/* ---- Estilo para QMainWindow ---- */
 QMainWindow {
-    background-color: #e9f6ff;
-    }
-/*--Estilo para QTabWidget--*/
+    background-color:  #d7eff6;
+}
+
+/* ---- Estilo para QTabWidget ---- */
 QTabWidget {
-    background-color: none;
-    }
-/*--Estilo para menu bar--*/
+    background-color: whitesmoke;
+}
+
+/*--- Estilo menu bar ----*/
+
 QMenuBar {
     background-color: whitesmoke;
-    }
-/*--Ejemplo de estilo para QPushButton no lo usaremos--*/
-QPushButton {
-    background-color:#d5d5d5;
-    color:black;
-    border: 0.5px solid grey;
-    border-radius: 2px;
+    color: black;
+}
 
+/* ---- Ejemplo de Estilo para QPushButton no lo usaremos ---- */
+QPushButton {
+    background-color: #4682B4;
+    font-weight: bold;
+    color: white;
+    border-radius: 5px;
+}
+QTableWidget{
+    background-color: whitesmoke;
+    color: black;
+    font-size: 14px;
+
+}
+
+QTableWidget::item:alternate {
+        background-color: white;
+}
+
+QTableWidget::item:selected {
+        background-color: #FFFFCC;
+        color: black;
     }
 QHeaderView::section {
-    background-color : #e5eeed;
-    color:black;
-    font-size:16px;
-    font-weight:bold;
-    padding:5px;
-    border:1px solid black;}
-QToolBar {
-    background-color: #e5eeed;
-    border: 1px solid black;
-    }
+    background-color: #d7eff6; /* Color de fondo del encabezado */
+    color: black;
+    font-size: 16px;/* Color del texto */
+    font-weight: bold;         /* Negrita para el texto */
+    padding: 5px;              /* Espaciado interno */
+    border: 1px solid black;   /* Borde del encabezado */
+}
 
+QLineEdit{
+    background-color: white;
+    color:black;
+}
+QLabel {
+    background-color: #d7eff6; /* Mismo color que el fondo del QMainWindow para que se integre */
+    color: black;
+    font-size: 12px;
+}
+QGridLayout{
+    background-color: whitesmoke;
+}
+
+/* ---- Estilo para las pestañas en QTabWidget ---- */
+QTabBar::tab {
+    background: white; /* Color normal de la pestaña */
+    padding: 10px;
+    color: black;
+}
+
+/* Mantener el mismo color al hacer hover */
+
+QTabBar::tab:hover {
+    background: whitesmoke;
+}
+
+QTabBar::tab:selected {
+    background: #4682B4; /* Mantener el mismo color al estar seleccionada */
+    color: whitesmoke; /* Color del texto de la pestaña seleccionada */
+    font-weight:bold;
+    font-size: 16px;
+}
+
+QComboBox {
+    background-color: white;
+    color: black;
+    border: none;           /* Elimina el borde del ComboBox */
+    padding: 5px;           /* Espaciado interno */
+    border-radius: 3px;     /* Esquinas redondeadas */
+}
+
+QtWidgets.QMessageBox{
+    background-color: whitesmoke;
+}
+
+QCheckBox {
+    background-color: whitesmoke; /* Fondo blanco */
+    color: black; /* Texto negro */
+    font-weight: bold;
+}
+
+QToolBar{
+    background-color:whitesmoke;
+}
+
+QCheckBox::indicator {
+    border: 1px solid black; /* Borde del indicador */
+    width: 20px;             /* Ancho del indicador */
+    height: 20px;            /* Alto del indicador */
+}
+
+QCheckBox::indicator:checked {
+    background-color: #A9A9A9; /* Fondo del indicador cuando está marcado */
+}

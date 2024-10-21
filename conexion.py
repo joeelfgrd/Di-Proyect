@@ -1,7 +1,8 @@
 import os
 from PyQt6 import QtSql, QtWidgets
 from PyQt6.QtGui import QIcon
-from PyQt6.uic.Compiler.qtproxies import  QtGui
+from PyQt6.uic.Compiler.qtproxies import QtGui, QtCore
+import var
 
 class Conexion:
 
@@ -67,6 +68,10 @@ class Conexion:
     @staticmethod
     def altaCliente(nuevocli):
         try:
+            if (not nuevocli[0] or not nuevocli[2] or not nuevocli[3] or not nuevocli[5] or
+                    not nuevocli[6] or not nuevocli[7] or not nuevocli[8]):
+                return False
+
             query = QtSql.QSqlQuery()
             query.prepare(
                 "INSERT INTO CLIENTES (dnicli, altacli, apelcli, nomecli, emailcli, movilcli, dircli, provcli, municli) "
@@ -93,15 +98,25 @@ class Conexion:
     def listadoClientes(self):
         try:
             listado = []
-            query = QtSql.QSqlQuery()
-            query.prepare("SELECT * FROM CLIENTES ORDER BY apelcli,nomecli ASC")
-            if query.exec():
-                while query.next():
-                    fila = [query.value(i) for i in range(query.record().count())]
-                    listado.append(fila)
-            return listado
+            if var.historico == 1:
+                query = QtSql.QSqlQuery()
+                query.prepare("SELECT * FROM clientes WHERE bajacli is NULL ORDER BY apelcli, nomecli ASC ")
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
+            elif var.historico == 0:
+                query = QtSql.QSqlQuery()
+                query.prepare("SELECT * FROM clientes ORDER BY apelcli, nomecli ASC ")
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
         except Exception as e:
-            print("error listadoClientes en conexion", e)
+            print("Error listado en conexion", e)
 
     @staticmethod
     def datosOneCliente(dni):
@@ -121,25 +136,37 @@ class Conexion:
     def modifCliente(registro):
         try:
             query = QtSql.QSqlQuery()
-            query.prepare("UPDATE clientes set altacli = :altacli, apelcli = :apelcli, nomecli = :nomecli,"
-                          " emailcli = :emailcli, movilcli = :movilcli, dircli = :dircli, provcli = :provcli, municli = :municli WHERE dnicli = :dni")
-            query.bindValue(":dni", str(registro[0]))
-            query.bindValue(":altacli", str(registro[1]))
-            query.bindValue(":apelcli", str(registro[2]))
-            query.bindValue(":nomecli", str(registro[3]))
-            query.bindValue(":emailcli", str(registro[4]))
-            query.bindValue(":movilcli", str(registro[5]))
-            query.bindValue(":dircli", str(registro[6]))
-            query.bindValue(":provcli", str(registro[7]))
-            query.bindValue(":municli", str(registro[8]))
+            query.prepare("select count(*) from clientes where dnicli = :dnicli")
+            query.bindValue(":dnicli", str(registro[0]))
             if query.exec():
-                return True
-            else:
-                return False
-
-
-        except Exception as e:
-            print("error modifCliente en conexion", e)
+                if query.next() and query.value(0) > 0:
+                    if query.exec():
+                        query = QtSql.QSqlQuery()
+                        query.prepare(
+                            "UPDATE clientes SET altacli = :altacli , apelcli = :apelcli, nomecli = :nomecli, emailcli = :emailcli, movilcli = :movilcli, dircli = :dircli, provcli = :provcli, municli = :municli, bajacli = :bajacli WHERE dnicli = :dnicli")
+                        query.bindValue(':dnicli', str(registro[0]))
+                        query.bindValue(':altacli', str(registro[1]))
+                        query.bindValue(':apelcli', str(registro[2]))
+                        query.bindValue(':nomecli', str(registro[3]))
+                        query.bindValue(':emailcli', str(registro[4]))
+                        query.bindValue(':movilcli', str(registro[5]))
+                        query.bindValue(':dircli', str(registro[6]))
+                        query.bindValue(':provcli', str(registro[7]))
+                        query.bindValue(':municli', str(registro[8]))
+                        if registro[9] == "":
+                            query.bindValue(":bajacli", QtCore.QVariant())
+                        else:
+                            query.bindValue(":bajacli", str(registro[9]))
+                        if query.exec():
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+                else:
+                    return False
+        except Exception as error:
+            print("error modificar cliente", error)
 
     @staticmethod
     def bajaCliente(datos):

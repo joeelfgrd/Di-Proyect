@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../../../.designer/img/logo.ico</normaloff>../../../../.designer/img/logo.ico</iconset>
+    <normaloff>../../../../../../.designer/img/logo.ico</normaloff>../../../../../../.designer/img/logo.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
@@ -169,7 +169,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
+              <normaloff>../../../../../../.designer/img/calendar.png</normaloff>../../../../../../.designer/img/calendar.png</iconset>
             </property>
            </widget>
           </item>
@@ -265,7 +265,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
+              <normaloff>../../../../../../.designer/img/calendar.png</normaloff>../../../../../../.designer/img/calendar.png</iconset>
             </property>
            </widget>
           </item>
@@ -594,25 +594,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btnDelCli">
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>80</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Eliminar</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="btnModifCli">
             <property name="minimumSize">
              <size>
@@ -628,6 +609,25 @@
             </property>
             <property name="text">
              <string>Modificar</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnDelCli">
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Eliminar</string>
             </property>
            </widget>
           </item>
@@ -663,6 +663,15 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::ContiguousSelection</enum>
           </property>
           <property name="selectionBehavior">
            <enum>QAbstractItemView::SelectRows</enum>
@@ -772,13 +781,12 @@
       <x>304</x>
       <y>125</y>
       <width>135</width>
-      <height>72</height>
+      <height>50</height>
      </rect>
     </property>
     <property name="title">
      <string>Archivo</string>
     </property>
-    <addaction name="actionSalir"/>
    </widget>
    <widget class="QMenu" name="menuHerramientas">
     <property name="title">
@@ -811,11 +819,6 @@
    <addaction name="separator"/>
    <addaction name="actionbarSalir"/>
   </widget>
-  <action name="actionSalir">
-   <property name="text">
-    <string>Salir</string>
-   </property>
-  </action>
   <action name="actionCrear_Backup">
    <property name="text">
     <string>Crear Backup</string>
@@ -829,11 +832,10 @@
   <action name="actionbarSalir">
    <property name="icon">
     <iconset>
-     <normalon>../img/salir.ico</normalon>
-    </iconset>
+     <normaloff>../img/salir.ico</normaloff>../img/salir.ico</iconset>
    </property>
    <property name="text">
-    <string>barSalir</string>
+    <string>Salir</string>
    </property>
    <property name="toolTip">
     <string>Salir</string>
@@ -845,17 +847,24 @@
   <action name="actionbarLimpiar">
    <property name="icon">
     <iconset>
-     <normalon>../img/reload2.ico</normalon>
-    </iconset>
+     <normaloff>../img/reload2.ico</normaloff>../img/reload2.ico</iconset>
    </property>
    <property name="text">
-    <string>barLimpiar</string>
+    <string>Limpiar</string>
    </property>
    <property name="toolTip">
     <string>Limpiar</string>
    </property>
    <property name="shortcut">
     <string>Alt+R</string>
+   </property>
+  </action>
+  <action name="actionSalir">
+   <property name="text">
+    <string>Salir</string>
+   </property>
+   <property name="toolTip">
+    <string>Salir</string>
    </property>
   </action>
  </widget>

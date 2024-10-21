@@ -17,15 +17,14 @@ class Clientes:
                         var.ui.txtNomCli.text(), var.ui.txtEmailCli.text(), var.ui.txtMovilCli.text(),
                         var.ui.txtDirCli.text(), var.ui.cmbProvCli.currentText(),
                         var.ui.cmbMuniCli.currentText()]
-            if (var.ui.txtDniCli.text() != ''):
+            if all(nuevoCli[i] for i in [0, 2, 3, 5, 6, 7, 8]):
                 if conexion.Conexion.altaCliente(nuevoCli):
                     mbox = QtWidgets.QMessageBox()
                     mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
                     mbox.setWindowTitle('Aviso')
                     mbox.setWindowIcon(QIcon('./img/logo.ico'))
-                    mbox.setText('Cliente Alta en Base de Datos')
-                    mbox.setStandardButtons(
-                        QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.setText('Cliente dado de alta en la Base de Datos')
+                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
                     mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
                     mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
                     mbox.exec()
@@ -36,11 +35,13 @@ class Clientes:
                 mbox.setWindowTitle('Aviso')
                 mbox.setWindowIcon(QIcon('./img/logo.ico'))
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                mbox.setText("Error al dar de alta el cliente")
+                mbox.setText("Error: Faltan campos obligatorios")
                 mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
                 mbox.exec()
+
         except Exception as e:
-            print("error altaCliente", e)
+            print("Error en altaCliente:", e)
+
 
 
     def checkDNI(dni):
@@ -105,7 +106,7 @@ class Clientes:
             listado = [var.ui.txtDniCli, var.ui.txtAltaCli, var.ui.txtApelCli,
                         var.ui.txtNomCli, var.ui.txtEmailCli, var.ui.txtMovilCli,
                         var.ui.txtDirCli, var.ui.cmbProvCli,
-                        var.ui.cmbMuniCli]
+                        var.ui.cmbMuniCli, var.ui.txtBajaCli]
             for i in range(len(listado)):
                 if i in (7, 8):
                     listado[i].setCurrentText(registro[i])
@@ -119,7 +120,7 @@ class Clientes:
             modifcli = [var.ui.txtDniCli.text(), var.ui.txtAltaCli.text(), var.ui.txtApelCli.text(),
                         var.ui.txtNomCli.text(), var.ui.txtEmailCli.text(), var.ui.txtMovilCli.text(),
                         var.ui.txtDirCli.text(), var.ui.cmbProvCli.currentText(),
-                        var.ui.cmbMuniCli.currentText()]
+                        var.ui.cmbMuniCli.currentText(),var.ui.txtBajaCli.text()]
             if conexion.Conexion.modifCliente(modifcli):
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
@@ -183,5 +184,17 @@ class Clientes:
             Clientes.cargaTablaClientes(self)
         except Exception as e:
             print("error bajaCliente en clientes", e)
+
+    @staticmethod
+    def historicoCli(self):
+        try:
+            if var.ui.chkHistoriaCli.isChecked():
+                var.historico = 0
+            else:
+                var.historico = 1
+            Clientes.cargaTablaClientes(self)
+        except Exception as e:
+            print("error en historicoCli", e)
+
 
 
