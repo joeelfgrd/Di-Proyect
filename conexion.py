@@ -185,6 +185,10 @@ class Conexion:
         except Exception as e:
             print("error bajaCliente en conexion", e)
 
+    '''
+    -------------GESTION PROPIEDADES---------------------
+    '''
+
 
 
 
