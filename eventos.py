@@ -89,9 +89,9 @@ class Eventos():
             print("error en validar telefono: ", error)
             return False
 
-    def abrirCalendar(pan,btn):
+    def abrirCalendar(btn):
         try:
-            var.panel = pan
+
             var.btn = btn
             var.uicalendar.show()
         except Exception as error:
@@ -100,10 +100,15 @@ class Eventos():
     def cargaFecha(qDate):
         try:
             data = ('{:02d}/{:02d}/{:4d}'.format(qDate.day(), qDate.month(), qDate.year()))
-            if var.panel == var.ui.panPrincipal.currentIndex() and var.btn == 0:
+            if  var.btn == 0:
                 var.ui.txtAltaCli.setText(str(data))
-            elif var.panel == var.ui.panPrincipal.currentIndex() and var.btn == 1:
+            elif  var.btn == 1:
                 var.ui.txtBajaCli.setText(str(data))
+            elif  var.btn == 2:
+                var.ui.txtFechaprop.setText(str(data))
+            elif var.btn == 3:
+                var.ui.txtBajaprop.setText(str(data))
+
             time.sleep(0.125)
             var.uicalendar.hide()
             return data
@@ -207,6 +212,11 @@ class Eventos():
 
         except Exception as error:
             print("Error en limpiar panel: ", error)
+    def abrirTipoProp(self):
+        try:
+            var.dlgGestion.show()
+        except Exception as error:
+            print("Error en abrir tipo propiedades: ", error)
 
 
 

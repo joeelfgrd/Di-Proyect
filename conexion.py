@@ -188,6 +188,25 @@ class Conexion:
     '''
     -------------GESTION PROPIEDADES---------------------
     '''
+    def altaTipoProp(tipo):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("INSERT INTO TIPOPROP (tipo) VALUES (:tipo)")
+            query.bindValue(":tipo", str(tipo))
+            if query.exec():
+                query = QtSql.QSqlQuery()
+                query.prepare("SELECT tipo FROM TIPOPROP")
+                if query.exec():
+                    registro = []
+                    while query.next():
+                        for i in range(query.record().count()):
+                            registro.append(str(query.value(i)))
+                    return registro
+            else:
+                return False
+
+        except Exception as e:
+            print("error altaTipoProp", e)
 
 
 

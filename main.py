@@ -6,7 +6,9 @@ import var
 from VenPrincipal import Ui_venPrincipal
 import styles
 import clientes
-from venAux import Calendar, FileDialogAbrir
+from dlgGestionProp import *
+from venAux import Calendar, FileDialogAbrir, dlgGestionProp
+import propiedades
 
 
 class Main(QtWidgets.QMainWindow):
@@ -18,6 +20,7 @@ class Main(QtWidgets.QMainWindow):
         var.uicalendar = Calendar()
         var.dlgabrir = FileDialogAbrir()
         var.historico = 1
+        var.dlgGestion = dlgGestionProp()
         self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
         #conexionserver.ConexionServer.crear_conexion(self)
@@ -39,6 +42,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionSalir.triggered.connect(eventos.Eventos.mensajeSalir)
         var.ui.actionCrear_Backup.triggered.connect(eventos.Eventos.crearBackup)
         var.ui.actionRestaurar_Backup.triggered.connect(eventos.Eventos.restaurarBackup)
+        var.ui.actionTipoProp.triggered.connect(eventos.Eventos.abrirTipoProp)
 
 
 
@@ -47,10 +51,13 @@ class Main(QtWidgets.QMainWindow):
         EVENTOS DE BOTONES
         '''
         var.ui.btnGrabarCli.clicked.connect(clientes.Clientes.altaCliente)
-        var.ui.btnAltaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0,0))
-        var.ui.btnBajaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0,1))
+        var.ui.btnAltaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0))
+        var.ui.btnBajaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1))
         var.ui.btnModifCli.clicked.connect(clientes.Clientes.modifCliente)
         var.ui.btnDelCli.clicked.connect(clientes.Clientes.bajaCliente)
+        var.ui.btnFechaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(2))
+        var.ui.btnBajaprop.clicked.connect(lambda: eventos.Eventos.abrirCalendar(3))
+        var.ui.btnGrabarprop.clicked.connect(propiedades.Propiedades.altaPropiedad)
 
 
         '''

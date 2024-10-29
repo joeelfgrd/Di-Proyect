@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1597</width>
-    <height>823</height>
+    <height>525</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@
     <item>
      <widget class="QTabWidget" name="panPrincipal">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pesClientes">
        <attribute name="title">
@@ -799,6 +799,9 @@
                 <height>20</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 216);</string>
+              </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
               </property>
@@ -888,6 +891,9 @@
                 <width>80</width>
                 <height>20</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 216);</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -1026,6 +1032,9 @@
                 <height>20</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 216);</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -1135,6 +1144,9 @@
                 <height>20</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 216);</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -1183,6 +1195,9 @@
                 <width>120</width>
                 <height>20</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 216);</string>
               </property>
              </widget>
             </item>
@@ -1348,24 +1363,24 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="txtidprop">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+             <widget class="QLabel" name="lblprop">
               <property name="minimumSize">
                <size>
-                <width>120</width>
+                <width>100</width>
                 <height>20</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>120</width>
+                <width>100</width>
                 <height>20</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(220, 220, 220);</string>
+              </property>
+              <property name="text">
+               <string/>
               </property>
              </widget>
             </item>
@@ -1434,6 +1449,9 @@
                 <height>20</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 216);</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -1479,6 +1497,9 @@
                 <width>120</width>
                 <height>20</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 216);</string>
               </property>
              </widget>
             </item>
@@ -1532,6 +1553,9 @@
                   <width>60</width>
                   <height>20</height>
                  </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 216);</string>
                 </property>
                </widget>
               </item>
@@ -1587,6 +1611,9 @@
                 <width>120</width>
                 <height>20</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 216);</string>
               </property>
              </widget>
             </item>
@@ -1682,7 +1709,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="txtPrecioprop">
+             <widget class="QLineEdit" name="txtPrecioAlquilerprop">
               <property name="minimumSize">
                <size>
                 <width>120</width>
@@ -1695,6 +1722,47 @@
                 <height>20</height>
                </size>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="placeholderText">
+               <string>Precio Alquiler</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>/</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="txtPrecioVentaprop">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>120</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="placeholderText">
+               <string>Precio Venta</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -1703,19 +1771,6 @@
                <string>€</string>
               </property>
              </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_27">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
             </item>
            </layout>
           </item>
@@ -1838,6 +1893,9 @@
                 <height>20</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 216);</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -1899,6 +1957,11 @@
           <column>
            <property name="text">
             <string>Código</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Provincia</string>
            </property>
           </column>
           <column>
@@ -2012,7 +2075,14 @@
      <string>Ayuda</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuGesti_n">
+    <property name="title">
+     <string>Gestión</string>
+    </property>
+    <addaction name="actionTipoProp"/>
+   </widget>
    <addaction name="menuArchivo"/>
+   <addaction name="menuGesti_n"/>
    <addaction name="menuHerramientas"/>
    <addaction name="menuAyuda"/>
   </widget>
@@ -2077,6 +2147,11 @@
    </property>
    <property name="toolTip">
     <string>Salir</string>
+   </property>
+  </action>
+  <action name="actionTipoProp">
+   <property name="text">
+    <string>Tipo Propiedades</string>
    </property>
   </action>
  </widget>
