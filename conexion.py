@@ -191,23 +191,31 @@ class Conexion:
     def altaTipoProp(tipo):
         try:
             query = QtSql.QSqlQuery()
-            query.prepare("INSERT INTO TIPOPROP (tipo) VALUES (:tipo)")
-            query.bindValue(":tipo", str(tipo))
+            query.prepare("INSERT INTO tipoprop (tipo) VALUES (:tipo)")
+            query.bindValue(":tipo", tipo)
+            return query.exec()
+        except Exception as error:
+            print("Error en alta tipo propiedad: ", error)
+
+    def bajaTipoProp(tipo):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("DELETE FROM tipoprop WHERE tipo = :tipo")
+            query.bindValue(":tipo", tipo)
+            return query.exec()
+        except Exception as error:
+            print("Error en baja tipo propiedad: ", error)
+
+    def cargarTipoProp(self):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT tipo FROM tipoprop")
             if query.exec():
-                query = QtSql.QSqlQuery()
-                query.prepare("SELECT tipo FROM TIPOPROP")
-                if query.exec():
-                    registro = []
-                    while query.next():
-                        for i in range(query.record().count()):
-                            registro.append(str(query.value(i)))
-                    return registro
-            else:
-                return False
-
-        except Exception as e:
-            print("error altaTipoProp", e)
-
-
+                registro = []
+                while query.next():
+                    registro.append(query.value(0))
+            return registro
+        except Exception as error:
+            print("Error en cargar tipo propiedad: ", error)
 
 

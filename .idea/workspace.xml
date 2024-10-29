@@ -13,8 +13,6 @@
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propiedades.py" beforeDir="false" afterPath="$PROJECT_DIR$/propiedades.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/VenPrincipal.ui" beforeDir="false" afterPath="$PROJECT_DIR$/templates/VenPrincipal.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/var.py" beforeDir="false" afterPath="$PROJECT_DIR$/var.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venAux.py" beforeDir="false" afterPath="$PROJECT_DIR$/venAux.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +168,7 @@
       <workItem from="1729854875712" duration="56000" />
       <workItem from="1730102577206" duration="986000" />
       <workItem from="1730119416976" duration="5775000" />
-      <workItem from="1730182094220" duration="2489000" />
+      <workItem from="1730182094220" duration="4805000" />
     </task>
     <task id="LOCAL-00001" summary="feat():delete button">
       <option name="closed" value="true" />
@@ -202,7 +200,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="feat():delete button" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/figueiridomolares$main.coverage" NAME="main Coverage Results" MODIFIED="1730184508873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/figueiridomolares$main.coverage" NAME="main Coverage Results" MODIFIED="1730186814582" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/figueiridomolares$eventos.coverage" NAME="eventos Coverage Results" MODIFIED="1728370697828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$VenvPrincipal.coverage" NAME="VenvPrincipal Coverage Results" MODIFIED="1727158725318" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$conexion.coverage" NAME="conexion Coverage Results" MODIFIED="1728370442025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -72,6 +72,8 @@ class Main(QtWidgets.QMainWindow):
         '''
         eventos.Eventos.cargarProv(self)
         var.ui.cmbProvCli.currentIndexChanged.connect(eventos.Eventos.cargaMuniCli)
+        var.ui.cmbProvprop.currentIndexChanged.connect(eventos.Eventos.cargaMuniProp)
+        eventos.Eventos.cargarTipoprop(self)
 
         '''
         EVENTOS DEL TOOLBAR

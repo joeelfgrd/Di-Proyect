@@ -38,10 +38,13 @@ class Eventos():
             mbox.hide()
 
     def cargarProv(self):
-        var.ui.cmbProvCli.clear()
-        listado = conexion.Conexion.listaProv(self)
-        # listado = conexionserver.ConexionServer.listaProv(self)
-        var.ui.cmbProvCli.addItems(listado)
+        listaprov = conexion.Conexion.listaProv(self)
+        cmbprovcli = var.ui.cmbProvCli
+        cmbprovprop = var.ui.cmbProvprop
+        cmbprovcli.clear()
+        cmbprovprop.clear()
+        cmbprovcli.addItems(listaprov)
+        cmbprovprop.addItems(listaprov)
 
     def cargaMuniCli(self):
         listado = []
@@ -49,6 +52,10 @@ class Eventos():
         listado = conexion.Conexion.listaMuniprov(str(provincia))
         var.ui.cmbMuniCli.clear()
         var.ui.cmbMuniCli.addItems(listado)
+    def cargaMuniProp(self):
+        var.ui.cmbMuniprop.clear()
+        listado = conexion.Conexion.listaMuniprov(var.ui.cmbProvprop.currentText())
+        var.ui.cmbMuniprop.addItems(listado)
 
     def validarDNIcli(dni):
         try:
@@ -217,6 +224,16 @@ class Eventos():
             var.dlgGestion.show()
         except Exception as error:
             print("Error en abrir tipo propiedades: ", error)
+
+    def cargarTipoprop(self):
+        try :
+            registro = conexion.Conexion.cargarTipoProp(self)
+            if registro:
+                var.ui.cmbTipoprop.clear()
+                var.ui.cmbTipoprop.addItems(registro)
+        except Exception as error:
+            print("Error en cargar tipo propiedad: ", error)
+
 
 
 

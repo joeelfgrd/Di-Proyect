@@ -1,6 +1,7 @@
 '''archivo de propiedades'''
 from PyQt6.QtGui import QIcon
 
+import eventos
 import var
 from dlgGestionProp import *
 import conexion
@@ -12,8 +13,7 @@ class Propiedades():
             tipo = var.dlgGestion.ui.txtGestTipoProp.text().title()
             registro = conexion.Conexion.altaTipoProp(tipo)
             if registro:
-                var.ui.cmbTipoprop.clear()
-                var.ui.cmbTipoprop.addItems(registro)
+                eventos.Eventos.cargarTipoprop(self)
             else:
                 mbox = QtWidgets.QMessageBox()
                 mbox.setWindowTitle('Aviso')
@@ -22,13 +22,25 @@ class Propiedades():
                 mbox.setText("Error: Tipo de propiedad ya existe")
                 mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
                 mbox.exec()
+            var.dlgGestion.ui.txtGestTipoProp.setText('')
         except Exception as error:
             print("Error en alta tipo propiedad: ", error)
     def bajaTipopropiedad(self):
         try:
             tipo = var.dlgGestion.ui.txtGestTipoProp.text().title()
-            conexion.Conexion.bajaTipoProp(tipo)
-            print(tipo + "eliminado tipo propiedad")
+            registro = conexion.Conexion.bajaTipoProp(tipo)
+
+            if registro:
+                eventos.Eventos.cargarTipoprop(self)
+            else:
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowTitle('Aviso')
+                mbox.setWindowIcon(QIcon('./img/logo.ico'))
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setText("Error: Tipo de propiedad no existe")
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
+                mbox.exec()
+            var.dlgGestion.ui.txtGestTipoProp.setText('')
         except Exception as error:
             print("Error en baja tipo propiedad: ", error)
 
@@ -44,3 +56,4 @@ class Propiedades():
             print(propiedad)
         except Exception as error:
             print("Error en alta propiedad: ", error)
+

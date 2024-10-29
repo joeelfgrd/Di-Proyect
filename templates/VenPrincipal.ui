@@ -201,7 +201,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
+              <normaloff>../../../../.designer/img/calendar.png</normaloff>../../../../.designer/img/calendar.png</iconset>
             </property>
            </widget>
           </item>
@@ -503,7 +503,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
+              <normaloff>../../../../.designer/img/calendar.png</normaloff>../../../../.designer/img/calendar.png</iconset>
             </property>
            </widget>
           </item>
@@ -832,7 +832,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
+                <normaloff>../../../../.designer/img/calendar.png</normaloff>../../../../.designer/img/calendar.png</iconset>
               </property>
              </widget>
             </item>
@@ -925,7 +925,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
+                <normaloff>../../../../.designer/img/calendar.png</normaloff>../../../../.designer/img/calendar.png</iconset>
               </property>
              </widget>
             </item>
@@ -1275,18 +1275,18 @@
                <widget class="QLabel" name="lblBanosprop">
                 <property name="minimumSize">
                  <size>
-                  <width>100</width>
+                  <width>80</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>120</width>
+                  <width>80</width>
                   <height>20</height>
                  </size>
                 </property>
                 <property name="text">
-                 <string>Num Habitaciones:</string>
+                 <string>Num Baños:</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1557,6 +1557,9 @@
                 <property name="styleSheet">
                  <string notr="true">background-color: rgb(255, 255, 216);</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                </widget>
               </item>
              </layout>
@@ -1615,12 +1618,15 @@
               <property name="styleSheet">
                <string notr="true">background-color: rgb(255, 255, 216);</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
              </widget>
             </item>
             <item>
              <widget class="QLabel" name="lblmetrosprop">
               <property name="text">
-               <string>m3</string>
+               <string>m2</string>
               </property>
              </widget>
             </item>
@@ -1896,6 +1902,9 @@
               <property name="styleSheet">
                <string notr="true">background-color: rgb(255, 255, 216);</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
              </widget>
             </item>
             <item>
@@ -2114,7 +2123,7 @@
   <action name="actionbarSalir">
    <property name="icon">
     <iconset>
-     <normaloff>../img/salir.ico</normaloff>../img/salir.ico</iconset>
+     <normaloff>../../../../.designer/img/salir.ico</normaloff>../../../../.designer/img/salir.ico</iconset>
    </property>
    <property name="text">
     <string>Salir</string>
@@ -2129,7 +2138,7 @@
   <action name="actionbarLimpiar">
    <property name="icon">
     <iconset>
-     <normaloff>../img/reload2.ico</normaloff>../img/reload2.ico</iconset>
+     <normaloff>../../../../.designer/img/reload2.ico</normaloff>../../../../.designer/img/reload2.ico</iconset>
    </property>
    <property name="text">
     <string>Limpiar</string>
@@ -2158,8 +2167,8 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
  </buttongroups>
 </ui>
