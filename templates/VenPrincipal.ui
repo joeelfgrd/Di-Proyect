@@ -1941,7 +1941,7 @@
          </layout>
         </item>
         <item row="3" column="0">
-         <widget class="QTableWidget" name="tabClientes_2">
+         <widget class="QTableWidget" name="tablaPropiedades">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -1966,11 +1966,6 @@
           <column>
            <property name="text">
             <string>Código</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Provincia</string>
            </property>
           </column>
           <column>
@@ -2167,8 +2162,8 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_3"/>
  </buttongroups>
 </ui>
