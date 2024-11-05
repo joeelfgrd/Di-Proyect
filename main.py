@@ -30,12 +30,14 @@ class Main(QtWidgets.QMainWindow):
 
 
         clientes.Clientes.cargaTablaClientes(self)
+        propiedades.Propiedades.cargaTablaPropiedades(self)
         '''
         EVENTOS DE TABLAS
         '''
         eventos.Eventos.resizeTableClientes(self)
         var.ui.tabClientes.clicked.connect(clientes.Clientes.cargaCliente)
         eventos.Eventos.resizeTablaPropiedades(self)
+        var.ui.tablaPropiedades.clicked.connect(propiedades.Propiedades.cargaPropiedad)
 
 
         '''

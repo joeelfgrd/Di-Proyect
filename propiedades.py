@@ -46,13 +46,13 @@ class Propiedades():
 
     def altaPropiedad(self):
         try:
+
             propiedad = [var.ui.txtFechaprop.text(), var.ui.txtDirprop.text(),
-                         var.ui.cmbProvprop.currentText(),var.ui.cmbMuniprop.currentText(),
-                         var.ui.cmbTipoprop.currentText(),var.ui.spinHabprop.text(),
-                         var.ui.spinBanosprop.text(),var.ui.txtSuperprop.text(),
-                         var.ui.txtPrecioAlquilerprop.text(),var.ui.txtPrecioVentaprop.text(),
-                         var.ui.txtCPprop.text(),var.ui.txtDescriprop.toPlainText(),var.ui.txtNomeprop.text(),
-                         var.ui.txtMovilprop.text()]
+                         var.ui.cmbProvprop.currentText(), var.ui.cmbMuniprop.currentText(),
+                         var.ui.cmbTipoprop.currentText(), var.ui.spinHabprop.text(),
+                         var.ui.spinBanosprop.text(), var.ui.txtSuperprop.text(),
+                         var.ui.txtPrecioAlquilerprop.text(), var.ui.txtPrecioVentaprop.text(),
+                         var.ui.txtCPprop.text(), var.ui.txtDescriprop.toPlainText()]
             tipooper = []
             if var.ui.chkAlquilerprop.isChecked():
                 tipooper.append(var.ui.chkAlquilerprop.text())
@@ -60,17 +60,102 @@ class Propiedades():
                 tipooper.append(var.ui.chkVentaprop.text())
             if var.ui.chkIntercambioprop.isChecked():
                 tipooper.append(var.ui.chkIntercambioprop.text())
-            propiedad.append(tipooper)
+            propiedad.append("-".join(tipooper))
             if var.ui.rbDisponibleprop.isChecked():
-                tipooper.append(var.ui.rbDisponibleprop.text())
+                propiedad.append(var.ui.rbDisponibleprop.text())
             if var.ui.rbAlquilerprop.isChecked():
-                tipooper.append(var.ui.rbAlquilerprop.text())
+                propiedad.append(var.ui.rbAlquilerprop.text())
             if var.ui.rbVentaprop.isChecked():
-                tipooper.append(var.ui.rbVentaprop.text())
+                propiedad.append(var.ui.rbVentaprop.text())
             propiedad.append(var.ui.txtNomeprop.text())
             propiedad.append(var.ui.txtMovilprop.text())
             conexion.Conexion.altaPropiedad(propiedad)
+            Propiedades.cargaTablaPropiedades(self)
         except Exception as error:
             print("Error en alta propiedad: ", error)
         print(propiedad)
+
+
+    def cargaTablaPropiedades(self):
+        try:
+            listado = conexion.Conexion.listadoPropiedades(self)
+            index = 0
+            for registro in listado:
+                var.ui.tablaPropiedades.setRowCount(index + 1)
+
+                var.ui.tablaPropiedades.setItem(index, 0, QtWidgets.QTableWidgetItem(str(registro[0])))
+                var.ui.tablaPropiedades.setItem(index, 1, QtWidgets.QTableWidgetItem(str(registro[5])))
+                var.ui.tablaPropiedades.setItem(index, 2, QtWidgets.QTableWidgetItem(str(registro[6])))
+                var.ui.tablaPropiedades.setItem(index, 3, QtWidgets.QTableWidgetItem(str(registro[7])))
+                var.ui.tablaPropiedades.setItem(index, 4, QtWidgets.QTableWidgetItem(str(registro[8])))
+                if registro[10] == "":
+                    registro[10] = "-"
+                elif registro[11] == "":
+                    registro[11] = "-"
+                var.ui.tablaPropiedades.setItem(index, 5, QtWidgets.QTableWidgetItem(str(registro[10]) + " € "))
+                var.ui.tablaPropiedades.setItem(index, 6, QtWidgets.QTableWidgetItem(str(registro[11]) + " € "))
+                var.ui.tablaPropiedades.setItem(index, 7, QtWidgets.QTableWidgetItem(str(registro[14])))
+                var.ui.tablaPropiedades.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                var.ui.tablaPropiedades.item(index, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                var.ui.tablaPropiedades.item(index, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                var.ui.tablaPropiedades.item(index, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                var.ui.tablaPropiedades.item(index, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                var.ui.tablaPropiedades.item(index, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                var.ui.tablaPropiedades.item(index, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                var.ui.tablaPropiedades.item(index, 7).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                index += 1
+        except Exception as error:
+            print("Error cargar propiedades: ", error)
+
+    def cargaPropiedad(self):
+        try:
+            fila = var.ui.tablaPropiedades.selectedItems()
+            datos = [dato.text() for dato in fila]
+            registro = conexion.Conexion.datosOnePropiedad(str(datos[0]))
+
+            listado = [var.ui.lblprop, var.ui.txtFechaprop,
+                       var.ui.txtBajaprop, var.ui.txtDirprop,
+                       var.ui.cmbProvprop, var.ui.cmbMuniprop,
+                       var.ui.cmbTipoprop, var.ui.spinHabprop, var.ui.spinBanosprop,
+                       var.ui.txtSuperprop, var.ui.txtPrecioAlquilerprop, var.ui.txtPrecioVentaprop,
+                       var.ui.txtCPprop, var.ui.txtDescriprop, var.ui.chkAlquilerprop,
+                       var.ui.rbDisponibleprop, var.ui.txtNomeprop, var.ui.txtMovilprop
+                       ]
+
+            for i, casilla in enumerate(listado):
+                if isinstance(casilla, QtWidgets.QComboBox):
+                    casilla.setCurrentText(str(registro[i]))
+                elif isinstance(casilla, QtWidgets.QCheckBox):
+                    if ("Alquiler") in registro[i]:
+                        var.ui.chkAlquilerprop.setChecked(True)
+                    else:
+                        var.ui.chkAlquilerprop.setChecked(False)
+                    if ("Venta") in registro[i]:
+                        var.ui.chkVentaprop.setChecked(True)
+                    else:
+                        var.ui.chkVentaprop.setChecked(False)
+                    if ("Intercambio") in registro[i]:
+                        var.ui.chkIntercambioprop.setChecked(True)
+                    else:
+                        var.ui.chkIntercambioprop.setChecked(False)
+                elif isinstance(casilla, QtWidgets.QRadioButton):
+                    if registro[i] == "Vendido":
+                        var.ui.rbVentaprop.setChecked(True)
+                    elif registro[i] == "Disponible":
+                        var.ui.rbDisponibleprop.setChecked(True)
+                    else:
+                        var.ui.rbAlquilerprop.setChecked(True)
+                elif isinstance(casilla, QtWidgets.QSpinBox):
+                    casilla.setValue(int(registro[i]))
+                elif isinstance(casilla, QtWidgets.QTextEdit):
+                    casilla.setPlainText(str(registro[i]))
+                else:
+                    casilla.setText(str(registro[i]))
+        except Exception as error:
+            print("Error cargar propiedad: ", error)
+
+
+
+
+
 

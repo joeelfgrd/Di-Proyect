@@ -217,10 +217,65 @@ class Conexion:
             return registro
         except Exception as error:
             print("Error en cargar tipo propiedad: ", error)
-    def altaPropiedad(self):
+
+    @staticmethod
+    def altaPropiedad(propiedad):
         try:
-            pass
+            query = QtSql.QSqlQuery()
+            query.prepare(
+                " INSERT into PROPIEDADES (altaprop, dirprop, provprop, muniprop, tipoprop, habprop, banprop, "
+                " superprop, prealquiprop, prevenprop, cpprop, obserprop, tipooper, estadoprop, nomeprop, movilprop) "
+                " VALUES (:altaprop, :dirprop, :provprop, :muniprop, :tipoprop, :habprop, :banprop, :superprop, "
+                " :prealquiprop, :prevenprop, :cpprop, :obserprop, :tipooper, :estadoprop, :nomeprop, :movilprop)")
+            query.bindValue(":altaprop", str(propiedad[0]))
+            query.bindValue(":dirprop", str(propiedad[1]))
+            query.bindValue(":provprop", str(propiedad[2]))
+            query.bindValue(":muniprop", str(propiedad[3]))
+            query.bindValue(":tipoprop", str(propiedad[4]))
+            query.bindValue(":habprop", str(propiedad[5]))
+            query.bindValue(":banprop", str(propiedad[6]))
+            query.bindValue(":superprop", str(propiedad[7]))
+            query.bindValue(":prealquiprop", str(propiedad[8]))
+            query.bindValue(":prevenprop", str(propiedad[9]))
+            query.bindValue(":cpprop", str(propiedad[10]))
+            query.bindValue(":obserprop", str(propiedad[11]))
+            query.bindValue(":tipooper", str(propiedad[12]))
+            query.bindValue(":estadoprop", str(propiedad[13]))
+            query.bindValue(":nomeprop", str(propiedad[14]))
+            query.bindValue(":movilprop", str(propiedad[15]))
+            return query.exec()
+
         except Exception as e:
-            print("Error al dar de alta propiedad")
+            print("error altaPropiedad en conexion", e)
+
+    def listadoPropiedades(self):
+        try:
+            listado = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM propiedades ORDER BY muniprop ASC")
+
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    listado.append(fila)
+            return listado
+
+        except Exception as e:
+            print("Error listado en conexion", e)
+
+    def datosOnePropiedad(codigo):
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM propiedades WHERE codigo = :codigo")
+            query.bindValue(":codigo", str(codigo))
+            if query.exec():
+                while query.next():
+                    for i in range(query.record().count()):
+                        registro.append(query.value(i))
+            return registro
+        except Exception as error:
+            print("Error en datos datosOnePropiedad: ", error)
+
 
 

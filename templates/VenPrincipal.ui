@@ -201,7 +201,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../../../../.designer/img/calendar.png</normaloff>../../../../.designer/img/calendar.png</iconset>
+              <normaloff>../../../../../../.designer/img/calendar.png</normaloff>../../../../../../.designer/img/calendar.png</iconset>
             </property>
            </widget>
           </item>
@@ -503,7 +503,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../../../../.designer/img/calendar.png</normaloff>../../../../.designer/img/calendar.png</iconset>
+              <normaloff>../../../../../../.designer/img/calendar.png</normaloff>../../../../../../.designer/img/calendar.png</iconset>
             </property>
            </widget>
           </item>
@@ -1074,9 +1074,6 @@
                 <property name="text">
                  <string>Venta</string>
                 </property>
-                <attribute name="buttonGroup">
-                 <string notr="true">buttonGroup_2</string>
-                </attribute>
                </widget>
               </item>
               <item>
@@ -1084,9 +1081,6 @@
                 <property name="text">
                  <string>Alquiler</string>
                 </property>
-                <attribute name="buttonGroup">
-                 <string notr="true">buttonGroup_2</string>
-                </attribute>
                </widget>
               </item>
               <item>
@@ -1094,9 +1088,6 @@
                 <property name="text">
                  <string>Intercambio</string>
                 </property>
-                <attribute name="buttonGroup">
-                 <string notr="true">buttonGroup_2</string>
-                </attribute>
                </widget>
               </item>
              </layout>
@@ -1198,6 +1189,25 @@
               </property>
               <property name="styleSheet">
                <string notr="true">background-color: rgb(255, 255, 216);</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnTipoProp">
+              <property name="minimumSize">
+               <size>
+                <width>30</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>30</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
               </property>
              </widget>
             </item>
@@ -1990,7 +2000,12 @@
           </column>
           <column>
            <property name="text">
-            <string>Precio</string>
+            <string>Precio Alquiler</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Precio Venta</string>
            </property>
           </column>
           <column>
@@ -2162,7 +2177,6 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_3"/>
  </buttongroups>
