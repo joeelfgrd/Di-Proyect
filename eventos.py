@@ -7,6 +7,7 @@ from PyQt6 import QtWidgets, QtSql
 import clientes
 import conexion
 import eventos
+import propiedades
 import var
 import locale
 import time
@@ -217,25 +218,53 @@ class Eventos():
         except Exception as e:
             print(e)
 
+
     def limpiarPanel(self):
-        try:
-            if var.ui.panPrincipal.currentIndex() == 0:
-                listado = [var.ui.txtDniCli, var.ui.txtAltaCli,
+        objetospanelcli = [var.ui.txtDniCli, var.ui.txtAltaCli,
                            var.ui.txtApelCli, var.ui.txtNomCli,
                            var.ui.txtEmailCli, var.ui.txtMovilCli,
                            var.ui.txtDirCli, var.ui.cmbProvCli, var.ui.cmbMuniCli,
                            var.ui.txtBajaCli]
+        for i, dato in enumerate(objetospanelcli):
+            if i == 7 or i == 8:
+                pass
+            else:
+                dato.setText("")
+        eventos.Eventos.cargarProv(self)
+        var.ui.cmbMuniCli.clear()
+        objetospanelprop = [var.ui.txtFechaprop, var.ui.txtBajaprop, var.ui.txtDirprop,
+                            var.ui.txtSuperprop, var.ui.txtPrecioAlquilerprop,
+                            var.ui.txtPrecioVentaprop, var.ui.txtCPprop, var.ui.txtDescriprop, var.ui.txtNomeprop,
+                            var.ui.txtMovilprop]
+        for i, dato in enumerate(objetospanelprop):
+            dato.setText("")
 
-                for i, dato in enumerate(listado):
-                    if i in (7, 8):
-                        pass
-                    dato.setText('')
+        var.ui.cmbProvprop.clear()
+        var.ui.cmbMuniprop.clear()
+        var.ui.cmbTipoprop.clear()
+        var.ui.spinHabprop.setValue(0)
+        var.ui.spinBanosprop.setValue(0)
+        var.ui.lblprop.setText("")
+        if var.ui.chkAlquilerprop.isChecked():
+            var.ui.chkAlquilerprop.setChecked(False)
+        if var.ui.chkVentaprop.isChecked():
+            var.ui.chkVentaprop.setChecked(False)
+        if var.ui.chkIntercambioprop.isChecked():
+            var.ui.chkIntercambioprop.setChecked(False)
+        eventos.Eventos.cargarProv(self)
+        eventos.Eventos.cargarTipoprop(self)
 
-                Eventos.cargarProv(self)
-                var.ui.cmbMuniCli.clear()
 
-        except Exception as error:
-            print("Error en limpiar panel: ", error)
+
+
+
+
+
+
+
+
+
+
     def abrirTipoProp(self):
         try:
             var.dlgGestion.show()

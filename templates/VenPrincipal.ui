@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1597</width>
-    <height>525</height>
+    <width>1613</width>
+    <height>531</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -2013,6 +2013,11 @@
             <string>Tipo de Operacion</string>
            </property>
           </column>
+          <column>
+           <property name="text">
+            <string>Fecha Baja</string>
+           </property>
+          </column>
          </widget>
         </item>
         <item row="1" column="0">
@@ -2065,7 +2070,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1597</width>
+     <width>1613</width>
      <height>21</height>
     </rect>
    </property>

@@ -276,6 +276,17 @@ class Conexion:
             return registro
         except Exception as error:
             print("Error en datos datosOnePropiedad: ", error)
+    def bajaPropiedad(codigo, fecha):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("UPDATE propiedades SET bajaprop = :bajaprop WHERE codigo = :codigo")
+            query.bindValue(":bajaprop", fecha)
+            query.bindValue(":codigo", codigo)
+            return query.exec()
+        except Exception as e:
+            print("Error en bajaPropiedad: ", e)
+
+
 
 
 
