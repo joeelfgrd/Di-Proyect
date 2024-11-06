@@ -3,6 +3,8 @@ import re
 import zipfile
 import shutil
 from PyQt6 import QtWidgets, QtSql
+from PyQt6.QtGui import QIcon
+from PyQt6.uic.properties import QtGui
 
 import clientes
 import conexion
@@ -21,7 +23,51 @@ locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 locale.setlocale(locale.LC_MONETARY, 'es_ES.UTF-8')
 
 
+
+
 class Eventos():
+
+    @staticmethod
+    def crearMensajeSalida(titulo_ventana, mensaje):
+        mbox = QtWidgets.QMessageBox()
+        mbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
+        mbox.setWindowIcon(QIcon('./img/logo.ico'))
+        mbox.setText(mensaje)
+        mbox.setWindowTitle(titulo_ventana)
+        mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+        mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
+        mbox.button(QtWidgets.QMessageBox.StandardButton.Yes).setText('Sí')
+        mbox.button(QtWidgets.QMessageBox.StandardButton.No).setText('No')
+        return mbox
+
+
+    @staticmethod
+    def crearMensajeInfo(titulo_ventana, mensaje):
+        mbox = QtWidgets.QMessageBox()
+        mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+        mbox.setWindowIcon(QIcon('./img/logo.ico'))
+        mbox.setWindowTitle(titulo_ventana)
+        mbox.setText(mensaje)
+        mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+        mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+        mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+        return mbox
+
+
+    @staticmethod
+    def crearMensajeError(titulo_ventana, mensaje):
+        mbox = QtWidgets.QMessageBox()
+        mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+        mbox.setWindowIcon(QIcon('./img/logo.ico'))
+        mbox.setWindowTitle(titulo_ventana)
+        mbox.setText(mensaje)
+        mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+        mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+        mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+        return mbox
+
+
+
     def mensajeSalir(self=None):
         mbox = QtWidgets.QMessageBox()
         mbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
@@ -163,8 +209,6 @@ class Eventos():
         except Exception as e:
             print("error en resize tabla propiedades: ", e)
 
-
-
     def crearBackup(self):
         try:
             copia = str(datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '_backup.zip'
@@ -253,17 +297,6 @@ class Eventos():
             var.ui.chkIntercambioprop.setChecked(False)
         eventos.Eventos.cargarProv(self)
         eventos.Eventos.cargarTipoprop(self)
-
-
-
-
-
-
-
-
-
-
-
 
     def abrirTipoProp(self):
         try:

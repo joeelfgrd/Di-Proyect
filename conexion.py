@@ -251,8 +251,15 @@ class Conexion:
     def listadoPropiedades(self):
         try:
             listado = []
+            queryStr = ""
+            if var.historico == 1:
+                queryStr = "SELECT * FROM propiedades WHERE bajaprop is NULL ORDER BY muniprop ASC "
+
+            elif var.historico == 0:
+                queryStr = "SELECT * FROM propiedades ORDER BY muniprop ASC "
+
             query = QtSql.QSqlQuery()
-            query.prepare("SELECT * FROM propiedades ORDER BY muniprop ASC")
+            query.prepare(queryStr)
 
             if query.exec():
                 while query.next():
@@ -285,6 +292,60 @@ class Conexion:
             return query.exec()
         except Exception as e:
             print("Error en bajaPropiedad: ", e)
+
+    def modifPropiedad(propiedad):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT count(*) FROM propiedades WHERE codigo = :codigo")
+            query.bindValue(":codigo", int(propiedad[0]))
+            if query.exec():
+                if query.next() and query.value(0) > 0:
+                    query.prepare(
+                        "UPDATE propiedades SET altaprop = :altaprop, dirprop = :dirprop, provprop = :provprop, "
+                        "muniprop = :muniprop, tipoprop = :tipoprop, habprop = :habprop, banprop = :banprop, "
+                        "superprop = :superprop, prealquiprop = :prealquiprop, prevenprop = :prevenprop, cpprop = :cpprop, "
+                        "obserprop = :obserprop, tipooper = :tipooper, estadoprop = :estadoprop, nomeprop = :nomeprop, "
+                        "movilprop = :movilprop WHERE codigo = :codigo"
+                    )
+                    query.bindValue(":altaprop", str(propiedad[1]))
+                    query.bindValue(":dirprop", str(propiedad[2]))
+                    query.bindValue(":provprop", str(propiedad[3]))
+                    query.bindValue(":muniprop", str(propiedad[4]))
+                    query.bindValue(":tipoprop", str(propiedad[5]))
+                    query.bindValue(":habprop", int(propiedad[6]))
+                    query.bindValue(":banprop", int(propiedad[7]))
+                    query.bindValue(":superprop", float(propiedad[8]))
+                    query.bindValue(":prealquiprop", float(propiedad[9]))
+                    query.bindValue(":prevenprop", float(propiedad[10]))
+                    query.bindValue(":cpprop", str(propiedad[11]))
+                    query.bindValue(":obserprop", str(propiedad[12]))
+                    query.bindValue(":tipooper", str(propiedad[13]))
+                    query.bindValue(":estadoprop", str(propiedad[14]))
+                    query.bindValue(":nomeprop", str(propiedad[15]))
+                    query.bindValue(":movilprop", str(propiedad[16]))
+                    query.bindValue(":codigo", int(propiedad[0]))
+                    query.exec()
+
+                    return query.numRowsAffected() > 0
+            return False
+        except Exception as error:
+            print("Error modificar propiedad", error)
+
+    def propiedadesPorTipo(tipo):
+        try:
+            listado = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM propiedades WHERE tipoprop = :tipoprop ORDER BY muniprop ASC")
+            query.bindValue(":tipoprop", tipo)
+
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    listado.append(fila)
+
+            return listado
+        except Exception as error:
+            print("Error en propiedadesPorTipo: ", error)
 
 
 

@@ -30,7 +30,7 @@ class Main(QtWidgets.QMainWindow):
 
 
         clientes.Clientes.cargaTablaClientes(self)
-        propiedades.Propiedades.cargaTablaPropiedades(self)
+        propiedades.Propiedades.cargaTablaPropiedades(self,0)
         '''
         EVENTOS DE TABLAS
         '''
@@ -63,6 +63,8 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnBajaprop.clicked.connect(lambda: eventos.Eventos.abrirCalendar(3))
         var.ui.btnGrabarprop.clicked.connect(propiedades.Propiedades.altaPropiedad)
         var.ui.btnDelprop.clicked.connect(propiedades.Propiedades.bajaPropiedad)
+        var.ui.btnModifprop.clicked.connect(propiedades.Propiedades.modifPropiedad)
+        var.ui.btnTipoProp.clicked.connect(propiedades.Propiedades.filtroPorTipoPropiedad)
 
 
         '''
@@ -90,6 +92,7 @@ class Main(QtWidgets.QMainWindow):
         EVENTOS CHECKBOX
         '''
         var.ui.chkHistoriaCli.stateChanged.connect(clientes.Clientes.historicoCli)
+        var.ui.chkHistoriaprop.stateChanged.connect(propiedades.Propiedades.historicoProp)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
