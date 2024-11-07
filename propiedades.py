@@ -1,6 +1,10 @@
 '''archivo de propiedades'''
-from PyQt6.QtGui import QIcon
+from datetime import datetime
 
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QMessageBox
+
+import VenPrincipal
 import eventos
 import var
 from dlgGestionProp import *
@@ -46,6 +50,26 @@ class Propiedades():
 
     def altaPropiedad(self):
         try:
+            direccion = var.ui.txtDirprop.text()
+            propietario = var.ui.txtNomeprop.text()
+            movil = var.ui.txtMovilprop.text()
+            fecha = var.ui.txtFechaprop.text()
+            provincia = var.ui.cmbProvprop.currentText()
+            municipio = var.ui.cmbMuniprop.currentText()
+            cp = var.ui.txtCPprop.text()
+            superf = var.ui.txtSuperprop.text()
+
+
+            if not direccion or not propietario or not movil or fecha == "" or provincia == "" or municipio == "" or cp == "" or superf == "":
+                mbox = QMessageBox()
+                mbox.setIcon(QMessageBox.Icon.Warning)
+                mbox.setWindowTitle('Aviso')
+                mbox.setText(
+                    "Por favor, complete los campos obligatorios.")
+                mbox.setStandardButtons(QMessageBox.StandardButton.Ok)
+                mbox.exec()
+                var.ui.txtDirprop.setStyleSheet('background-color:rgb(255,255,220);')
+                return
 
             propiedad = [var.ui.txtFechaprop.text(), var.ui.txtDirprop.text(),
                          var.ui.cmbProvprop.currentText(), var.ui.cmbMuniprop.currentText(),
@@ -165,16 +189,27 @@ class Propiedades():
 
     def bajaPropiedad(self):
         try:
+
             codigo = var.ui.lblprop.text()
-            fecha = var.ui.txtBajaprop.text()
-            if conexion.Conexion.bajaPropiedad(codigo,fecha):
+            fechabaja = var.ui.txtBajaprop.text()
+            if not fechabaja:
+                fechabaja = datetime.today().strftime('%Y-%m-%d')
+            if var.ui.rbDisponibleprop.isChecked():
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowTitle('Aviso')
+                mbox.setWindowIcon(QIcon('./img/logo.ico'))
+                mbox.setText("Error,no se puede dar de baja una propiedad disponible")
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
+                mbox.exec()
+                return
+
+            if conexion.Conexion.bajaPropiedad(codigo, fechabaja):
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
                 mbox.setWindowTitle('Aviso')
                 mbox.setWindowIcon(QIcon('./img/logo.ico'))
                 mbox.setText('Propiedad dada de baja')
-                mbox.setStandardButtons(
-                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
                 mbox.exec()
@@ -186,9 +221,10 @@ class Propiedades():
                 mbox.setText("Error al dar de baja la propiedad")
                 mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
                 mbox.exec()
-            Propiedades.cargaTablaPropiedades(self,0)
+            Propiedades.cargaTablaPropiedades(self, 0)
+
         except Exception as e:
-            print("error bajaPropiedad en propiedades", e)
+            print("Error bajaPropiedad en propiedades:", e)
 
     def modifPropiedad(self):
         try:
@@ -202,7 +238,8 @@ class Propiedades():
                 var.ui.spinHabprop.text(),
                 var.ui.spinBanosprop.text(),
                 var.ui.txtSuperprop.text(),
-                var.ui.txtPrecioAlquilerprop.text(),  # Validación de precios
+                var.ui.txtPrecioAlquilerprop.text(),
+
                 var.ui.txtPrecioVentaprop.text(),  # Validación de precios
                 var.ui.txtCPprop.text(),
                 var.ui.txtDescriprop.toPlainText()
@@ -236,7 +273,7 @@ class Propiedades():
                 mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
                 mbox.exec()
-                Propiedades.cargaTablaPropiedades(self,0)
+                Propiedades.cargaTablaPropiedades(self, 0)
             else:
                 mbox = QtWidgets.QMessageBox()
                 mbox.setWindowTitle("Aviso")
@@ -245,11 +282,10 @@ class Propiedades():
                 mbox.setText("Error al modificar la propiedad")
                 mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
                 mbox.exec()
-                Propiedades.cargaTablaPropiedades(self,0)
+                Propiedades.cargaTablaPropiedades(self, 0)
 
         except Exception as error:
             print("error modificar propiedad", error)
-
     def historicoProp(self):
         try:
             if var.ui.chkHistoriaprop.isChecked():
@@ -262,46 +298,51 @@ class Propiedades():
             print("Error en historico propiedades: ", error)
 
     def filtroPorTipoPropiedad(self):
-        try:
-            tipoSeleccionado = var.ui.cmbTipoprop.currentText()
-            if tipoSeleccionado:
-                listado = conexion.Conexion.propiedadesPorTipo(tipoSeleccionado)
-            else:
-                listado = conexion.Conexion.listadoPropiedades(self)
 
-            var.ui.tablaPropiedades.setRowCount(0)
-            i = 0
-            for registro in listado:
-                var.ui.tablaPropiedades.setRowCount(i + 1)
+        if var.ui.btnTipoProp.isChecked():
+            try:
+                tipoSeleccionado = var.ui.cmbTipoprop.currentText()
+                if tipoSeleccionado:
+                    listado = conexion.Conexion.propiedadesPorTipo(tipoSeleccionado)
+                else:
+                    listado = conexion.Conexion.listadoPropiedades(self)
 
-                var.ui.tablaPropiedades.setItem(i, 0, QtWidgets.QTableWidgetItem(str(registro[0])))
-                var.ui.tablaPropiedades.setItem(i, 1, QtWidgets.QTableWidgetItem(registro[5]))
-                var.ui.tablaPropiedades.setItem(i, 2, QtWidgets.QTableWidgetItem(registro[6]))
-                var.ui.tablaPropiedades.setItem(i, 3, QtWidgets.QTableWidgetItem(str(registro[7])))
-                var.ui.tablaPropiedades.setItem(i, 4, QtWidgets.QTableWidgetItem(str(registro[8])))
-                if registro[10] == "":
-                    registro[10] = "-"
-                if registro[11] == "":
-                    registro[11] = "-"
-                var.ui.tablaPropiedades.setItem(i, 5, QtWidgets.QTableWidgetItem(str(registro[10]) + " €"))
-                var.ui.tablaPropiedades.setItem(i, 6, QtWidgets.QTableWidgetItem(str(registro[11]) + " €"))
-                var.ui.tablaPropiedades.setItem(i, 7, QtWidgets.QTableWidgetItem(registro[14]))
-                var.ui.tablaPropiedades.setItem(i, 8, QtWidgets.QTableWidgetItem(registro[2]))
+                var.ui.tablaPropiedades.setRowCount(0)
+                i = 0
+                for registro in listado:
+                    var.ui.tablaPropiedades.setRowCount(i + 1)
 
-                var.ui.tablaPropiedades.item(i, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
-                var.ui.tablaPropiedades.item(i, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
-                var.ui.tablaPropiedades.item(i, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 7).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 8).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                i += 1
+                    var.ui.tablaPropiedades.setItem(i, 0, QtWidgets.QTableWidgetItem(str(registro[0])))
+                    var.ui.tablaPropiedades.setItem(i, 1, QtWidgets.QTableWidgetItem(registro[5]))
+                    var.ui.tablaPropiedades.setItem(i, 2, QtWidgets.QTableWidgetItem(registro[6]))
+                    var.ui.tablaPropiedades.setItem(i, 3, QtWidgets.QTableWidgetItem(str(registro[7])))
+                    var.ui.tablaPropiedades.setItem(i, 4, QtWidgets.QTableWidgetItem(str(registro[8])))
+                    if registro[10] == "":
+                        registro[10] = "-"
+                    if registro[11] == "":
+                        registro[11] = "-"
+                    var.ui.tablaPropiedades.setItem(i, 5, QtWidgets.QTableWidgetItem(str(registro[10]) + " €"))
+                    var.ui.tablaPropiedades.setItem(i, 6, QtWidgets.QTableWidgetItem(str(registro[11]) + " €"))
+                    var.ui.tablaPropiedades.setItem(i, 7, QtWidgets.QTableWidgetItem(registro[14]))
+                    var.ui.tablaPropiedades.setItem(i, 8, QtWidgets.QTableWidgetItem(registro[2]))
 
-        except Exception as e:
-            print("Error al filtrar propiedades por tipo:", e)
+                    var.ui.tablaPropiedades.item(i, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                    var.ui.tablaPropiedades.item(i, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                    var.ui.tablaPropiedades.item(i, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                    var.ui.tablaPropiedades.item(i, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                    var.ui.tablaPropiedades.item(i, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                    var.ui.tablaPropiedades.item(i, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                    var.ui.tablaPropiedades.item(i, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                    var.ui.tablaPropiedades.item(i, 7).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                    var.ui.tablaPropiedades.item(i, 8).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
+                    i += 1
+
+            except Exception as e:
+                print("Error al filtrar propiedades por tipo:", e)
+
+        else:
+            Propiedades.cargaTablaPropiedades(self,0)
 
 
 

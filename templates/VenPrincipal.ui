@@ -832,7 +832,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../../../../.designer/img/calendar.png</normaloff>../../../../.designer/img/calendar.png</iconset>
+                <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
               </property>
              </widget>
             </item>
@@ -925,7 +925,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../../../../.designer/img/calendar.png</normaloff>../../../../.designer/img/calendar.png</iconset>
+                <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
               </property>
              </widget>
             </item>
@@ -1208,6 +1208,13 @@
               </property>
               <property name="text">
                <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../img/buscar.png</normaloff>../img/buscar.png</iconset>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -2138,7 +2145,7 @@
   <action name="actionbarSalir">
    <property name="icon">
     <iconset>
-     <normaloff>../../../../.designer/img/salir.ico</normaloff>../../../../.designer/img/salir.ico</iconset>
+     <normaloff>../img/salir.ico</normaloff>../img/salir.ico</iconset>
    </property>
    <property name="text">
     <string>Salir</string>
@@ -2153,7 +2160,7 @@
   <action name="actionbarLimpiar">
    <property name="icon">
     <iconset>
-     <normaloff>../../../../.designer/img/reload2.ico</normaloff>../../../../.designer/img/reload2.ico</iconset>
+     <normaloff>../img/reload2.ico</normaloff>../img/reload2.ico</iconset>
    </property>
    <property name="text">
     <string>Limpiar</string>

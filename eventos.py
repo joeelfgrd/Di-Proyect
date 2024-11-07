@@ -64,6 +64,7 @@ class Eventos():
         mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
         mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
         mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+        mbox.exec()
         return mbox
 
 
@@ -71,6 +72,7 @@ class Eventos():
     def mensajeSalir(self=None):
         mbox = QtWidgets.QMessageBox()
         mbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
+        
         # mbox.setWindowIcon(QtGui.QIcon('./img/icono.ico')) # PONER UN ICONO .SVG
         mbox.setWindowTitle('Salir')
         mbox.setText('Desea usted Salir?')
