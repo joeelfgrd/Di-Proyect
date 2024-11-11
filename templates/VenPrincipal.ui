@@ -2128,6 +2128,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionCrear_tipo_Propiedad"/>
    <addaction name="actionbarLimpiar"/>
    <addaction name="separator"/>
    <addaction name="actionbarSalir"/>
@@ -2185,11 +2186,20 @@
     <string>Tipo Propiedades</string>
    </property>
   </action>
+  <action name="actionCrear_tipo_Propiedad">
+   <property name="icon">
+    <iconset>
+     <normaloff>../img/logo.ico</normaloff>../img/logo.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Crear tipo Propiedad</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>
