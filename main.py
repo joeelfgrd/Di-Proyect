@@ -64,7 +64,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnGrabarprop.clicked.connect(propiedades.Propiedades.altaPropiedad)
         var.ui.btnDelprop.clicked.connect(propiedades.Propiedades.bajaPropiedad)
         var.ui.btnModifprop.clicked.connect(propiedades.Propiedades.modifPropiedad)
-        var.ui.btnTipoProp.clicked.connect(propiedades.Propiedades.filtroPorTipoPropiedad)
+        var.ui.btnTipoProp.clicked.connect(lambda: propiedades.Propiedades.cargaTablaPropiedades(self,1))
 
 
         '''

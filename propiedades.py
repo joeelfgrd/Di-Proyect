@@ -107,7 +107,7 @@ class Propiedades():
             var.ui.tablaPropiedades.setRowCount(0)
             i = 0
             for registro in listado:
-                if contexto == 1 and var.ui.cmbTipoprop.currentText() != registro[6]:
+                if var.ui.btnTipoProp.isChecked() and contexto == 1 and (var.ui.cmbTipoprop.currentText() != registro[6] or var.ui.cmbMuniprop.currentText() != registro[5]):
                     continue
 
                 var.ui.tablaPropiedades.setRowCount(i + 1)
@@ -131,8 +131,8 @@ class Propiedades():
                 var.ui.tablaPropiedades.item(i, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
                 var.ui.tablaPropiedades.item(i, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                 var.ui.tablaPropiedades.item(i, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tablaPropiedades.item(i, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+                var.ui.tablaPropiedades.item(i, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
                 var.ui.tablaPropiedades.item(i, 7).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                 var.ui.tablaPropiedades.item(i, 8).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                 i += 1
@@ -331,8 +331,8 @@ class Propiedades():
                     var.ui.tablaPropiedades.item(i, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
                     var.ui.tablaPropiedades.item(i, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                     var.ui.tablaPropiedades.item(i, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                    var.ui.tablaPropiedades.item(i, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                    var.ui.tablaPropiedades.item(i, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                    var.ui.tablaPropiedades.item(i, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+                    var.ui.tablaPropiedades.item(i, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
                     var.ui.tablaPropiedades.item(i, 7).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                     var.ui.tablaPropiedades.item(i, 8).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
