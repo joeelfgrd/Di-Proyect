@@ -315,6 +315,10 @@ class Eventos():
         except Exception as error:
             print("Error en cargar tipo propiedad: ", error)
 
+    def controlarBtnBuscar(self):
+        var.ui.btnTipoProp.setChecked(not var.ui.btnTipoProp.isChecked())
+        propiedades.Propiedades.cargaTablaPropiedades(self, 1)
+
 
 
 

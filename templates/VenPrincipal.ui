@@ -2138,6 +2138,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionFiltrarTipoProp"/>
    <addaction name="actionCrear_tipo_Propiedad"/>
    <addaction name="actionbarLimpiar"/>
    <addaction name="separator"/>
@@ -2221,6 +2222,15 @@
   <action name="actionSalir_2">
    <property name="text">
     <string>Salir</string>
+   </property>
+  </action>
+  <action name="actionFiltrarTipoProp">
+   <property name="icon">
+    <iconset>
+     <normaloff>../img/buscar.png</normaloff>../img/buscar.png</iconset>
+   </property>
+   <property name="text">
+    <string>FiltrarTipoProp</string>
    </property>
   </action>
  </widget>

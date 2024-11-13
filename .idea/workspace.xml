@@ -7,9 +7,10 @@
     <list default="true" id="b138e9cf-b85a-43cb-9048-15798344b753" name="Changes" comment="feat():delete button">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VenPrincipal.py" beforeDir="false" afterPath="$PROJECT_DIR$/VenPrincipal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bbdd.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/bbdd.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventos.py" beforeDir="false" afterPath="$PROJECT_DIR$/eventos.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propiedades.py" beforeDir="false" afterPath="$PROJECT_DIR$/propiedades.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles.qss" beforeDir="false" afterPath="$PROJECT_DIR$/styles.qss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/VenPrincipal.ui" beforeDir="false" afterPath="$PROJECT_DIR$/templates/VenPrincipal.ui" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -179,7 +180,7 @@
       <workItem from="1730971115592" duration="4904000" />
       <workItem from="1731328933034" duration="2088000" />
       <workItem from="1731333882765" duration="775000" />
-      <workItem from="1731499172751" duration="2212000" />
+      <workItem from="1731499172751" duration="4827000" />
     </task>
     <task id="LOCAL-00001" summary="feat():delete button">
       <option name="closed" value="true" />
@@ -216,6 +217,6 @@
     <SUITE FILE_PATH="coverage/figueiridomolares$VenvPrincipal.coverage" NAME="VenvPrincipal Coverage Results" MODIFIED="1727158725318" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$conexion.coverage" NAME="conexion Coverage Results" MODIFIED="1728370442025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$kill.coverage" NAME="kill Coverage Results" MODIFIED="1729064725726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Y:/0_COMUN" />
-    <SUITE FILE_PATH="coverage/Di_Proyect$main.coverage" NAME="main Coverage Results" MODIFIED="1731501415841" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\a23joelfm\Documents\PROYECTO INTERFACES\Di-Proyect" />
+    <SUITE FILE_PATH="coverage/Di_Proyect$main.coverage" NAME="main Coverage Results" MODIFIED="1731504016934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\a23joelfm\Documents\PROYECTO INTERFACES\Di-Proyect" />
   </component>
 </project>

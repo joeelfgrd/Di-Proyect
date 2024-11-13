@@ -369,7 +369,34 @@ class Propiedades():
         else:
             Propiedades.cargaTablaPropiedades(self,0)
 
+    def controlDeCheckbox(self):
+        if var.ui.txtPrecioAlquilerprop.text() == "":
+            var.ui.chkAlquilerprop.setChecked(False)
+            var.ui.chkAlquilerprop.setEnabled(False)
+        else:
+            var.ui.chkAlquilerprop.setChecked(True)
+            var.ui.chkAlquilerprop.setEnabled(True)
+
+        if var.ui.txtPrecioVentaprop.text() == "":
+            var.ui.chkVentaprop.setChecked(False)
+            var.ui.chkVentaprop.setEnabled(False)
+        else:
+            var.ui.chkVentaprop.setChecked(True)
+            var.ui.chkVentaprop.setEnabled(True)
 
 
 
-
+    def controlDeRadioButtons(self):
+        if var.ui.txtBajaprop.text() == "":
+            var.ui.rbDisponibleprop.setEnabled(True)
+            var.ui.rbDisponibleprop.setChecked(True)
+            var.ui.rbAlquilerprop.setChecked(False)
+            var.ui.rbVentaprop.setChecked(False)
+            var.ui.rbAlquilerprop.setEnabled(False)
+            var.ui.rbVentaprop.setEnabled(False)
+        else:
+            var.ui.rbDisponibleprop.setChecked(False)
+            var.ui.rbDisponibleprop.setEnabled(False)
+            var.ui.rbAlquilerprop.setChecked(True)
+            var.ui.rbAlquilerprop.setEnabled(True)
+            var.ui.rbVentaprop.setEnabled(True)

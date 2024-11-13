@@ -25,6 +25,8 @@ class Main(QtWidgets.QMainWindow):
         conexion.Conexion.db_conexion(self)
         #conexionserver.ConexionServer.crear_conexion(self)
         eventos.Eventos.cargaMuniCli(self)
+        propiedades.Propiedades.controlDeCheckbox(self)
+        propiedades.Propiedades.controlDeRadioButtons(self)
 
 
 
@@ -70,6 +72,14 @@ class Main(QtWidgets.QMainWindow):
         var.ui.txtDniCli.editingFinished.connect(lambda:clientes.Clientes.checkDNI(var.ui.txtDniCli.text()))
         var.ui.txtEmailCli.editingFinished.connect(lambda:clientes.Clientes.checkEmail(var.ui.txtEmailCli.text()))
         var.ui.txtMovilCli.editingFinished.connect(lambda: clientes.Clientes.checkTelefono(var.ui.txtMovilCli.text()))
+        var.ui.txtPrecioAlquilerprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeCheckbox(self))
+        var.ui.txtPrecioVentaprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeCheckbox(self))
+        var.ui.txtFechaprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeRadioButtons(self))
+        var.ui.txtBajaprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeRadioButtons(self))
+
+
+
+
 
         '''
         EVENTOS COMOBOX 
@@ -85,6 +95,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionbarSalir.triggered.connect(eventos.Eventos.mensajeSalir)
         var.ui.actionbarLimpiar.triggered.connect(eventos.Eventos.limpiarPanel)
         var.ui.actionCrear_tipo_Propiedad.triggered.connect(eventos.Eventos.abrirTipoProp)
+        var.ui.actionFiltrarTipoProp.triggered.connect(lambda: eventos.Eventos.controlarBtnBuscar(self))
 
         '''
         EVENTOS CHECKBOX

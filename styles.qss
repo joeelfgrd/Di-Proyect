@@ -29,3 +29,15 @@ QToolBar {
     background-color: #FFFBE7;
     border: 1px solid black;
     }
+*:disabled {
+   color: #a6a6a6;
+}
+
+QCheckBox::indicator:disabled {
+    border: 1px solid #a6a6a6;
+    border-radius: 5px;
+}
+QRadioButton::indicator:disabled {
+    border: 1px solid #a6a6a6;
+    border-radius: 8px;
+}
