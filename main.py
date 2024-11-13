@@ -43,13 +43,10 @@ class Main(QtWidgets.QMainWindow):
         '''
         ZONA DE EVENTOS DEL MENUBAR
         '''
-        var.ui.actionSalir.triggered.connect(eventos.Eventos.mensajeSalir)
+        var.ui.actionSalir_2.triggered.connect(eventos.Eventos.mensajeSalir)
         var.ui.actionCrear_Backup.triggered.connect(eventos.Eventos.crearBackup)
         var.ui.actionRestaurar_Backup.triggered.connect(eventos.Eventos.restaurarBackup)
         var.ui.actionTipoProp.triggered.connect(eventos.Eventos.abrirTipoProp)
-
-
-
 
         '''
         EVENTOS DE BOTONES

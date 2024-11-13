@@ -194,6 +194,14 @@ class Propiedades():
             fechabaja = var.ui.txtBajaprop.text()
             if not fechabaja:
                 fechabaja = datetime.today().strftime('%Y-%m-%d')
+            if fechabaja < var.ui.txtFechaprop.text():
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowTitle('Aviso')
+                mbox.setWindowIcon(QIcon('./img/logo.ico'))
+                mbox.setText("Error, la fecha de baja no puede ser anterior a la fecha de alta")
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
+                mbox.exec()
+                return
             if var.ui.rbDisponibleprop.isChecked():
                 mbox = QtWidgets.QMessageBox()
                 mbox.setWindowTitle('Aviso')
@@ -228,6 +236,7 @@ class Propiedades():
 
     def modifPropiedad(self):
         try:
+
             registro = [
                 var.ui.lblprop.text(),
                 var.ui.txtFechaprop.text(),
@@ -262,6 +271,22 @@ class Propiedades():
                 registro.append(var.ui.rbVentaprop.text())
             registro.append(var.ui.txtNomeprop.text())
             registro.append(var.ui.txtMovilprop.text())
+            if var.ui.txtBajaprop.text() == "":
+                registro.append("")
+            else:
+                fecha_alta = datetime.strptime(var.ui.txtFechaprop.text(), '%d/%m/%Y')
+                fecha_baja = datetime.strptime(var.ui.txtBajaprop.text(), '%d/%m/%Y')
+                if fecha_baja > fecha_alta:
+                    registro.append(var.ui.txtBajaprop.text())
+                else:
+                    mbox = QtWidgets.QMessageBox()
+                    mbox.setWindowTitle('Aviso')
+                    mbox.setWindowIcon(QIcon('./img/logo.ico'))
+                    mbox.setText("Error, la fecha de baja no puede ser anterior a la fecha de alta")
+                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
+                    mbox.exec()
+                    return
+
 
             if conexion.Conexion.modifPropiedad(registro):
                 mbox = QtWidgets.QMessageBox()
