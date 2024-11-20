@@ -7,8 +7,9 @@ from VenPrincipal import Ui_venPrincipal
 import styles
 import clientes
 from dlgGestionProp import *
-from venAux import Calendar, FileDialogAbrir, dlgGestionProp
+from venAux import Calendar, FileDialogAbrir, dlgGestionProp, dlgAbout
 import propiedades
+
 
 
 class Main(QtWidgets.QMainWindow):
@@ -21,6 +22,7 @@ class Main(QtWidgets.QMainWindow):
         var.dlgabrir = FileDialogAbrir()
         var.historico = 1
         var.dlgGestion = dlgGestionProp()
+        var.dlgAbout = dlgAbout()
         self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
         #conexionserver.ConexionServer.crear_conexion(self)
@@ -49,7 +51,9 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionCrear_Backup.triggered.connect(eventos.Eventos.crearBackup)
         var.ui.actionRestaurar_Backup.triggered.connect(eventos.Eventos.restaurarBackup)
         var.ui.actionTipoProp.triggered.connect(eventos.Eventos.abrirTipoProp)
-
+        var.ui.actionExportar_Propiedades_CSV.triggered.connect(eventos.Eventos.exportCSVProp)
+        var.ui.actionExportar_Propiedades_JSON.triggered.connect(eventos.Eventos.exportJSONprop)
+        var.ui.actionAbout.triggered.connect(eventos.Eventos.abrirAbout)
         '''
         EVENTOS DE BOTONES
         '''
@@ -64,6 +68,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnDelprop.clicked.connect(propiedades.Propiedades.bajaPropiedad)
         var.ui.btnModifprop.clicked.connect(propiedades.Propiedades.modifPropiedad)
         var.ui.btnTipoProp.clicked.connect(lambda: propiedades.Propiedades.cargaTablaPropiedades(self,1))
+
 
 
         '''

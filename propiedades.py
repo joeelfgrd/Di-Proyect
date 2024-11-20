@@ -136,6 +136,10 @@ class Propiedades():
                 var.ui.tablaPropiedades.item(i, 7).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                 var.ui.tablaPropiedades.item(i, 8).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                 i += 1
+            if var.ui.tablaPropiedades.rowCount()==0:
+                var.ui.tablaPropiedades.setRowCount(1)
+                var.ui.tablaPropiedades.setItem(0,2, QtWidgets.QTableWidgetItem("No Hay Propiedades"))
+                var.ui.tablaPropiedades.item(0, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
 
         except Exception as e:
             print("Error cargar tabPropiedades", e)
@@ -248,7 +252,6 @@ class Propiedades():
                 var.ui.spinBanosprop.text(),
                 var.ui.txtSuperprop.text(),
                 var.ui.txtPrecioAlquilerprop.text(),
-
                 var.ui.txtPrecioVentaprop.text(),  # Validación de precios
                 var.ui.txtCPprop.text(),
                 var.ui.txtDescriprop.toPlainText()

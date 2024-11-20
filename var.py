@@ -9,3 +9,5 @@ global panel
 global dlgabrir
 global historico
 global dlgGestion
+global historiaprop
+global dlgAbout
