@@ -1,4 +1,5 @@
 import conexion
+import conexionserver
 import eventos
 from VenPrincipal import *
 import sys
@@ -24,12 +25,12 @@ class Main(QtWidgets.QMainWindow):
         var.dlgGestion = dlgGestionProp()
         var.dlgAbout = dlgAbout()
         self.setStyleSheet(styles.load_stylesheet())
-        conexion.Conexion.db_conexion(self)
-        #conexionserver.ConexionServer.crear_conexion(self)
+        #conexion.Conexion.db_conexion(self)
+        conexionserver.ConexionServer.crear_conexion(self)
         eventos.Eventos.cargaMuniCli(self)
         propiedades.Propiedades.controlDeCheckbox(self)
         propiedades.Propiedades.controlDeRadioButtons(self)
-
+        tipos_propiedad = conexionserver.ConexionServer.cargarTipoProp()
 
 
 
@@ -68,6 +69,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnDelprop.clicked.connect(propiedades.Propiedades.bajaPropiedad)
         var.ui.btnModifprop.clicked.connect(propiedades.Propiedades.modifPropiedad)
         var.ui.btnTipoProp.clicked.connect(lambda: propiedades.Propiedades.cargaTablaPropiedades(self,1))
+        var.ui.btnBuscarDniCli.clicked.connect(lambda: clientes.Clientes.cargaClienteDni(self))
 
 
 
@@ -93,6 +95,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.cmbProvCli.currentIndexChanged.connect(eventos.Eventos.cargaMuniCli)
         var.ui.cmbProvprop.currentIndexChanged.connect(eventos.Eventos.cargaMuniProp)
         eventos.Eventos.cargarTipoprop(self)
+        var.ui.cmbTipoprop.addItems(tipos_propiedad)
 
         '''
         EVENTOS DEL TOOLBAR

@@ -89,7 +89,8 @@ class Eventos():
             mbox.hide()
 
     def cargarProv(self):
-        listaprov = conexion.Conexion.listaProv(self)
+        #listaprov = conexion.Conexion.listaProv(self)
+        listaprov = conexionserver.ConexionServer.listaProv(self)
         cmbprovcli = var.ui.cmbProvCli
         cmbprovprop = var.ui.cmbProvprop
         cmbprovcli.clear()
@@ -100,7 +101,8 @@ class Eventos():
     def cargaMuniCli(self):
         listado = []
         provincia = var.ui.cmbProvCli.currentText()
-        listado = conexion.Conexion.listaMuniprov(str(provincia))
+        #listado = conexion.Conexion.listaMuniprov(str(provincia))
+        listado = conexionserver.ConexionServer.listaMuniProv(str(provincia))
         var.ui.cmbMuniCli.clear()
         var.ui.cmbMuniCli.addItems(listado)
     def cargaMuniProp(self):
@@ -310,7 +312,7 @@ class Eventos():
 
     def cargarTipoprop(self):
         try :
-            registro = conexion.Conexion.cargarTipoProp(self)
+            registro = conexionserver.ConexionServer.cargarTipoProp()
             if registro:
                 var.ui.cmbTipoprop.clear()
                 var.ui.cmbTipoprop.addItems(registro)

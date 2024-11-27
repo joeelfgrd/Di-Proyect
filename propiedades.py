@@ -5,6 +5,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMessageBox
 
 import VenPrincipal
+import conexionserver
 import eventos
 import var
 from dlgGestionProp import *
@@ -103,7 +104,7 @@ class Propiedades():
 
     def cargaTablaPropiedades(self, contexto):
         try:
-            listado = conexion.Conexion.listadoPropiedades(self)
+            listado = conexionserver.ConexionServer.listadoPropiedades(self)
             var.ui.tablaPropiedades.setRowCount(0)
             i = 0
             for registro in listado:
