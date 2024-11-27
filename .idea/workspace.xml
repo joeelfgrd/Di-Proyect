@@ -6,14 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b138e9cf-b85a-43cb-9048-15798344b753" name="Changes" comment="feat():delete button">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VenPrincipal.py" beforeDir="false" afterPath="$PROJECT_DIR$/VenPrincipal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bbdd.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/bbdd.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clientes.py" beforeDir="false" afterPath="$PROJECT_DIR$/clientes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conexionserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/conexionserver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventos.py" beforeDir="false" afterPath="$PROJECT_DIR$/eventos.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propiedades.py" beforeDir="false" afterPath="$PROJECT_DIR$/propiedades.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/VenPrincipal.ui" beforeDir="false" afterPath="$PROJECT_DIR$/templates/VenPrincipal.ui" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +187,7 @@
       <workItem from="1732522268508" duration="1356000" />
       <workItem from="1732605215996" duration="2201000" />
       <workItem from="1732607450791" duration="3842000" />
-      <workItem from="1732709105957" duration="3864000" />
+      <workItem from="1732709105957" duration="4660000" />
     </task>
     <task id="LOCAL-00001" summary="feat():delete button">
       <option name="closed" value="true" />
@@ -229,11 +222,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/clientes.py</url>
-          <line>209</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
           <line>68</line>
           <option name="timeStamp" value="2" />
@@ -247,6 +235,6 @@
     <SUITE FILE_PATH="coverage/figueiridomolares$VenvPrincipal.coverage" NAME="VenvPrincipal Coverage Results" MODIFIED="1727158725318" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$conexion.coverage" NAME="conexion Coverage Results" MODIFIED="1728370442025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$kill.coverage" NAME="kill Coverage Results" MODIFIED="1729064725726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Y:/0_COMUN" />
-    <SUITE FILE_PATH="coverage/Di_Proyect$main.coverage" NAME="main Coverage Results" MODIFIED="1732713121244" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\a23joelfm\Documents\PROYECTO INTERFACES\Di-Proyect" />
+    <SUITE FILE_PATH="coverage/Di_Proyect$main.coverage" NAME="main Coverage Results" MODIFIED="1732713787720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\a23joelfm\Documents\PROYECTO INTERFACES\Di-Proyect" />
   </component>
 </project>

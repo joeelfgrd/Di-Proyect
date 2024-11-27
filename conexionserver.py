@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import mysql.connector
 from PyQt6.uic.properties import QtCore
 from mysql.connector import Error
@@ -113,7 +115,9 @@ class ConexionServer():
             if count > 0:
                 query_update = """
                                 UPDATE clientes SET altacli = %s, apelcli = %s, nomecli = %s, emailcli = %s, movilcli = %s,dircli = %s, provcli = %s, municli = %s, bajacli = %s WHERE dnicli = %s """
-                params = (query_update, registro)
+                params = (str(registro[1]), str(registro[2]), str(registro[3]), str(registro[4]),
+                    str(registro[5]), str(registro[6]), str(registro[7]), str(registro[8]),
+                    str(registro[9]) if registro[9] != "" else None, str(registro[0]))
                 if len(params) == 10:
                     cursor.execute(query_update, params)
                     conexion.commit()
@@ -129,14 +133,21 @@ class ConexionServer():
     from PyQt6.QtCore import QDate
 
     def bajaCliente(datos):
-        conexion = ConexionServer().crear_conexion()
-        query = '''UPDATE clientes SET bajacli = %s WHERE dnicli = %s'''
-        cursor = conexion.cursor()
-        cursor.execute(query, (datos[0], datos[1]))
-        conexion.commit()
-        cursor.close()
-        conexion.close()
-        return True
+        try:
+            conexion = ConexionServer().crear_conexion()
+            if conexion:
+                cursor = conexion.cursor()
+                query = "UPDATE clientes SET bajacli = %s WHERE dnicli = %s"
+                cursor.execute(query, (datetime.now().strftime("%d/%m/%Y"), str(datos[1])))
+                conexion.commit()
+                return cursor.rowcount != 0
+        except Error as error:
+            print("Error en baja cliente:", error)
+        finally:
+            if cursor:
+                cursor.close()
+            if conexion:
+                conexion.close()
 
     def datosOneCliente(dni):
         registro = []  # Inicializa la lista para almacenar los datos del cliente
