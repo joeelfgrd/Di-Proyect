@@ -53,7 +53,7 @@ class ConexionServer():
             )
             resultados = cursor.fetchall()
             for fila in resultados:
-                listamunicipios.append(fila[1])  # Asumiendo que el nombre de la provincia está en la segunda columna
+                listamunicipios.append(fila[1])
             cursor.close()
             conexion.close()
             return listamunicipios
@@ -75,6 +75,8 @@ class ConexionServer():
             # Cerrar el cursor y la conexión si no los necesitas más
             cursor.close()
             conexion.close()
+
+
             print(listadoclientes)
             return listadoclientes
         except Exception as e:
