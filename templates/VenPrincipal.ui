@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1613</width>
-    <height>562</height>
+    <height>568</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@
     <item>
      <widget class="QTabWidget" name="panPrincipal">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pesClientes">
        <attribute name="title">
@@ -829,7 +829,7 @@
       </widget>
       <widget class="QWidget" name="tabConstruccion">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>PROPIEDADES</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="1" column="0">

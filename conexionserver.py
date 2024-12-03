@@ -74,8 +74,6 @@ class ConexionServer():
             # Cerrar el cursor y la conexión si no los necesitas más
             cursor.close()
             conexion.close()
-
-
             print(listadoclientes)
             return listadoclientes
         except Exception as e:
