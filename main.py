@@ -20,6 +20,11 @@ class Main(QtWidgets.QMainWindow):
         var.ui.setupUi(self)
         var.uicalendar = Calendar()
         var.dlgabrir = FileDialogAbrir()
+        var.current_page_cli = 0
+        var.current_page_prop = 0
+        var.items_per_page_cli = 3
+        var.items_per_page_prop = 3
+
         var.historico = 1
         var.dlgGestion = dlgGestionProp()
         var.dlgAbout = dlgAbout()
@@ -29,9 +34,6 @@ class Main(QtWidgets.QMainWindow):
         eventos.Eventos.cargaMuniCli(self)
         propiedades.Propiedades.controlDeCheckbox(self)
         propiedades.Propiedades.controlDeRadioButtons(self)
-
-
-
 
         clientes.Clientes.cargaTablaClientes(self)
         propiedades.Propiedades.cargaTablaPropiedades(self,0)
@@ -68,6 +70,8 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnDelprop.clicked.connect(propiedades.Propiedades.bajaPropiedad)
         var.ui.btnModifprop.clicked.connect(propiedades.Propiedades.modifPropiedad)
         var.ui.btnTipoProp.clicked.connect(lambda: propiedades.Propiedades.cargaTablaPropiedades(self,1))
+        var.ui.btnSiguientecli.clicked.connect(clientes.Clientes.siguientePaginaClientes)
+        var.ui.btnAnteriorcli.clicked.connect(clientes.Clientes.anteriorPaginaClientes)
 
 
 

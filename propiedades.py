@@ -11,6 +11,7 @@ from dlgGestionProp import *
 import conexion
 import venAux
 
+
 class Propiedades():
     def altaTipopropiedad(self):
         try:
@@ -29,6 +30,7 @@ class Propiedades():
             var.dlgGestion.ui.txtGestTipoProp.setText('')
         except Exception as error:
             print("Error en alta tipo propiedad: ", error)
+
     def bajaTipopropiedad(self):
         try:
             tipo = var.dlgGestion.ui.txtGestTipoProp.text().title()
@@ -58,7 +60,6 @@ class Propiedades():
             municipio = var.ui.cmbMuniprop.currentText()
             cp = var.ui.txtCPprop.text()
             superf = var.ui.txtSuperprop.text()
-
 
             if not direccion or not propietario or not movil or fecha == "" or provincia == "" or municipio == "" or cp == "" or superf == "":
                 mbox = QMessageBox()
@@ -94,55 +95,94 @@ class Propiedades():
             propiedad.append(var.ui.txtNomeprop.text())
             propiedad.append(var.ui.txtMovilprop.text())
             conexion.Conexion.altaPropiedad(propiedad)
-            Propiedades.cargaTablaPropiedades(self,0)
+            Propiedades.cargaTablaPropiedades(self, 0)
         except Exception as error:
             print("Error en alta propiedad: ", error)
         print(propiedad)
 
-
-
     def cargaTablaPropiedades(self, contexto):
         try:
-            listado = conexion.Conexion.listadoPropiedades(self)
+            # Reiniciar el contenido de la tabla
             var.ui.tablaPropiedades.setRowCount(0)
-            i = 0
-            for registro in listado:
-                if var.ui.btnTipoProp.isChecked() and contexto == 1 and (var.ui.cmbTipoprop.currentText() != registro[6] or var.ui.cmbMuniprop.currentText() != registro[5]):
-                    continue
 
-                var.ui.tablaPropiedades.setRowCount(i + 1)
+            # Obtener listado de propiedades desde la base de datos
+            listado = conexion.Conexion.listadoPropiedades(self)
 
-                var.ui.tablaPropiedades.setItem(i, 0, QtWidgets.QTableWidgetItem(str(registro[0])))
-                var.ui.tablaPropiedades.setItem(i, 1, QtWidgets.QTableWidgetItem(registro[5]))
-                var.ui.tablaPropiedades.setItem(i, 2, QtWidgets.QTableWidgetItem(registro[6]))
-                var.ui.tablaPropiedades.setItem(i, 3, QtWidgets.QTableWidgetItem(str(registro[7])))
-                var.ui.tablaPropiedades.setItem(i, 4, QtWidgets.QTableWidgetItem(str(registro[8])))
-                if registro[10] == "":
-                    registro[10] = "-"
-                if registro[11] == "":
-                    registro[11] = "-"
-                var.ui.tablaPropiedades.setItem(i, 5, QtWidgets.QTableWidgetItem(str(registro[10]) + " €"))
-                var.ui.tablaPropiedades.setItem(i, 6, QtWidgets.QTableWidgetItem(str(registro[11]) + " €"))
-                var.ui.tablaPropiedades.setItem(i, 7, QtWidgets.QTableWidgetItem(registro[14]))
-                var.ui.tablaPropiedades.setItem(i, 8, QtWidgets.QTableWidgetItem(registro[2]))
+            # Calcular índices para la paginación
+            total_items = len(listado)
+            start_index = var.current_page_prop * var.items_per_page_prop
+            end_index = start_index + var.items_per_page_prop
+            paginated_list = listado[start_index:end_index] if listado else []
 
-                var.ui.tablaPropiedades.item(i, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
-                var.ui.tablaPropiedades.item(i, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
-                var.ui.tablaPropiedades.item(i, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-                var.ui.tablaPropiedades.item(i, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-                var.ui.tablaPropiedades.item(i, 7).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tablaPropiedades.item(i, 8).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                i += 1
-            if var.ui.tablaPropiedades.rowCount()==0:
+            # Configurar el número de filas visibles en la tabla
+            var.ui.tablaPropiedades.setRowCount(len(paginated_list))
+
+            if not listado:
+                # Mostrar mensaje si no hay propiedades
                 var.ui.tablaPropiedades.setRowCount(1)
-                var.ui.tablaPropiedades.setItem(0,2, QtWidgets.QTableWidgetItem("No Hay Propiedades"))
-                var.ui.tablaPropiedades.item(0, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tablaPropiedades.setItem(0, 2, QtWidgets.QTableWidgetItem("No hay propiedades que mostrar"))
+                var.ui.tablaPropiedades.item(0, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            else:
+                i = 0
+                for registro in paginated_list:
+                    # Filtrar resultados si el contexto es específico
+                    if var.ui.btnTipoProp.isChecked() and contexto == 1 and (
+                            var.ui.cmbTipoprop.currentText() != registro[6] or
+                            var.ui.cmbMuniprop.currentText() != registro[5]
+                    ):
+                        continue
+
+                    var.ui.tablaPropiedades.setRowCount(i + 1)
+
+                    # Colocar los valores de las columnas según las propiedades
+                    var.ui.tablaPropiedades.setItem(i, 0, QtWidgets.QTableWidgetItem(str(registro[0])))  # ID
+                    var.ui.tablaPropiedades.setItem(i, 1, QtWidgets.QTableWidgetItem(str(registro[5])))  # Municipio
+                    var.ui.tablaPropiedades.setItem(i, 2,
+                                                    QtWidgets.QTableWidgetItem(str(registro[6])))  # Tipo de propiedad
+                    var.ui.tablaPropiedades.setItem(i, 3, QtWidgets.QTableWidgetItem(str(registro[7])))  # Habitaciones
+                    var.ui.tablaPropiedades.setItem(i, 4, QtWidgets.QTableWidgetItem(str(registro[8])))  # Baños
+
+                    # Validar y formatear precios
+                    precio_alquiler = registro[10] if registro[10] else "-"
+                    precio_venta = registro[11] if registro[11] else "-"
+
+                    var.ui.tablaPropiedades.setItem(i, 5, QtWidgets.QTableWidgetItem(f"{precio_alquiler} €"))
+                    var.ui.tablaPropiedades.setItem(i, 6, QtWidgets.QTableWidgetItem(f"{precio_venta} €"))
+
+                    var.ui.tablaPropiedades.setItem(i, 7,
+                                                    QtWidgets.QTableWidgetItem(str(registro[14])))  # Tipo de operación
+                    var.ui.tablaPropiedades.setItem(i, 8, QtWidgets.QTableWidgetItem(str(registro[2])))  # Baja
+
+                    # Alinear los textos en las celdas
+                    for col in range(9):
+                        alignment = QtCore.Qt.AlignmentFlag.AlignCenter if col not in (
+                            1, 2, 7, 8) else QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter
+                        var.ui.tablaPropiedades.item(i, col).setTextAlignment(alignment)
+
+                    i += 1
+
+                # Habilitar o deshabilitar botones de paginación
+                var.ui.btnSiguienteprop.setEnabled(end_index < total_items)
+                var.ui.btnAnteriorprop.setEnabled(var.current_page_prop > 0)
+
+            # Mostrar mensaje si no hay resultados tras filtrar
+            if var.ui.tablaPropiedades.rowCount() == 0:
+                var.ui.tablaPropiedades.setRowCount(1)
+                var.ui.tablaPropiedades.setItem(0, 2, QtWidgets.QTableWidgetItem("No Hay Propiedades"))
+                var.ui.tablaPropiedades.item(0, 2).setTextAlignment(
+                    QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
 
         except Exception as e:
             print("Error cargar tabPropiedades", e)
+
+    def siguientePaginaProp(self):
+        var.current_page_prop += 1
+        self.cargaTablaPropiedades(contexto=1)
+
+    def anteriorPaginaProp(self):
+        if var.current_page_prop > 0:
+            var.current_page_prop -= 1
+        self.cargaTablaPropiedades(contexto=1)
 
     def cargaPropiedad(self):
         try:
@@ -290,7 +330,6 @@ class Propiedades():
                     mbox.exec()
                     return
 
-
             if conexion.Conexion.modifPropiedad(registro):
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
@@ -314,6 +353,7 @@ class Propiedades():
 
         except Exception as error:
             print("error modificar propiedad", error)
+
     def historicoProp(self):
         try:
             if var.ui.chkHistoriaprop.isChecked():
@@ -370,7 +410,7 @@ class Propiedades():
                 print("Error al filtrar propiedades por tipo:", e)
 
         else:
-            Propiedades.cargaTablaPropiedades(self,0)
+            Propiedades.cargaTablaPropiedades(self, 0)
 
     def controlDeCheckbox(self):
         if var.ui.txtPrecioAlquilerprop.text() == "":
@@ -386,8 +426,6 @@ class Propiedades():
         else:
             var.ui.chkVentaprop.setChecked(True)
             var.ui.chkVentaprop.setEnabled(True)
-
-
 
     def controlDeRadioButtons(self):
         if var.ui.txtBajaprop.text() == "":

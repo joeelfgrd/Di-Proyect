@@ -75,28 +75,81 @@ class Clientes:
         except Exception as error:
             print("error check cliente", error)
 
+    #def cargaTablaClientes(self):
+            #    try:
+            #      listado = conexion.Conexion.listadoClientes(self)
+            #   for i, registro in enumerate(listado):
+            #     var.ui.tabClientes.setRowCount(i + 1)
+
+            #   for j, value in enumerate(
+            #         [registro[0], registro[2], registro[3], registro[5], registro[7], registro[8], registro[9]]):
+            #     item = QtWidgets.QTableWidgetItem(value)
+            #    var.ui.tabClientes.setItem(i, j, item)
+
+            #  for j in range(7):
+            #   item = var.ui.tabClientes.item(i, j)
+            #  if item is not None:
+            #   if j in [0, 3, 6]:
+                        #      item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            #  else:
+            #   item.setTextAlignment(
+        #      QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+
+            #  except Exception as e:
+    #  print("Error cargar Clientes", e)
+
     def cargaTablaClientes(self):
         try:
+            var.ui.tabClientes.setRowCount(0)
             listado = conexion.Conexion.listadoClientes(self)
-            for i, registro in enumerate(listado):
-                var.ui.tabClientes.setRowCount(i + 1)
+            total_items = len(listado)
+            start_index = var.current_page_cli * var.items_per_page_cli
+            end_index = start_index + var.items_per_page_cli
+            paginated_list = listado[start_index:end_index]
+            #listado = conexionserver.ConexionServer.listadoClientes(self)
 
-                for j, value in enumerate(
-                        [registro[0], registro[2], registro[3], registro[5], registro[7], registro[8], registro[9]]):
-                    item = QtWidgets.QTableWidgetItem(value)
-                    var.ui.tabClientes.setItem(i, j, item)
-
-                for j in range(7):
-                    item = var.ui.tabClientes.item(i, j)
-                    if item is not None:
-                        if j in [0, 3, 6]:
-                            item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                        else:
-                            item.setTextAlignment(
-                                QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
-
+            for index, registro in enumerate(paginated_list):
+                var.ui.tabClientes.insertRow(index)
+                var.ui.tabClientes.setItem(index, 0, QtWidgets.QTableWidgetItem(registro[0]))
+                var.ui.tabClientes.setItem(index, 1, QtWidgets.QTableWidgetItem(registro[2]))
+                var.ui.tabClientes.setItem(index, 2, QtWidgets.QTableWidgetItem(registro[3]))
+                var.ui.tabClientes.setItem(index, 3, QtWidgets.QTableWidgetItem(" " + " " + registro[5] + " " + " "))
+                var.ui.tabClientes.setItem(index, 4, QtWidgets.QTableWidgetItem(registro[7]))
+                var.ui.tabClientes.setItem(index, 5, QtWidgets.QTableWidgetItem(registro[8]))
+                var.ui.tabClientes.setItem(index, 6, QtWidgets.QTableWidgetItem(registro[9]))
+                var.ui.tabClientes.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tabClientes.item(index, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tabClientes.item(index, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            var.ui.btnSiguientecli.setEnabled(end_index < total_items)
+            var.ui.btnAnteriorcli.setEnabled(var.current_page_cli > 0)
         except Exception as e:
-            print("Error cargar Clientes", e)
+            print("Error carga tabla clientes ", e)
+
+    def siguientePaginaClientes(self):
+        try:
+            total_items = len(conexion.Conexion.listadoClientes(self))
+            total_pages = (total_items + var.items_per_page_cli - 1) // var.items_per_page_cli
+            if var.current_page_cli < total_pages - 1:
+                var.current_page_cli += 1
+                Clientes.cargaTablaClientes(self)
+            else:
+                print("No hay más páginas.")
+        except Exception as e:
+            print(f"Error al pasar a la siguiente página: {e}")
+
+    def anteriorPaginaClientes(self):
+        try:
+            if var.current_page_cli > 0:
+                var.current_page_cli -= 1
+                Clientes.cargaTablaClientes(self)
+            else:
+                print("No hay páginas anteriores.")
+        except Exception as e:
+            print(f"Error al retroceder a la página anterior: {e}")
 
     def cargaCliente(self):
         try:
