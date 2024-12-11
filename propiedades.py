@@ -102,87 +102,70 @@ class Propiedades():
 
     def cargaTablaPropiedades(self, contexto):
         try:
-            # Reiniciar el contenido de la tabla
+            # Restablecer la tabla
             var.ui.tablaPropiedades.setRowCount(0)
 
-            # Obtener listado de propiedades desde la base de datos
+            # Obtener listado completo
             listado = conexion.Conexion.listadoPropiedades(self)
-
-            # Calcular índices para la paginación
             total_items = len(listado)
+
+            # Cálculo de paginación
             start_index = var.current_page_prop * var.items_per_page_prop
             end_index = start_index + var.items_per_page_prop
-            paginated_list = listado[start_index:end_index] if listado else []
+            paginated_list = listado[start_index:end_index]
 
-            # Configurar el número de filas visibles en la tabla
-            var.ui.tablaPropiedades.setRowCount(len(paginated_list))
-
-            if not listado:
-                # Mostrar mensaje si no hay propiedades
-                var.ui.tablaPropiedades.setRowCount(1)
-                var.ui.tablaPropiedades.setItem(0, 2, QtWidgets.QTableWidgetItem("No hay propiedades que mostrar"))
-                var.ui.tablaPropiedades.item(0, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            else:
-                i = 0
-                for registro in paginated_list:
-                    # Filtrar resultados si el contexto es específico
-                    if var.ui.btnTipoProp.isChecked() and contexto == 1 and (
-                            var.ui.cmbTipoprop.currentText() != registro[6] or
-                            var.ui.cmbMuniprop.currentText() != registro[5]
-                    ):
+            # Rellenar la tabla
+            for i, registro in enumerate(paginated_list):
+                # Filtrar por tipo y municipio si corresponde
+                if var.ui.btnTipoProp.isChecked() and contexto == 1:
+                    tipo = var.ui.cmbTipoprop.currentText()
+                    muni = var.ui.cmbMuniprop.currentText()
+                    if registro[6] != tipo or registro[5] != muni:
                         continue
 
-                    var.ui.tablaPropiedades.setRowCount(i + 1)
+                # Añadir fila a la tabla
+                var.ui.tablaPropiedades.setRowCount(i + 1)
+                var.ui.tablaPropiedades.setItem(i, 0, QtWidgets.QTableWidgetItem(str(registro[0])))
+                var.ui.tablaPropiedades.setItem(i, 1, QtWidgets.QTableWidgetItem(registro[5]))
+                var.ui.tablaPropiedades.setItem(i, 2, QtWidgets.QTableWidgetItem(registro[6]))
+                var.ui.tablaPropiedades.setItem(i, 3, QtWidgets.QTableWidgetItem(str(registro[7])))
+                var.ui.tablaPropiedades.setItem(i, 4, QtWidgets.QTableWidgetItem(str(registro[8])))
 
-                    # Colocar los valores de las columnas según las propiedades
-                    var.ui.tablaPropiedades.setItem(i, 0, QtWidgets.QTableWidgetItem(str(registro[0])))  # ID
-                    var.ui.tablaPropiedades.setItem(i, 1, QtWidgets.QTableWidgetItem(str(registro[5])))  # Municipio
-                    var.ui.tablaPropiedades.setItem(i, 2,
-                                                    QtWidgets.QTableWidgetItem(str(registro[6])))  # Tipo de propiedad
-                    var.ui.tablaPropiedades.setItem(i, 3, QtWidgets.QTableWidgetItem(str(registro[7])))  # Habitaciones
-                    var.ui.tablaPropiedades.setItem(i, 4, QtWidgets.QTableWidgetItem(str(registro[8])))  # Baños
-
-                    # Validar y formatear precios
-                    precio_alquiler = registro[10] if registro[10] else "-"
-                    precio_venta = registro[11] if registro[11] else "-"
-
-                    var.ui.tablaPropiedades.setItem(i, 5, QtWidgets.QTableWidgetItem(f"{precio_alquiler} €"))
-                    var.ui.tablaPropiedades.setItem(i, 6, QtWidgets.QTableWidgetItem(f"{precio_venta} €"))
-
-                    var.ui.tablaPropiedades.setItem(i, 7,
-                                                    QtWidgets.QTableWidgetItem(str(registro[14])))  # Tipo de operación
-                    var.ui.tablaPropiedades.setItem(i, 8, QtWidgets.QTableWidgetItem(str(registro[2])))  # Baja
-
-                    # Alinear los textos en las celdas
-                    for col in range(9):
-                        alignment = QtCore.Qt.AlignmentFlag.AlignCenter if col not in (
-                            1, 2, 7, 8) else QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter
-                        var.ui.tablaPropiedades.item(i, col).setTextAlignment(alignment)
-
-                    i += 1
-
-                # Habilitar o deshabilitar botones de paginación
-                var.ui.btnSiguienteprop.setEnabled(end_index < total_items)
-                var.ui.btnAnteriorprop.setEnabled(var.current_page_prop > 0)
-
-            # Mostrar mensaje si no hay resultados tras filtrar
+            # Mostrar mensaje si no hay resultados
             if var.ui.tablaPropiedades.rowCount() == 0:
                 var.ui.tablaPropiedades.setRowCount(1)
                 var.ui.tablaPropiedades.setItem(0, 2, QtWidgets.QTableWidgetItem("No Hay Propiedades"))
-                var.ui.tablaPropiedades.item(0, 2).setTextAlignment(
-                    QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+
+            # Habilitar/deshabilitar botones de paginación
+            var.ui.btnSiguienteProp.setEnabled(end_index < total_items)
+            var.ui.btnAnteriorProp.setEnabled(var.current_page_prop > 0)
 
         except Exception as e:
-            print("Error cargar tabPropiedades", e)
+            print("Error al cargar propiedades:", e)
 
     def siguientePaginaProp(self):
-        var.current_page_prop += 1
-        self.cargaTablaPropiedades(contexto=1)
+        try:
+            total_items = len(conexion.Conexion.listadoPropiedades(self))
+            total_pages = (total_items + var.items_per_page_prop - 1) // var.items_per_page_prop
+            print("pulsado boton siguiente")
+            if var.current_page_prop < total_pages - 1:
+                var.current_page_prop += 1
+                self.cargaTablaPropiedades(contexto=0)
+            else:
+                print("No hay más páginas.")
+        except Exception as e:
+            print("Error al pasar a la siguiente página:", e)
 
     def anteriorPaginaProp(self):
-        if var.current_page_prop > 0:
-            var.current_page_prop -= 1
-        self.cargaTablaPropiedades(contexto=1)
+        try:
+            if var.current_page_prop > 0:
+                var.current_page_prop -= 1
+                self.cargaTablaPropiedades(contexto=1)
+            else:
+                print("No hay páginas anteriores.")
+        except Exception as e:
+            print("Error al retroceder a la página anterior:", e)
+
 
     def cargaPropiedad(self):
         try:

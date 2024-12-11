@@ -20,10 +20,10 @@ class Main(QtWidgets.QMainWindow):
         var.ui.setupUi(self)
         var.uicalendar = Calendar()
         var.dlgabrir = FileDialogAbrir()
-        var.current_page_cli = 0
         var.current_page_prop = 0
-        var.items_per_page_cli = 3
-        var.items_per_page_prop = 3
+        var.current_page_cli = 0
+        var.items_per_page_prop = 7
+        var.items_per_page_cli = 7
 
         var.historico = 1
         var.dlgGestion = dlgGestionProp()
@@ -70,8 +70,13 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnDelprop.clicked.connect(propiedades.Propiedades.bajaPropiedad)
         var.ui.btnModifprop.clicked.connect(propiedades.Propiedades.modifPropiedad)
         var.ui.btnTipoProp.clicked.connect(lambda: propiedades.Propiedades.cargaTablaPropiedades(self,1))
+
         var.ui.btnSiguientecli.clicked.connect(clientes.Clientes.siguientePaginaClientes)
         var.ui.btnAnteriorcli.clicked.connect(clientes.Clientes.anteriorPaginaClientes)
+        propiedades_instance = propiedades.Propiedades()
+        var.ui.btnSiguienteProp.clicked.connect(propiedades_instance.siguientePaginaProp)
+        var.ui.btnAnteriorProp.clicked.connect(propiedades_instance.anteriorPaginaProp)
+
 
 
 
