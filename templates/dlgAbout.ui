@@ -159,7 +159,7 @@
      <bool>true</bool>
     </property>
     <property name="textInteractionFlags">
-     <set>Qt::LinksAccessibleByMouse</set>
+     <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
     </property>
    </widget>
    <widget class="QPushButton" name="btnAceptarAbout">

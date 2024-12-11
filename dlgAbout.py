@@ -51,7 +51,7 @@ class Ui_dlgAbout(object):
         self.label_2 = QtWidgets.QLabel(parent=self.frame)
         self.label_2.setGeometry(QtCore.QRect(120, 160, 181, 31))
         self.label_2.setOpenExternalLinks(True)
-        self.label_2.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse)
+        self.label_2.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByKeyboard|QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextBrowserInteraction|QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.label_2.setObjectName("label_2")
         self.btnAceptarAbout = QtWidgets.QPushButton(parent=self.frame)
         self.btnAceptarAbout.setGeometry(QtCore.QRect(310, 250, 75, 23))

@@ -1,5 +1,6 @@
 import conexion
 import eventos
+import vendedores
 from VenPrincipal import *
 import sys
 import var
@@ -22,7 +23,7 @@ class Main(QtWidgets.QMainWindow):
         var.dlgabrir = FileDialogAbrir()
         var.current_page_prop = 0
         var.current_page_cli = 0
-        var.items_per_page_prop = 7
+        var.items_per_page_prop = 17
         var.items_per_page_cli = 7
 
         var.historico = 1
@@ -78,6 +79,13 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnAnteriorProp.clicked.connect(propiedades_instance.anteriorPaginaProp)
 
 
+        '''
+        ---------Examen----------
+        '''
+        var.ui.btnCrearVend.clicked.connect(vendedores.Vendedores.altaVendedor)
+        var.ui.btnFechaVend.clicked.connect(lambda: eventos.Eventos.abrirCalendar(4))
+        var.ui.btnBajaVend.clicked.connect(lambda: eventos.Eventos.abrirCalendar(5))
+
 
 
         '''
@@ -90,6 +98,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.txtPrecioVentaprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeCheckbox(self))
         var.ui.txtFechaprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeRadioButtons(self))
         var.ui.txtBajaprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeRadioButtons(self))
+        #var.ui.txtDniVend.editingFinished.connect(lambda: vendedores.Vendedores.checkDNI(var.ui.txtDniVend.text()))
 
 
 
@@ -101,6 +110,7 @@ class Main(QtWidgets.QMainWindow):
         eventos.Eventos.cargarProv(self)
         var.ui.cmbProvCli.currentIndexChanged.connect(eventos.Eventos.cargaMuniCli)
         var.ui.cmbProvprop.currentIndexChanged.connect(eventos.Eventos.cargaMuniProp)
+        var.ui.cmbProvVend.currentIndexChanged.connect(eventos.Eventos.cargarProv)
         eventos.Eventos.cargarTipoprop(self)
 
         '''

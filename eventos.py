@@ -7,7 +7,8 @@ import shutil
 from PyQt6 import QtWidgets, QtSql
 from PyQt6.QtGui import QIcon
 from PyQt6.uic.properties import QtGui
-
+import vendedores
+import VenPrincipal
 import clientes
 import conexion
 import eventos
@@ -92,10 +93,13 @@ class Eventos():
         listaprov = conexion.Conexion.listaProv(self)
         cmbprovcli = var.ui.cmbProvCli
         cmbprovprop = var.ui.cmbProvprop
+        cmbprovvend= var.ui.cmbProvVend
         cmbprovcli.clear()
         cmbprovprop.clear()
+        cmbprovvend.clear()
         cmbprovcli.addItems(listaprov)
         cmbprovprop.addItems(listaprov)
+        cmbprovvend.addItems(listaprov)
 
     def cargaMuniCli(self):
         listado = []
@@ -107,6 +111,11 @@ class Eventos():
         var.ui.cmbMuniprop.clear()
         listado = conexion.Conexion.listaMuniprov(var.ui.cmbProvprop.currentText())
         var.ui.cmbMuniprop.addItems(listado)
+    def cargaMuniVend(self):
+        var.var.ui.cmbMuniprop.clear()
+        listado = conexion.Conexion.listaMuniprov(var.ui.cmbProvprop.currentText())
+        var.ui.cmbMuniprop.addItems(listado)
+
 
     def validarDNIcli(dni):
         try:
@@ -149,7 +158,6 @@ class Eventos():
 
     def abrirCalendar(btn):
         try:
-
             var.btn = btn
             var.uicalendar.show()
         except Exception as error:
@@ -166,7 +174,10 @@ class Eventos():
                 var.ui.txtFechaprop.setText(str(data))
             elif var.btn == 3:
                 var.ui.txtBajaprop.setText(str(data))
-
+            elif var.btn == 4:
+                var.ui.txtAltaVend.setText(str(data))
+            elif var.btn == 5:
+                var.ui.txtBajaVend.setText(str(data))
             time.sleep(0.125)
             var.uicalendar.hide()
             return data
