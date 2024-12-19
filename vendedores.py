@@ -17,7 +17,7 @@ class Vendedores:
                         var.ui.txtNombreVend.text(), var.ui.txtMailVend.text(), var.ui.txtMovilVend.text(),
                         var.ui.cmbProvVend.currentText()]
             if all(nuevovend[i] for i in [0, 1, 2, 3, 4, 5]):
-                if conexion.Conexion.altaCliente(nuevovend):
+                if conexion.Conexion.altaVendedor(nuevovend):
                     mbox = QtWidgets.QMessageBox()
                     mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
                     mbox.setWindowTitle('Aviso')
@@ -55,3 +55,29 @@ class Vendedores:
 
         except Exception as e:
             print("error check vendedor ", e)
+
+    @staticmethod
+    def bajaVendedor(self):
+        try:
+            datos = [var.ui.txtBajaVend.text(), var.ui.txtDniVend.text()]
+            if conexion.Conexion.bajaVendedor(datos):
+                mbox = QtWidgets.QMessageBox()
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+                mbox.setWindowTitle('Aviso')
+                mbox.setWindowIcon(QIcon('./img/logo.ico'))
+                mbox.setText('Datos del Cliente Modificados')
+                mbox.setStandardButtons(
+                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                mbox.exec()
+            else:
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowTitle('Aviso')
+                mbox.setWindowIcon(QIcon('./img/logo.ico'))
+                mbox.setText("Error al dar de alta el cliente")
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
+                mbox.exec()
+            #Clientes.cargaTablaClientes(self)
+        except Exception as e:
+            print("error bajaCliente en clientes", e)

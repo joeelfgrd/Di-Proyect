@@ -350,24 +350,38 @@ class Conexion:
             ----------------------------GESTION VENDEDORES-----------------------------------
             '''
 
-            @staticmethod
-            def altaVendedor(nuevovend):
-                try:
-                    query = QtSql.QSqlQuery()
-                    query.prepare(
-                        "INSERT INTO vendedores (dniVendedor, nombreVendedor, altaVendedor,movilVendedor, mailVendedor, delegacionVendedor) "
-                        "VALUES (:dniVendedor, :nombreVendedor, :altaVendedor, :movilVendedor, :mailVendedor, :delegacionVendedor)")
-                    query.bindValue(":dniVendedor", str(nuevovend[0]))
-                    query.bindValue(":nombreVendedor", str(nuevovend[1]))
-                    query.bindValue(":altaVendedor", str(nuevovend[2]))
-                    query.bindValue(":movilVendedor", str(nuevovend[3]))
-                    query.bindValue(":mailVendedor", str(nuevovend[4]))
-                    query.bindValue(":delegacionVendedor", str(nuevovend[5]))
-                    return query.exec()
+    @staticmethod
+    def altaVendedor(nuevovend):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare(
+                "INSERT INTO vendedores (dniVendedor, nombreVendedor, altaVendedor,movilVendedor, mailVendedor, delegacionVendedor) "
+                "VALUES (:dniVendedor, :nombreVendedor, :altaVendedor, :movilVendedor, :mailVendedor, :delegacionVendedor)")
+            query.bindValue(":dniVendedor", str(nuevovend[0]))
+            query.bindValue(":nombreVendedor", str(nuevovend[1]))
+            query.bindValue(":altaVendedor", str(nuevovend[2]))
+            query.bindValue(":movilVendedor", str(nuevovend[3]))
+            query.bindValue(":mailVendedor", str(nuevovend[4]))
+            query.bindValue(":delegacionVendedor", str(nuevovend[5]))
+            return query.exec()
 
-                except Exception as e:
-                    print("error altavendedor", e)
+        except Exception as e:
+            print("error altavendedor", e)
 
+    @staticmethod
+    def bajaVendedor(datos):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("UPDATE vendedores SET bajaVendedor = :bajaVendedor WHERE dniVendedor = :dniVendedor")
+            query.bindValue(":bajaVendedor", datetime.now().strftime('%d/%m/%Y'))
+            query.bindValue(":dniVendedor", str(datos[1]))
+
+            if query.exec():
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("error bajaVendedor en conexion", e)
 
 
 

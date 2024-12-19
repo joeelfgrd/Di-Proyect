@@ -11,6 +11,7 @@ global historico
 global dlgGestion
 global historiaprop
 global dlgAbout
+global report
 
 global current_page_cli
 global current_page_prop

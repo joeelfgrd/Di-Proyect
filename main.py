@@ -1,5 +1,6 @@
 import conexion
 import eventos
+import informes
 import vendedores
 from VenPrincipal import *
 import sys
@@ -57,6 +58,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionExportar_Propiedades_CSV.triggered.connect(eventos.Eventos.exportCSVProp)
         var.ui.actionExportar_Propiedades_JSON.triggered.connect(eventos.Eventos.exportJSONprop)
         var.ui.actionAbout.triggered.connect(eventos.Eventos.abrirAbout)
+        var.ui.actionListado_Clientes.triggered.connect(informes.Informes.reportClientes)
         '''
         EVENTOS DE BOTONES
         '''
@@ -71,6 +73,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnDelprop.clicked.connect(propiedades.Propiedades.bajaPropiedad)
         var.ui.btnModifprop.clicked.connect(propiedades.Propiedades.modifPropiedad)
         var.ui.btnTipoProp.clicked.connect(lambda: propiedades.Propiedades.cargaTablaPropiedades(self,1))
+        var.ui.btnBajaVend.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1))
 
         var.ui.btnSiguientecli.clicked.connect(clientes.Clientes.siguientePaginaClientes)
         var.ui.btnAnteriorcli.clicked.connect(clientes.Clientes.anteriorPaginaClientes)
