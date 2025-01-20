@@ -11,3 +11,8 @@ global historico
 global dlgGestion
 global historiaprop
 global dlgAbout
+global claseConexion
+global lenClientes
+global paginaActualCli
+global maxClientesPagina
+

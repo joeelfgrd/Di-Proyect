@@ -23,6 +23,9 @@ class Main(QtWidgets.QMainWindow):
         var.historico = 1
         var.dlgGestion = dlgGestionProp()
         var.dlgAbout = dlgAbout()
+        var.paginaActualCli = 0
+
+
         self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
         #conexionserver.ConexionServer.crear_conexion(self)
@@ -42,6 +45,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.tabClientes.clicked.connect(clientes.Clientes.cargaCliente)
         eventos.Eventos.resizeTablaPropiedades(self)
         var.ui.tablaPropiedades.clicked.connect(propiedades.Propiedades.cargaPropiedad)
+        var.paginaActualCli = 0
 
 
         '''
@@ -68,6 +72,8 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnDelprop.clicked.connect(propiedades.Propiedades.bajaPropiedad)
         var.ui.btnModifprop.clicked.connect(propiedades.Propiedades.modifPropiedad)
         var.ui.btnTipoProp.clicked.connect(lambda: propiedades.Propiedades.cargaTablaPropiedades(self,1))
+        var.ui.btnSiguientecli.clicked.connect(eventos.Eventos.siguienteCli)
+        var.ui.btnAnteriorcli.clicked.connect(eventos.Eventos.anteriorCli)
 
 
 

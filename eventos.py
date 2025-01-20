@@ -393,6 +393,17 @@ class Eventos():
         except Exception as error:
             print("Error en cerrar about: ", error)
 
+    @staticmethod
+    def siguienteCli():
+        var.paginaActualCli += 1
+        clientes.Clientes.cargaTablaClientes()
+
+    @staticmethod
+    def anteriorCli():
+        if var.paginaActualCli > 0:
+            var.paginaActualCli -= 1
+            clientes.Clientes.cargaTablaClientes()
+
 
 
 
