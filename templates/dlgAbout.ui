@@ -134,7 +134,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../img/logo.ico</pixmap>
+     <pixmap>../img/icono.ico</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -162,7 +162,7 @@
      <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnAceptarAbout">
+   <widget class="QPushButton" name="btnSalir">
     <property name="geometry">
      <rect>
       <x>310</x>

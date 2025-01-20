@@ -1,18 +1,13 @@
-import conexion
-import eventos
-import informes
+from ctypes.wintypes import VARIANT_BOOL
+
+import clientes
+import facturas
+import styles
 import vendedores
-from VenPrincipal import *
+from venAux import *
+from venPrincipal import *
 import sys
 import var
-from VenPrincipal import Ui_venPrincipal
-import styles
-import clientes
-from dlgGestionProp import *
-from venAux import Calendar, FileDialogAbrir, dlgGestionProp, dlgAbout
-import propiedades
-
-
 
 class Main(QtWidgets.QMainWindow):
 
@@ -22,113 +17,120 @@ class Main(QtWidgets.QMainWindow):
         var.ui.setupUi(self)
         var.uicalendar = Calendar()
         var.dlgabrir = FileDialogAbrir()
-        var.current_page_prop = 0
-        var.current_page_cli = 0
-        var.items_per_page_prop = 17
-        var.items_per_page_cli = 7
-
-        var.historico = 1
-        var.dlgGestion = dlgGestionProp()
+        var.dlggestion = dlgGestionProp()
         var.dlgAbout = dlgAbout()
-        self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
+        listado = conexion.Conexion.listaTodosMunicipios(self)
+        var.dlgLocalidad = dlgBuscarProp(listado)
+        self.setStyleSheet(styles.load_stylesheet())
+        var.historicoCli = 0
+        var.historicoProp = 0
+        var.historicoVend = 0
+        var.lupaState = 0
+        var.rowsClientes = 15
+        var.rowsPropiedades = 11
         #conexionserver.ConexionServer.crear_conexion(self)
-        eventos.Eventos.cargaMuniCli(self)
-        propiedades.Propiedades.controlDeCheckbox(self)
-        propiedades.Propiedades.controlDeRadioButtons(self)
+        propiedades.Propiedades.manageCheckbox(self)
+        propiedades.Propiedades.manageRadioButtons(self)
 
-        clientes.Clientes.cargaTablaClientes(self)
-        propiedades.Propiedades.cargaTablaPropiedades(self,0)
         '''
         EVENTOS DE TABLAS
         '''
-        eventos.Eventos.resizeTableClientes(self)
-        var.ui.tabClientes.clicked.connect(clientes.Clientes.cargaCliente)
+
+        clientes.Clientes.cargaTablaClientes(self)
+        eventos.Eventos.resizeTablaClientes(self)
         eventos.Eventos.resizeTablaPropiedades(self)
-        var.ui.tablaPropiedades.clicked.connect(propiedades.Propiedades.cargaPropiedad)
-
+        eventos.Eventos.resizeTablaVendedores(self)
+        var.ui.tablaClientes.clicked.connect(clientes.Clientes.cargaOneCliente)
+        var.ui.tablaPropiedades.clicked.connect(propiedades.Propiedades.cargaOnePropiedad)
+        var.ui.tablaVendedores.clicked.connect(vendedores.Vendedores.cargarOneVendedor)
+        propiedades.Propiedades.cargarTablaPropiedades(self, 0)
+        vendedores.Vendedores.cargarTablaVendedores(self)
 
         '''
-        ZONA DE EVENTOS DEL MENUBAR
+        EVENTOS DEL MENUBAR
         '''
-        var.ui.actionSalir_2.triggered.connect(eventos.Eventos.mensajeSalir)
+
+        var.ui.actionSalir.triggered.connect(eventos.Eventos.mensajeSalir)
         var.ui.actionCrear_Backup.triggered.connect(eventos.Eventos.crearBackup)
-        var.ui.actionRestaurar_Backup.triggered.connect(eventos.Eventos.restaurarBackup)
-        var.ui.actionTipoProp.triggered.connect(eventos.Eventos.abrirTipoProp)
-        var.ui.actionExportar_Propiedades_CSV.triggered.connect(eventos.Eventos.exportCSVProp)
-        var.ui.actionExportar_Propiedades_JSON.triggered.connect(eventos.Eventos.exportJSONprop)
+        var.ui.actionCargar_Backup.triggered.connect(eventos.Eventos.restaurarBackup)
+        var.ui.actionTipo_Propiedades.triggered.connect(eventos.Eventos.abrirTipoProp)
+        var.ui.action_exportCSVprop.triggered.connect(eventos.Eventos.exportCSVprop)
+        var.ui.action_exportJSONprop.triggered.connect(eventos.Eventos.exportJSONprop)
         var.ui.actionAbout.triggered.connect(eventos.Eventos.abrirAbout)
+        var.ui.actionExportar_Vendedores_JSON.triggered.connect(eventos.Eventos.exportJSONvendedores)
         var.ui.actionListado_Clientes.triggered.connect(informes.Informes.reportClientes)
+        var.ui.actionListado_Propiedades.triggered.connect(eventos.Eventos.abrirBuscarLocalidad)
+
         '''
         EVENTOS DE BOTONES
         '''
-        var.ui.btnGrabarCli.clicked.connect(clientes.Clientes.altaCliente)
-        var.ui.btnAltaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0))
-        var.ui.btnBajaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1))
-        var.ui.btnModifCli.clicked.connect(clientes.Clientes.modifCliente)
-        var.ui.btnDelCli.clicked.connect(clientes.Clientes.bajaCliente)
-        var.ui.btnFechaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(2))
-        var.ui.btnBajaprop.clicked.connect(lambda: eventos.Eventos.abrirCalendar(3))
-        var.ui.btnGrabarprop.clicked.connect(propiedades.Propiedades.altaPropiedad)
-        var.ui.btnDelprop.clicked.connect(propiedades.Propiedades.bajaPropiedad)
-        var.ui.btnModifprop.clicked.connect(propiedades.Propiedades.modifPropiedad)
-        var.ui.btnTipoProp.clicked.connect(lambda: propiedades.Propiedades.cargaTablaPropiedades(self,1))
-        var.ui.btnBajaVend.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1))
 
-        var.ui.btnSiguientecli.clicked.connect(clientes.Clientes.siguientePaginaClientes)
-        var.ui.btnAnteriorcli.clicked.connect(clientes.Clientes.anteriorPaginaClientes)
-        propiedades_instance = propiedades.Propiedades()
-        var.ui.btnSiguienteProp.clicked.connect(propiedades_instance.siguientePaginaProp)
-        var.ui.btnAnteriorProp.clicked.connect(propiedades_instance.anteriorPaginaProp)
-
-
-        '''
-        ---------Examen----------
-        '''
-        var.ui.btnCrearVend.clicked.connect(vendedores.Vendedores.altaVendedor)
-        var.ui.btnFechaVend.clicked.connect(lambda: eventos.Eventos.abrirCalendar(4))
-        var.ui.btnBajaVend.clicked.connect(lambda: eventos.Eventos.abrirCalendar(5))
-
+        var.ui.btnGrabarcli.clicked.connect(clientes.Clientes.altaCliente)
+        var.ui.btnAltacli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0))
+        var.ui.btnBajacli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1))
+        var.ui.btnPublicacionPro.clicked.connect(lambda: eventos.Eventos.abrirCalendar(2))
+        var.ui.btnBajaPro.clicked.connect(lambda: eventos.Eventos.abrirCalendar(3))
+        var.ui.btnModifcli.clicked.connect(clientes.Clientes.modifCliente)
+        var.ui.btnDelcli.clicked.connect(clientes.Clientes.bajaCliente)
+        var.ui.btnGrabarPro.clicked.connect(propiedades.Propiedades.altaPropiedad)
+        var.ui.btnModificarPro.clicked.connect(propiedades.Propiedades.modifPropiedad)
+        var.ui.btnEliminarPro.clicked.connect(propiedades.Propiedades.bajaPropiedad)
+        var.ui.btnFiltrar.clicked.connect(lambda: clientes.Clientes.cargaClienteDni(self))
+        var.ui.btnAnteriorCli.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(self,0, "Clientes"))
+        var.ui.btnSiguienteCli.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(self,1, "Clientes"))
+        var.ui.btnAnteriorPro.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(self,0, "Propiedades"))
+        var.ui.btnSiguientePro.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(self,1, "Propiedades"))
+        var.ui.btnGrabarVend.clicked.connect(vendedores.Vendedores.altaVendedor)
+        var.ui.btnModificarVend.clicked.connect(vendedores.Vendedores.modificarVendedor)
+        var.ui.btnBajaVend.clicked.connect(vendedores.Vendedores.bajaVendedor)
+        var.ui.btnAltaCalVend.clicked.connect(lambda: eventos.Eventos.abrirCalendar(5))
+        var.ui.btnBajaCalVend.clicked.connect(lambda: eventos.Eventos.abrirCalendar(4))
+        var.ui.btnFiltrarVend.clicked.connect(vendedores.Vendedores.filtrarPorTelefono)
+        var.ui.btnCalendarVentas.clicked.connect(lambda: eventos.Eventos.abrirCalendar(6))
+        var.ui.btnGrabarVenta.clicked.connect(lambda: facturas.Facturas.altaVenta(self))
 
 
         '''
         EVENTOS DE CAJAS DE TEXTO
         '''
-        var.ui.txtDniCli.editingFinished.connect(lambda:clientes.Clientes.checkDNI(var.ui.txtDniCli.text()))
-        var.ui.txtEmailCli.editingFinished.connect(lambda:clientes.Clientes.checkEmail(var.ui.txtEmailCli.text()))
-        var.ui.txtMovilCli.editingFinished.connect(lambda: clientes.Clientes.checkTelefono(var.ui.txtMovilCli.text()))
-        var.ui.txtPrecioAlquilerprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeCheckbox(self))
-        var.ui.txtPrecioVentaprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeCheckbox(self))
-        var.ui.txtFechaprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeRadioButtons(self))
-        var.ui.txtBajaprop.textChanged.connect(lambda: propiedades.Propiedades.controlDeRadioButtons(self))
-        #var.ui.txtDniVend.editingFinished.connect(lambda: vendedores.Vendedores.checkDNI(var.ui.txtDniVend.text()))
 
-
-
-
+        var.ui.txtDnicli.editingFinished.connect(lambda : clientes.Clientes.checkDNI(var.ui.txtDnicli.text()))
+        var.ui.txtEmailcli.editingFinished.connect(lambda : clientes.Clientes.checkEmail(var.ui.txtEmailcli.text()))
+        var.ui.txtMovilcli.editingFinished.connect(lambda : clientes.Clientes.checkTelefono(var.ui.txtMovilcli.text()))
+        var.ui.txtMovilPro.editingFinished.connect(lambda : propiedades.Propiedades.checkTelefono(var.ui.txtMovilPro.text()))
+        var.ui.txtPrecioAlquilerPro.textChanged.connect(lambda : propiedades.Propiedades.manageCheckbox(self))
+        var.ui.txtPrecioVentaPro.textChanged.connect(lambda : propiedades.Propiedades.manageCheckbox(self))
+        var.ui.txtFechabajaPro.textChanged.connect(lambda : propiedades.Propiedades.manageRadioButtons(self))
+        var.ui.txtDniVend.editingFinished.connect(lambda: clientes.Clientes.checkDNI(var.ui.txtDniVend.text()))
+        var.ui.txtEmailVend.editingFinished.connect(lambda: clientes.Clientes.checkEmail(var.ui.txtEmailVend.text()))
+        var.ui.txtTelefonoVend.editingFinished.connect(lambda: clientes.Clientes.checkTelefono(var.ui.txtTelefonoVend.text()))
 
         '''
-        EVENTOS COMOBOX 
+        EVENTOS COMBOBOX
         '''
+
         eventos.Eventos.cargarProv(self)
-        var.ui.cmbProvCli.currentIndexChanged.connect(eventos.Eventos.cargaMuniCli)
-        var.ui.cmbProvprop.currentIndexChanged.connect(eventos.Eventos.cargaMuniProp)
-        var.ui.cmbProvVend.currentIndexChanged.connect(eventos.Eventos.cargarProv)
-        eventos.Eventos.cargarTipoprop(self)
+        var.ui.cmbProvinciacli.currentIndexChanged.connect(eventos.Eventos.cargarMunicipiosCli)
+        var.ui.cmbProvinciaPro.currentIndexChanged.connect(eventos.Eventos.cargarMunicipiosPro)
+        eventos.Eventos.cargarTipoPropiedad(self)
 
         '''
-        EVENTOS DEL TOOLBAR
+        EVENTOS TOOLBAR
         '''
+
         var.ui.actionbarSalir.triggered.connect(eventos.Eventos.mensajeSalir)
         var.ui.actionbarLimpiar.triggered.connect(eventos.Eventos.limpiarPanel)
-        var.ui.actionCrear_tipo_Propiedad.triggered.connect(eventos.Eventos.abrirTipoProp)
-        var.ui.actionFiltrarTipoProp.triggered.connect(lambda: eventos.Eventos.controlarBtnBuscar(self))
+        var.ui.actionTipoPropiedad.triggered.connect(eventos.Eventos.abrirTipoProp)
+        var.ui.actionBuscar.triggered.connect(propiedades.Propiedades.filtrarPropiedades)
 
         '''
-        EVENTOS CHECKBOX
+        EVENTOS DE CHECKBOX
         '''
-        var.ui.chkHistoriaCli.stateChanged.connect(clientes.Clientes.historicoCli)
-        var.ui.chkHistoriaprop.stateChanged.connect(propiedades.Propiedades.historicoProp)
+
+        var.ui.chkHistoriacli.stateChanged.connect(clientes.Clientes.historicoCli)
+        var.ui.chkHistoricoPro.stateChanged.connect(propiedades.Propiedades.historicoProp)
+        var.ui.chkHistoricoVend.stateChanged.connect(vendedores.Vendedores.historicoVend)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

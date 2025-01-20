@@ -1,7 +1,5 @@
 import mysql.connector
 from mysql.connector import Error
-import os
-from PyQt6 import QtSql, QtWidgets
 
 class ConexionServer():
     def crear_conexion(self):
@@ -53,7 +51,7 @@ class ConexionServer():
             )
             resultados = cursor.fetchall()
             for fila in resultados:
-                listamunicipios.append(fila[1])
+                listamunicipios.append(fila[1])  # Asumiendo que el nombre de la provincia está en la segunda columna
             cursor.close()
             conexion.close()
             return listamunicipios
@@ -67,6 +65,7 @@ class ConexionServer():
             cursor = conexion.cursor()
             cursor.execute("SELECT * FROM clientes ORDER BY apelcli, nomecli ASC")
             resultados = cursor.fetchall()
+            # Procesar cada fila de los resultados
             for fila in resultados:
                 # Crear una lista con los valores de la fila
                 listadoclientes.append(list(fila))  # Convierte la tupla en una lista y la añade a listadoclientes
@@ -74,8 +73,6 @@ class ConexionServer():
             # Cerrar el cursor y la conexión si no los necesitas más
             cursor.close()
             conexion.close()
-
-
             print(listadoclientes)
             return listadoclientes
         except Exception as e:

@@ -30,30 +30,30 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../../../.designer/img/logo.ico</normaloff>../../../../.designer/img/logo.ico</iconset>
+    <normaloff>../img/_123049.ico</normaloff>../img/_123049.ico</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
   </property>
-  <widget class="QCalendarWidget" name="calendar">
+  <widget class="QCalendarWidget" name="Calendar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>312</width>
-     <height>185</height>
+     <height>183</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
      <width>312</width>
-     <height>185</height>
+     <height>183</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
      <width>312</width>
-     <height>185</height>
+     <height>183</height>
     </size>
    </property>
    <property name="verticalHeaderFormat">

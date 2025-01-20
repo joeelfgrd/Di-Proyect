@@ -1,426 +1,417 @@
-'''archivo de propiedades'''
 from datetime import datetime
 
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QMessageBox
+from PyQt6 import QtWidgets, QtGui, QtCore
 
-import VenPrincipal
+import conexion
 import eventos
 import var
-from dlgGestionProp import *
-import conexion
-import venAux
+
 
 
 class Propiedades():
-    def altaTipopropiedad(self):
+
+    def checkTelefono(telefono):
         try:
-            tipo = var.dlgGestion.ui.txtGestTipoProp.text().title()
-            registro = conexion.Conexion.altaTipoProp(tipo)
+            telefono = str(var.ui.txtMovilPro.text())
+            if eventos.Eventos.validarTelefono(telefono):
+                var.ui.txtMovilPro.setStyleSheet('background-color: rgb(255, 252, 220);')
+            else:
+                var.ui.txtMovilPro.setStyleSheet('background-color:#FFC0CB; font-style: italic;')
+                var.ui.txtMovilPro.setText(None)
+                var.ui.txtMovilPro.setText("telefono no válido")
+                var.ui.txtMovilPro.setFocus()
+        except Exception as error:
+            print("error check cliente", error)
+
+    def altaTipoPropiedad(self):
+        try:
+            tipo = var.dlggestion.ui.txtGestipoprop.text().title()
+            registro = conexion.Conexion.altaTipoPropiedad(tipo)
             if registro:
-                eventos.Eventos.cargarTipoprop(self)
+                eventos.Eventos.cargarTipoPropiedad(self)
             else:
                 mbox = QtWidgets.QMessageBox()
-                mbox.setWindowTitle('Aviso')
-                mbox.setWindowIcon(QIcon('./img/logo.ico'))
+                mbox.setWindowTitle("Error")
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                mbox.setText("Error: Tipo de propiedad ya existe")
-                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
+                mbox.setText('Ya existe el tipo.')
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.exec()
-            var.dlgGestion.ui.txtGestTipoProp.setText('')
+            var.dlggestion.ui.txtGestipoprop.setText('')
         except Exception as error:
             print("Error en alta tipo propiedad: ", error)
 
-    def bajaTipopropiedad(self):
+    def bajaTipoPropiedad(self):
         try:
-            tipo = var.dlgGestion.ui.txtGestTipoProp.text().title()
-            registro = conexion.Conexion.bajaTipoProp(tipo)
-
+            tipo = var.dlggestion.ui.txtGestipoprop.text().title()
+            registro = conexion.Conexion.bajaTipoPropiedad(tipo)
             if registro:
-                eventos.Eventos.cargarTipoprop(self)
+                eventos.Eventos.cargarTipoPropiedad(self)
             else:
                 mbox = QtWidgets.QMessageBox()
-                mbox.setWindowTitle('Aviso')
-                mbox.setWindowIcon(QIcon('./img/logo.ico'))
+                mbox.setWindowTitle("Error")
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                mbox.setText("Error: Tipo de propiedad no existe")
-                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
+                mbox.setText('No existe el tipo.')
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.exec()
-            var.dlgGestion.ui.txtGestTipoProp.setText('')
+            var.dlggestion.ui.txtGestipoprop.setText('')
         except Exception as error:
             print("Error en baja tipo propiedad: ", error)
 
     def altaPropiedad(self):
         try:
-            direccion = var.ui.txtDirprop.text()
-            propietario = var.ui.txtNomeprop.text()
-            movil = var.ui.txtMovilprop.text()
-            fecha = var.ui.txtFechaprop.text()
-            provincia = var.ui.cmbProvprop.currentText()
-            municipio = var.ui.cmbMuniprop.currentText()
-            cp = var.ui.txtCPprop.text()
-            superf = var.ui.txtSuperprop.text()
+            # var.ui.txtFechabajaPro.text(), var.ui.txtPropietarioPro.text(), var.ui.txtMovilPro.text()
+            propiedad = [var.ui.txtPublicacionPro.text(), var.ui.txtDireccionPro.text(),
+                        var.ui.cmbProvinciaPro.currentText(), var.ui.cmbMunicipioPro.currentText(),
+                        var.ui.cmbTipoPro.currentText(), var.ui.spbHabitacionesPro.text(),
+                        var.ui.spbBanosPro.text(), var.ui.txtSuperficiePro.text(),
+                        var.ui.txtPrecioAlquilerPro.text(), var.ui.txtPrecioVentaPro.text(),
+                        var.ui.txtCpPro.text(), var.ui.artxtDescripcionPro.toPlainText()]
 
-            if not direccion or not propietario or not movil or fecha == "" or provincia == "" or municipio == "" or cp == "" or superf == "":
-                mbox = QMessageBox()
-                mbox.setIcon(QMessageBox.Icon.Warning)
-                mbox.setWindowTitle('Aviso')
-                mbox.setText(
-                    "Por favor, complete los campos obligatorios.")
-                mbox.setStandardButtons(QMessageBox.StandardButton.Ok)
-                mbox.exec()
-                var.ui.txtDirprop.setStyleSheet('background-color:rgb(255,255,220);')
-                return
+            obligatorios = [var.ui.txtDireccionPro.text(), var.ui.txtPropietarioPro, var.ui.txtMovilPro,
+                            var.ui.cmbProvinciaPro.currentText(), var.ui.cmbMunicipioPro.currentText(),
+                            var.ui.cmbTipoPro.currentText(), var.ui.txtSuperficiePro.text(), var.ui.txtCpPro.text()]
 
-            propiedad = [var.ui.txtFechaprop.text(), var.ui.txtDirprop.text(),
-                         var.ui.cmbProvprop.currentText(), var.ui.cmbMuniprop.currentText(),
-                         var.ui.cmbTipoprop.currentText(), var.ui.spinHabprop.text(),
-                         var.ui.spinBanosprop.text(), var.ui.txtSuperprop.text(),
-                         var.ui.txtPrecioAlquilerprop.text(), var.ui.txtPrecioVentaprop.text(),
-                         var.ui.txtCPprop.text(), var.ui.txtDescriprop.toPlainText()]
-            tipooper = []
-            if var.ui.chkAlquilerprop.isChecked():
-                tipooper.append(var.ui.chkAlquilerprop.text())
-            if var.ui.chkVentaprop.isChecked():
-                tipooper.append(var.ui.chkVentaprop.text())
-            if var.ui.chkIntercambioprop.isChecked():
-                tipooper.append(var.ui.chkIntercambioprop.text())
-            propiedad.append("-".join(tipooper))
-            if var.ui.rbDisponibleprop.isChecked():
-                propiedad.append(var.ui.rbDisponibleprop.text())
-            if var.ui.rbAlquilerprop.isChecked():
-                propiedad.append(var.ui.rbAlquilerprop.text())
-            if var.ui.rbVentaprop.isChecked():
-                propiedad.append(var.ui.rbVentaprop.text())
-            propiedad.append(var.ui.txtNomeprop.text())
-            propiedad.append(var.ui.txtMovilprop.text())
+            for i in obligatorios:
+                if i == "":
+                    mbox = QtWidgets.QMessageBox()
+                    mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                    mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                    mbox.setWindowTitle('Aviso')
+                    mbox.setText('Rellena los campos obligatorios (los amarillos)')
+                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                    mbox.exec()
+                    return
+
+            tipoper = []
+            if var.ui.cbxAlquilerPro.isChecked():
+                tipoper.append(var.ui.cbxAlquilerPro.text())
+            if var.ui.cbxVentaPro.isChecked():
+                tipoper.append(var.ui.cbxVentaPro.text())
+            if var.ui.cbxIntercambioPro.isChecked():
+                tipoper.append(var.ui.cbxIntercambioPro.text())
+            propiedad.append(", ".join(tipoper))
+            if var.ui.rbtnDisponiblePro.isChecked():
+                propiedad.append(var.ui.rbtnDisponiblePro.text())
+            if var.ui.rbtnAlquiladoPro.isChecked():
+                propiedad.append(var.ui.rbtnAlquiladoPro.text())
+            if var.ui.rbtnVendidoPro.isChecked():
+                propiedad.append(var.ui.rbtnVendidoPro.text())
+            propiedad.append(var.ui.txtPropietarioPro.text())
+            propiedad.append(var.ui.txtMovilPro.text())
+
             conexion.Conexion.altaPropiedad(propiedad)
-            Propiedades.cargaTablaPropiedades(self, 0)
+            Propiedades.cargarTablaPropiedades(self, 0)
+
         except Exception as error:
-            print("Error en alta propiedad: ", error)
-        print(propiedad)
+            print(error)
 
-    def cargaTablaPropiedades(self, contexto):
+    @staticmethod
+    def cargarTablaPropiedades(self, contexto):
         try:
-            # Restablecer la tabla
+            if contexto == 0:
+                listado = conexion.Conexion.listadoPropiedades(self)
+            elif contexto == 1:
+                datosNecesarios = [var.ui.cmbTipoPro.currentText(), var.ui.cmbMunicipioPro.currentText()]
+                listado = conexion.Conexion.listadoFiltrado(datosNecesarios)
+            index = 0
             var.ui.tablaPropiedades.setRowCount(0)
+            for registro in listado:
+                var.ui.tablaPropiedades.setRowCount(index + 1)
+                var.ui.tablaPropiedades.setItem(index, 0, QtWidgets.QTableWidgetItem(str(registro[0])))
+                var.ui.tablaPropiedades.setItem(index, 1, QtWidgets.QTableWidgetItem(str(registro[5])))
+                var.ui.tablaPropiedades.setItem(index, 2, QtWidgets.QTableWidgetItem(str(registro[6])))
+                var.ui.tablaPropiedades.setItem(index, 3, QtWidgets.QTableWidgetItem(str(registro[7])))
+                var.ui.tablaPropiedades.setItem(index, 4, QtWidgets.QTableWidgetItem(str(registro[8])))
+                var.ui.tablaPropiedades.setItem(index, 5, QtWidgets.QTableWidgetItem(
+                    str(registro[10]) + " €" if str(registro[10]) else "- €"))
+                var.ui.tablaPropiedades.setItem(index, 6, QtWidgets.QTableWidgetItem(
+                    str(registro[11]) + " €" if str(registro[11]) else "- €"))
+                var.ui.tablaPropiedades.setItem(index, 7, QtWidgets.QTableWidgetItem(str(registro[14])))
+                var.ui.tablaPropiedades.setItem(index, 8, QtWidgets.QTableWidgetItem(str(registro[2])))
 
-            # Obtener listado completo
-            listado = conexion.Conexion.listadoPropiedades(self)
-            total_items = len(listado)
-
-            # Cálculo de paginación
-            start_index = var.current_page_prop * var.items_per_page_prop
-            end_index = start_index + var.items_per_page_prop
-            paginated_list = listado[start_index:end_index]
-
-            # Rellenar la tabla
-            for i, registro in enumerate(paginated_list):
-                # Filtrar por tipo y municipio si corresponde
-                if var.ui.btnTipoProp.isChecked() and contexto == 1:
-                    tipo = var.ui.cmbTipoprop.currentText()
-                    muni = var.ui.cmbMuniprop.currentText()
-                    if registro[6] != tipo or registro[5] != muni:
-                        continue
-
-                # Añadir fila a la tabla
-                var.ui.tablaPropiedades.setRowCount(i + 1)
-                var.ui.tablaPropiedades.setItem(i, 0, QtWidgets.QTableWidgetItem(str(registro[0])))
-                var.ui.tablaPropiedades.setItem(i, 1, QtWidgets.QTableWidgetItem(registro[5]))
-                var.ui.tablaPropiedades.setItem(i, 2, QtWidgets.QTableWidgetItem(registro[6]))
-                var.ui.tablaPropiedades.setItem(i, 3, QtWidgets.QTableWidgetItem(str(registro[7])))
-                var.ui.tablaPropiedades.setItem(i, 4, QtWidgets.QTableWidgetItem(str(registro[8])))
-
-            # Mostrar mensaje si no hay resultados
-            if var.ui.tablaPropiedades.rowCount() == 0:
+                var.ui.tablaPropiedades.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tablaPropiedades.item(index, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tablaPropiedades.item(index, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tablaPropiedades.item(index, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tablaPropiedades.item(index, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tablaPropiedades.item(index, 7).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tablaPropiedades.item(index, 8).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                index += 1
+            if len(listado) == 0:
                 var.ui.tablaPropiedades.setRowCount(1)
-                var.ui.tablaPropiedades.setItem(0, 2, QtWidgets.QTableWidgetItem("No Hay Propiedades"))
+                var.ui.tablaPropiedades.setItem(0, 2, QtWidgets.QTableWidgetItem("No hay propiedades"))
 
-            # Habilitar/deshabilitar botones de paginación
-            var.ui.btnSiguienteProp.setEnabled(end_index < total_items)
-            var.ui.btnAnteriorProp.setEnabled(var.current_page_prop > 0)
-
-        except Exception as e:
-            print("Error al cargar propiedades:", e)
-
-    def siguientePaginaProp(self):
-        try:
-            total_items = len(conexion.Conexion.listadoPropiedades(self))
-            total_pages = (total_items + var.items_per_page_prop - 1) // var.items_per_page_prop
-            print("pulsado boton siguiente")
-            if var.current_page_prop < total_pages - 1:
-                var.current_page_prop += 1
-                self.cargaTablaPropiedades(contexto=0)
+            if var.rowsPropiedades == 11:
+                var.ui.btnAnteriorPro.setEnabled(False)
             else:
-                print("No hay más páginas.")
-        except Exception as e:
-            print("Error al pasar a la siguiente página:", e)
+                var.ui.btnAnteriorPro.setEnabled(True)
 
-    def anteriorPaginaProp(self):
-        try:
-            if var.current_page_prop > 0:
-                var.current_page_prop -= 1
-                self.cargaTablaPropiedades(contexto=1)
+            if len(listado) < 11:
+                var.ui.btnSiguientePro.setEnabled(False)
             else:
-                print("No hay páginas anteriores.")
+                var.ui.btnSiguientePro.setEnabled(True)
+
         except Exception as e:
-            print("Error al retroceder a la página anterior:", e)
+            print("error cargaTablaPropiedades", e)
 
 
-    def cargaPropiedad(self):
+    @staticmethod
+    def cargaOnePropiedad(self):
         try:
+            Propiedades.manageCheckbox(self)
+            Propiedades.manageRadioButtons(self)
             fila = var.ui.tablaPropiedades.selectedItems()
             datos = [dato.text() for dato in fila]
             registro = conexion.Conexion.datosOnePropiedad(str(datos[0]))
+            listado = [var.ui.lblCodigoProp, var.ui.txtPublicacionPro, var.ui.txtFechabajaPro,
+                        var.ui.txtDireccionPro, var.ui.cmbProvinciaPro, var.ui.cmbMunicipioPro,
+                        var.ui.cmbTipoPro, var.ui.spbHabitacionesPro, var.ui.spbBanosPro,
+                        var.ui.txtSuperficiePro, var.ui.txtPrecioAlquilerPro, var.ui.txtPrecioVentaPro,
+                        var.ui.txtCpPro, var.ui.artxtDescripcionPro, var.ui.cbxAlquilerPro,
+                        var.ui.rbtnDisponiblePro, var.ui.txtPropietarioPro, var.ui.txtMovilPro]
 
-            listado = [var.ui.lblprop, var.ui.txtFechaprop,
-                       var.ui.txtBajaprop, var.ui.txtDirprop,
-                       var.ui.cmbProvprop, var.ui.cmbMuniprop,
-                       var.ui.cmbTipoprop, var.ui.spinHabprop, var.ui.spinBanosprop,
-                       var.ui.txtSuperprop, var.ui.txtPrecioAlquilerprop, var.ui.txtPrecioVentaprop,
-                       var.ui.txtCPprop, var.ui.txtDescriprop, var.ui.chkAlquilerprop,
-                       var.ui.rbDisponibleprop, var.ui.txtNomeprop, var.ui.txtMovilprop
-                       ]
 
             for i, casilla in enumerate(listado):
                 if isinstance(casilla, QtWidgets.QComboBox):
                     casilla.setCurrentText(str(registro[i]))
                 elif isinstance(casilla, QtWidgets.QCheckBox):
                     if ("Alquiler") in registro[i]:
-                        var.ui.chkAlquilerprop.setChecked(True)
+                        var.ui.cbxAlquilerPro.setChecked(True)
                     else:
-                        var.ui.chkAlquilerprop.setChecked(False)
+                        var.ui.cbxAlquilerPro.setChecked(False)
                     if ("Venta") in registro[i]:
-                        var.ui.chkVentaprop.setChecked(True)
+                        var.ui.cbxVentaPro.setChecked(True)
                     else:
-                        var.ui.chkVentaprop.setChecked(False)
+                        var.ui.cbxVentaPro.setChecked(False)
                     if ("Intercambio") in registro[i]:
-                        var.ui.chkIntercambioprop.setChecked(True)
+                        var.ui.cbxIntercambioPro.setChecked(True)
                     else:
-                        var.ui.chkIntercambioprop.setChecked(False)
+                        var.ui.cbxIntercambioPro.setChecked(False)
                 elif isinstance(casilla, QtWidgets.QRadioButton):
                     if registro[i] == "Vendido":
-                        var.ui.rbVentaprop.setChecked(True)
+                        var.ui.rbtnVendidoPro.setChecked(True)
                     elif registro[i] == "Disponible":
-                        var.ui.rbDisponibleprop.setChecked(True)
+                        var.ui.rbtnDisponiblePro.setChecked(True)
                     else:
-                        var.ui.rbAlquilerprop.setChecked(True)
+                        var.ui.rbtnAlquiladoPro.setChecked(True)
                 elif isinstance(casilla, QtWidgets.QSpinBox):
                     casilla.setValue(int(registro[i]))
                 elif isinstance(casilla, QtWidgets.QTextEdit):
                     casilla.setPlainText(str(registro[i]))
                 else:
                     casilla.setText(str(registro[i]))
-        except Exception as error:
-            print("Error cargar propiedad: ", error)
-
-    def bajaPropiedad(self):
-        try:
-
-            codigo = var.ui.lblprop.text()
-            fechabaja = var.ui.txtBajaprop.text()
-            if not fechabaja:
-                fechabaja = datetime.today().strftime('%Y-%m-%d')
-            if fechabaja < var.ui.txtFechaprop.text():
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowTitle('Aviso')
-                mbox.setWindowIcon(QIcon('./img/logo.ico'))
-                mbox.setText("Error, la fecha de baja no puede ser anterior a la fecha de alta")
-                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
-                mbox.exec()
-                return
-            if var.ui.rbDisponibleprop.isChecked():
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowTitle('Aviso')
-                mbox.setWindowIcon(QIcon('./img/logo.ico'))
-                mbox.setText("Error,no se puede dar de baja una propiedad disponible")
-                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
-                mbox.exec()
-                return
-
-            if conexion.Conexion.bajaPropiedad(codigo, fechabaja):
-                mbox = QtWidgets.QMessageBox()
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                mbox.setWindowTitle('Aviso')
-                mbox.setWindowIcon(QIcon('./img/logo.ico'))
-                mbox.setText('Propiedad dada de baja')
-                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
-                mbox.exec()
-
-            else:
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowTitle('Aviso')
-                mbox.setWindowIcon(QIcon('./img/logo.ico'))
-                mbox.setText("Error al dar de baja la propiedad")
-                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
-                mbox.exec()
-            Propiedades.cargaTablaPropiedades(self, 0)
-
+            Propiedades.manageCheckbox(self)
+            Propiedades.manageRadioButtons(self)
         except Exception as e:
-            print("Error bajaPropiedad en propiedades:", e)
+            print("error cargaOnePropiedad en propiedades", e)
 
     def modifPropiedad(self):
         try:
+            propiedad = [var.ui.txtPublicacionPro.text(), var.ui.txtDireccionPro.text(),
+                         var.ui.cmbProvinciaPro.currentText(), var.ui.cmbMunicipioPro.currentText(),
+                         var.ui.cmbTipoPro.currentText(), var.ui.spbHabitacionesPro.text(),
+                         var.ui.spbBanosPro.text(), var.ui.txtSuperficiePro.text(),
+                         var.ui.txtPrecioAlquilerPro.text(), var.ui.txtPrecioVentaPro.text(),
+                         var.ui.txtCpPro.text(), var.ui.artxtDescripcionPro.toPlainText()]
 
-            registro = [
-                var.ui.lblprop.text(),
-                var.ui.txtFechaprop.text(),
-                var.ui.txtDirprop.text(),
-                var.ui.cmbProvprop.currentText(),
-                var.ui.cmbMuniprop.currentText(),
-                var.ui.cmbTipoprop.currentText(),
-                var.ui.spinHabprop.text(),
-                var.ui.spinBanosprop.text(),
-                var.ui.txtSuperprop.text(),
-                var.ui.txtPrecioAlquilerprop.text(),
-                var.ui.txtPrecioVentaprop.text(),  # Validación de precios
-                var.ui.txtCPprop.text(),
-                var.ui.txtDescriprop.toPlainText()
-            ]
+            obligatorios = [var.ui.txtDireccionPro.text(), var.ui.txtPropietarioPro, var.ui.txtMovilPro,
+                            var.ui.cmbProvinciaPro.currentText(), var.ui.cmbMunicipioPro.currentText(),
+                            var.ui.cmbTipoPro.currentText(), var.ui.txtSuperficiePro.text(), var.ui.txtCpPro.text()]
 
-            tipooper = []
-            if var.ui.chkAlquilerprop.isChecked():
-                tipooper.append(var.ui.chkAlquilerprop.text())
-            if var.ui.chkVentaprop.isChecked():
-                tipooper.append(var.ui.chkVentaprop.text())
-            if var.ui.chkIntercambioprop.isChecked():
-                tipooper.append(var.ui.chkIntercambioprop.text())
-            registro.append("-".join(tipooper))
-
-            if var.ui.rbDisponibleprop.isChecked():
-                registro.append(var.ui.rbDisponibleprop.text())
-            if var.ui.rbAlquilerprop.isChecked():
-                registro.append(var.ui.rbAlquilerprop.text())
-            if var.ui.rbVentaprop.isChecked():
-                registro.append(var.ui.rbVentaprop.text())
-            registro.append(var.ui.txtNomeprop.text())
-            registro.append(var.ui.txtMovilprop.text())
-            if var.ui.txtBajaprop.text() == "":
-                registro.append("")
-            else:
-                fecha_alta = datetime.strptime(var.ui.txtFechaprop.text(), '%d/%m/%Y')
-                fecha_baja = datetime.strptime(var.ui.txtBajaprop.text(), '%d/%m/%Y')
-                if fecha_baja > fecha_alta:
-                    registro.append(var.ui.txtBajaprop.text())
-                else:
+            for i in obligatorios:
+                if obligatorios[2] == "telefono no válido":
+                    return
+                if i == "":
                     mbox = QtWidgets.QMessageBox()
+                    mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                    mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
                     mbox.setWindowTitle('Aviso')
-                    mbox.setWindowIcon(QIcon('./img/logo.ico'))
-                    mbox.setText("Error, la fecha de baja no puede ser anterior a la fecha de alta")
-                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
+                    mbox.setText('Rellena los campos obligatorios')
+                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
                     mbox.exec()
                     return
 
-            if conexion.Conexion.modifPropiedad(registro):
+            if var.ui.rbtnDisponiblePro.isChecked() and var.ui.txtFechabajaPro.text() != "":
                 mbox = QtWidgets.QMessageBox()
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                mbox.setWindowIcon(QtGui.QIcon('img/logo.ico'))
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
                 mbox.setWindowTitle('Aviso')
-                mbox.setText('Propiedad modificada correctamente')
+                mbox.setText('No puedes modificar la baja de una propiedad disponible')
                 mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
                 mbox.exec()
-                Propiedades.cargaTablaPropiedades(self, 0)
             else:
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowTitle("Aviso")
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                mbox.setWindowIcon(QtGui.QIcon('img/logo.ico'))
-                mbox.setText("Error al modificar la propiedad")
-                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
-                mbox.exec()
-                Propiedades.cargaTablaPropiedades(self, 0)
+                tipoper = []
+                if var.ui.cbxAlquilerPro.isChecked():
+                    tipoper.append(var.ui.cbxAlquilerPro.text())
+                if var.ui.cbxVentaPro.isChecked():
+                    tipoper.append(var.ui.cbxVentaPro.text())
+                if var.ui.cbxIntercambioPro.isChecked():
+                    tipoper.append(var.ui.cbxIntercambioPro.text())
+                propiedad.append(", ".join(tipoper))
+                if var.ui.rbtnDisponiblePro.isChecked():
+                    propiedad.append(var.ui.rbtnDisponiblePro.text())
+                if var.ui.rbtnAlquiladoPro.isChecked():
+                    propiedad.append(var.ui.rbtnAlquiladoPro.text())
+                if var.ui.rbtnVendidoPro.isChecked():
+                    propiedad.append(var.ui.rbtnVendidoPro.text())
 
+                propiedad.append(var.ui.txtPropietarioPro.text())
+                propiedad.append(var.ui.txtMovilPro.text())
+                propiedad.append(var.ui.lblCodigoProp.text())
+
+                if var.ui.txtFechabajaPro.text() == "":
+                    propiedad.append("")
+                else:
+                    fecha_publicacion = datetime.strptime(var.ui.txtPublicacionPro.text(), "%d/%m/%Y")
+                    fecha_baja = datetime.strptime(var.ui.txtFechabajaPro.text(), "%d/%m/%Y")
+                    if fecha_baja > fecha_publicacion:
+                        propiedad.append(var.ui.txtFechabajaPro.text())
+                    else:
+                        mbox = QtWidgets.QMessageBox()
+                        mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                        mbox.setWindowTitle('Error')
+                        mbox.setText('La fecha de baja debe ser posterior a la fecha de publicación')
+                        mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                        mbox.exec()
+
+                if conexion.Conexion.modifPropiedades(propiedad):
+                    mbox = QtWidgets.QMessageBox()
+                    mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+                    mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                    mbox.setWindowTitle('Aviso')
+                    mbox.setText('Datos de la propiedad modificados')
+                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                    mbox.exec()
+                    Propiedades.cargarTablaPropiedades(self, 0)
+                else:
+                    mbox = QtWidgets.QMessageBox()
+                    mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                    mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                    mbox.setWindowTitle('Aviso')
+                    mbox.setText('Error en actualizacion Datos de la propiedad')
+                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                    mbox.exec()
+                Propiedades.cargarTablaPropiedades(self, 0)
         except Exception as error:
-            print("error modificar propiedad", error)
+            print("error modifPropiedad en propiedades", error)
+
+    def bajaPropiedad(self):
+        try:
+            if var.ui.rbtnDisponiblePro.isChecked():
+                mbox = QtWidgets.QMessageBox()
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                mbox.setWindowTitle('Aviso')
+                mbox.setText('La propiedad no puede darse de baja si está disponible')
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                mbox.exec()
+            else:
+                fecha_baja = datetime.strptime(var.ui.txtFechabajaPro.text(), "%d/%m/%Y").strftime("%d/%m/%Y")
+                datos = [fecha_baja, var.ui.lblCodigoProp.text()]
+                fecha_publicacion = datetime.strptime(var.ui.txtPublicacionPro.text(), "%d/%m/%Y").strftime("%d/%m/%Y")
+                if datetime.strptime(fecha_baja, "%d/%m/%Y") > datetime.strptime(fecha_publicacion, "%d/%m/%Y"):
+                    if conexion.Conexion.bajaPropiedad(datos):
+                        mbox = QtWidgets.QMessageBox()
+                        mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+                        mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                        mbox.setWindowTitle('Aviso')
+                        mbox.setText('Propiedad dada de baja')
+                        mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                        mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                        mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                        mbox.exec()
+                        Propiedades.cargarTablaPropiedades(self, 0)
+                    else:
+                        mbox = QtWidgets.QMessageBox()
+                        mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                        mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                        mbox.setWindowTitle('Aviso')
+                        mbox.setText('Error en la baja de la propiedad')
+                        mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                        mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                        mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                        mbox.exec()
+                else:
+                    mbox = QtWidgets.QMessageBox()
+                    mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                    mbox.setWindowTitle('Error')
+                    mbox.setText('La fecha de baja debe ser posterior a la fecha de publicación')
+                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.exec()
+                Propiedades.cargarTablaPropiedades(self, 0)
+        except Exception as error:
+            print("error bajaPropiedad en propiedades", error)
 
     def historicoProp(self):
         try:
-            if var.ui.chkHistoriaprop.isChecked():
-                var.historico = 0
+            if var.ui.chkHistoricoPro.isChecked():
+                var.historicoProp = 1
             else:
-                var.historico = 1
-            Propiedades.cargaTablaPropiedades(self, 0)
+                var.historicoProp = 0
+            var.rowsPropiedades = 11
+            Propiedades.cargarTablaPropiedades(self, 0)
+        except Exception as e:
+            print("checkbox historico error ", e)
 
-        except Exception as error:
-            print("Error en historico propiedades: ", error)
+    def filtrarPropiedades(self):
+        if not var.ui.cmbTipoPro.currentText() or not var.ui.cmbMunicipioPro.currentText():
+            mbox = QtWidgets.QMessageBox()
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+            mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+            mbox.setWindowTitle('Aviso')
+            mbox.setText('Los campos Tipo y Municipio han de contener algo')
+            mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+            mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+            mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+            mbox.exec()
+        elif var.lupaState == 0:
+            var.lupaState = 1
+            Propiedades.cargarTablaPropiedades(self, 1)
+        elif var.lupaState == 1:
+            var.lupaState = 0
+            Propiedades.cargarTablaPropiedades(self, 0)
 
-    def filtroPorTipoPropiedad(self):
+    def manageCheckbox(self):
 
-        if var.ui.btnTipoProp.isChecked():
-            try:
-                tipoSeleccionado = var.ui.cmbTipoprop.currentText()
-                if tipoSeleccionado:
-                    listado = conexion.Conexion.propiedadesPorTipo(tipoSeleccionado)
-                else:
-                    listado = conexion.Conexion.listadoPropiedades(self)
+        var.ui.cbxAlquilerPro.setEnabled(False)
+        var.ui.cbxVentaPro.setEnabled(False)
 
-                var.ui.tablaPropiedades.setRowCount(0)
-                i = 0
-                for registro in listado:
-                    var.ui.tablaPropiedades.setRowCount(i + 1)
-
-                    var.ui.tablaPropiedades.setItem(i, 0, QtWidgets.QTableWidgetItem(str(registro[0])))
-                    var.ui.tablaPropiedades.setItem(i, 1, QtWidgets.QTableWidgetItem(registro[5]))
-                    var.ui.tablaPropiedades.setItem(i, 2, QtWidgets.QTableWidgetItem(registro[6]))
-                    var.ui.tablaPropiedades.setItem(i, 3, QtWidgets.QTableWidgetItem(str(registro[7])))
-                    var.ui.tablaPropiedades.setItem(i, 4, QtWidgets.QTableWidgetItem(str(registro[8])))
-                    if registro[10] == "":
-                        registro[10] = "-"
-                    if registro[11] == "":
-                        registro[11] = "-"
-                    var.ui.tablaPropiedades.setItem(i, 5, QtWidgets.QTableWidgetItem(str(registro[10]) + " €"))
-                    var.ui.tablaPropiedades.setItem(i, 6, QtWidgets.QTableWidgetItem(str(registro[11]) + " €"))
-                    var.ui.tablaPropiedades.setItem(i, 7, QtWidgets.QTableWidgetItem(registro[14]))
-                    var.ui.tablaPropiedades.setItem(i, 8, QtWidgets.QTableWidgetItem(registro[2]))
-
-                    var.ui.tablaPropiedades.item(i, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                    var.ui.tablaPropiedades.item(i, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
-                    var.ui.tablaPropiedades.item(i, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
-                    var.ui.tablaPropiedades.item(i, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                    var.ui.tablaPropiedades.item(i, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                    var.ui.tablaPropiedades.item(i, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-                    var.ui.tablaPropiedades.item(i, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-                    var.ui.tablaPropiedades.item(i, 7).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                    var.ui.tablaPropiedades.item(i, 8).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-
-                    i += 1
-
-            except Exception as e:
-                print("Error al filtrar propiedades por tipo:", e)
-
+        if var.ui.txtPrecioAlquilerPro.text() == "":
+            var.ui.cbxAlquilerPro.setChecked(False)
         else:
-            Propiedades.cargaTablaPropiedades(self, 0)
+            var.ui.cbxAlquilerPro.setChecked(True)
 
-    def controlDeCheckbox(self):
-        if var.ui.txtPrecioAlquilerprop.text() == "":
-            var.ui.chkAlquilerprop.setChecked(False)
-            var.ui.chkAlquilerprop.setEnabled(False)
+        if var.ui.txtPrecioVentaPro.text() == "":
+            var.ui.cbxVentaPro.setChecked(False)
         else:
-            var.ui.chkAlquilerprop.setChecked(True)
-            var.ui.chkAlquilerprop.setEnabled(True)
+            var.ui.cbxVentaPro.setChecked(True)
 
-        if var.ui.txtPrecioVentaprop.text() == "":
-            var.ui.chkVentaprop.setChecked(False)
-            var.ui.chkVentaprop.setEnabled(False)
-        else:
-            var.ui.chkVentaprop.setChecked(True)
-            var.ui.chkVentaprop.setEnabled(True)
+        if var.ui.txtPrecioAlquilerPro.text() == "" and var.ui.txtPrecioVentaPro.text() == "":
+            var.ui.cbxIntercambioPro.setChecked(True)
 
-    def controlDeRadioButtons(self):
-        if var.ui.txtBajaprop.text() == "":
-            var.ui.rbDisponibleprop.setEnabled(True)
-            var.ui.rbDisponibleprop.setChecked(True)
-            var.ui.rbAlquilerprop.setChecked(False)
-            var.ui.rbVentaprop.setChecked(False)
-            var.ui.rbAlquilerprop.setEnabled(False)
-            var.ui.rbVentaprop.setEnabled(False)
+    def manageRadioButtons(self):
+        if var.ui.txtFechabajaPro.text() == "":
+            var.ui.rbtnDisponiblePro.setEnabled(True)
+            var.ui.rbtnDisponiblePro.setChecked(True)
+            var.ui.rbtnAlquiladoPro.setChecked(False)
+            var.ui.rbtnVendidoPro.setChecked(False)
+            var.ui.rbtnAlquiladoPro.setEnabled(False)
+            var.ui.rbtnVendidoPro.setEnabled(False)
         else:
-            var.ui.rbDisponibleprop.setChecked(False)
-            var.ui.rbDisponibleprop.setEnabled(False)
-            var.ui.rbAlquilerprop.setChecked(True)
-            var.ui.rbAlquilerprop.setEnabled(True)
-            var.ui.rbVentaprop.setEnabled(True)
+            var.ui.rbtnDisponiblePro.setChecked(False)
+            var.ui.rbtnDisponiblePro.setEnabled(False)
+            var.ui.rbtnAlquiladoPro.setChecked(True)
+            var.ui.rbtnAlquiladoPro.setEnabled(True)
+            var.ui.rbtnVendidoPro.setEnabled(True)

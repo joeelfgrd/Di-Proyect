@@ -1,19 +1,20 @@
 '''
 
-Fichero de variables globales
+    Fichero de variables globales
 
 '''
+
 global ui
 global uicalendar
-global panel
+global op
 global dlgabrir
-global historico
-global dlgGestion
-global historiaprop
+global historicoCli
+global historicoProp
+global historicoVend
+global dlggestion
+global lupaState
 global dlgAbout
+global dlgLocalidad
+global rowsClientes
+global rowsPropiedades
 global report
-
-global current_page_cli
-global current_page_prop
-global items_per_page_cli
-global items_per_page_prop
