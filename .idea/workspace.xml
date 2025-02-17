@@ -4,43 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b138e9cf-b85a-43cb-9048-15798344b753" name="Changes" comment="feat():examen 1 evaluacion">
-      <change afterPath="$PROJECT_DIR$/dlgBuscarProp.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/facturas.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/casa.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/papelera.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/venPrincipal.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
+    <list default="true" id="b138e9cf-b85a-43cb-9048-15798344b753" name="Changes" comment="feat():cambios">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2024_10_14_14_55_25_backup.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2024_11_14_10_55_52_DatosPropiedades.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2024_11_14_10_59_29_DatosPropiedades.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2024_11_14_10_59_34DatosPropiedades.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/VenPrincipal.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bbdd.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/bbdd.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clientes.py" beforeDir="false" afterPath="$PROJECT_DIR$/clientes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conexion.py" beforeDir="false" afterPath="$PROJECT_DIR$/conexion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conexionserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/conexionserver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dlgAbout.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dlgCalendar.py" beforeDir="false" afterPath="$PROJECT_DIR$/dlgCalendar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dlgGestionProp.py" beforeDir="false" afterPath="$PROJECT_DIR$/dlgGestionProp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventos.py" beforeDir="false" afterPath="$PROJECT_DIR$/eventos.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/buscar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/calendar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/logo.ico" beforeDir="false" afterPath="$PROJECT_DIR$/img/icono.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/reload2.ico" beforeDir="false" afterPath="$PROJECT_DIR$/img/reload3_78495.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/salir.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/informes.py" beforeDir="false" afterPath="$PROJECT_DIR$/informes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propiedades.py" beforeDir="false" afterPath="$PROJECT_DIR$/propiedades.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/styles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/VenPrincipal.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dlgAbout.ui" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dlgAbout.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dlgCalendar.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dlgGestionProp.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/var.py" beforeDir="false" afterPath="$PROJECT_DIR$/var.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venAux.py" beforeDir="false" afterPath="$PROJECT_DIR$/venAux.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendedores.py" beforeDir="false" afterPath="$PROJECT_DIR$/vendedores.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +64,7 @@
     "git-widget-placeholder": "sqlite",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/a23joelfm/Documents/pycharm-proyects/Di-Proyect/img",
+    "last_opened_file_path": "Z:/2DAM/DI/proyecto",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -250,7 +215,8 @@
       <workItem from="1734598590837" duration="451000" />
       <workItem from="1736945634705" duration="1889000" />
       <workItem from="1737021428810" duration="614000" />
-      <workItem from="1737361588051" duration="4207000" />
+      <workItem from="1737361588051" duration="4377000" />
+      <workItem from="1737366054679" duration="624000" />
     </task>
     <task id="LOCAL-00001" summary="feat():delete button">
       <option name="closed" value="true" />
@@ -268,7 +234,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733923399850</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat():cambios">
+      <option name="closed" value="true" />
+      <created>1737365924730</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1737365924730</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -288,7 +262,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat():delete button" />
     <MESSAGE value="feat():examen 1 evaluacion" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat():examen 1 evaluacion" />
+    <MESSAGE value="feat():cambios" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat():cambios" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/figueiridomolares$main.coverage" NAME="main Coverage Results" MODIFIED="1730796540113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
@@ -300,6 +275,6 @@
     <SUITE FILE_PATH="coverage/Di_Proyect$clientes.coverage" NAME="clientes Coverage Results" MODIFIED="1733839980977" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$conexion.coverage" NAME="conexion Coverage Results" MODIFIED="1728370442025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$kill.coverage" NAME="kill Coverage Results" MODIFIED="1729064725726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Y:/0_COMUN" />
-    <SUITE FILE_PATH="coverage/Di_Proyect$main.coverage" NAME="main Coverage Results" MODIFIED="1737365823685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Di_Proyect$main.coverage" NAME="main Coverage Results" MODIFIED="1737366097627" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
