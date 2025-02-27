@@ -62,7 +62,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pClientres">
        <attribute name="title">
@@ -1222,16 +1222,6 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="16">
-             <widget class="QLineEdit" name="txtFechabajaPro">
-              <property name="maximumSize">
-               <size>
-                <width>150</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="14">
              <spacer name="horizontalSpacer_19">
               <property name="orientation">
@@ -1303,6 +1293,9 @@
                <string>m2</string>
               </property>
              </widget>
+            </item>
+            <item row="0" column="16">
+             <widget class="QLineEdit" name="txtFechabajaPro"/>
             </item>
            </layout>
           </item>

@@ -395,10 +395,6 @@ class Ui_venPrincipal(object):
         self.spbHabitacionesPro.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.spbHabitacionesPro.setObjectName("spbHabitacionesPro")
         self.gridLayout_5.addWidget(self.spbHabitacionesPro, 0, 10, 1, 1)
-        self.txtFechabajaPro = QtWidgets.QLineEdit(parent=self.pPropiedades)
-        self.txtFechabajaPro.setMaximumSize(QtCore.QSize(150, 16777215))
-        self.txtFechabajaPro.setObjectName("txtFechabajaPro")
-        self.gridLayout_5.addWidget(self.txtFechabajaPro, 0, 16, 1, 1)
         spacerItem23 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.gridLayout_5.addItem(spacerItem23, 0, 14, 1, 1)
         self.lblCodigoPro = QtWidgets.QLabel(parent=self.pPropiedades)
@@ -419,6 +415,9 @@ class Ui_venPrincipal(object):
         self.label = QtWidgets.QLabel(parent=self.pPropiedades)
         self.label.setObjectName("label")
         self.gridLayout_5.addWidget(self.label, 2, 6, 1, 1)
+        self.txtFechabajaPro = QtWidgets.QLineEdit(parent=self.pPropiedades)
+        self.txtFechabajaPro.setObjectName("txtFechabajaPro")
+        self.gridLayout_5.addWidget(self.txtFechabajaPro, 0, 16, 1, 1)
         self.verticalLayout_4.addLayout(self.gridLayout_5)
         spacerItem25 = QtWidgets.QSpacerItem(20, 13, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
         self.verticalLayout_4.addItem(spacerItem25)
@@ -1285,7 +1284,7 @@ class Ui_venPrincipal(object):
         self.toolBar.addAction(self.actionbarSalir)
 
         self.retranslateUi(venPrincipal)
-        self.panPrincipal.setCurrentIndex(4)
+        self.panPrincipal.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(venPrincipal)
 
     def retranslateUi(self, venPrincipal):
