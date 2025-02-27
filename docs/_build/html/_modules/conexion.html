@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+
+<html lang="es" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>conexion &#8212; documentación de LAMAVILARINO - v.0.0.1</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=8ee129b9"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=f85f4cfb"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Código fuente para conexion</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyQt6</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtSql</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="p">,</span> <span class="n">QtCore</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">var</span>
+
+
+<div class="viewcode-block" id="Conexion">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion">[documentos]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Conexion</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Conexion.db_conexion">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.db_conexion">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">db_conexion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param self: None</span>
+<span class="sd">        :type self: None</span>
+<span class="sd">        :return:  operación exitosa</span>
+<span class="sd">        :rtype: bolean</span>
+
+<span class="sd">        Módulo para establecer la conexión con la base de datos.</span>
+<span class="sd">        Si éxito devuelve true, en caso contrario devuelve false.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;bbdd.sqlite&#39;</span><span class="p">):</span>
+            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="s1">&#39;El archivo de la base de datos no existe.&#39;</span><span class="p">,</span>
+                                           <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Cancel</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlDatabase</span><span class="o">.</span><span class="n">addDatabase</span><span class="p">(</span><span class="s1">&#39;QSQLITE&#39;</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">setDatabaseName</span><span class="p">(</span><span class="s1">&#39;bbdd.sqlite&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">db</span><span class="o">.</span><span class="n">open</span><span class="p">():</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;SELECT name FROM sqlite_master WHERE type=&#39;table&#39;;&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>  <span class="c1"># Si no hay tablas</span>
+                <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="s1">&#39;Base de datos vacía o no válida.&#39;</span><span class="p">,</span>
+                                               <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Cancel</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Aviso&#39;</span><span class="p">,</span> <span class="s1">&#39;Conexión Base de Datos realizada&#39;</span><span class="p">,</span>
+                                                  <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="s1">&#39;No se pudo abrir la base de datos.&#39;</span><span class="p">,</span>
+                                           <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Cancel</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    ZONA LOCALIDADES</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="Conexion.listaProv">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.listaProv">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listaProv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param self: None</span>
+<span class="sd">        :type self: None</span>
+<span class="sd">        :return: lista provincias</span>
+<span class="sd">        :rtype: bytearray</span>
+
+<span class="sd">        Query que obtiene listado provincias en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">listaprov</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+        <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM provincias&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+            <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                <span class="n">listaprov</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">listaprov</span></div>
+
+
+<div class="viewcode-block" id="Conexion.listaMunicipios">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.listaMunicipios">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listaMunicipios</span><span class="p">(</span><span class="n">provincia</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param provincia: nombre provincia</span>
+<span class="sd">        :type provincia: str</span>
+<span class="sd">        :return: lista municipios</span>
+<span class="sd">        :rtype: list</span>
+
+<span class="sd">        Query que obtiene listado municipios en la base de datos de una provincia concreta.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listamunicipios</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM municipios where idprov = (select idprov from provincias where provincia = :provincia)&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:provincia&quot;</span><span class="p">,</span> <span class="n">provincia</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="n">listamunicipios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">listamunicipios</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error lista municipios&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.listaTodosMunicipios">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.listaTodosMunicipios">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listaTodosMunicipios</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param self: None</span>
+<span class="sd">        :type self: None</span>
+<span class="sd">        :return: lista municipios</span>
+<span class="sd">        :rtype: list</span>
+
+<span class="sd">        Query que obtiene listado de todos los municipios en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listamunicipios</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM municipios&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="n">listamunicipios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">listamunicipios</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error lista municipios&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    ZONA CLIENTES</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="Conexion.altaCliente">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.altaCliente">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">altaCliente</span><span class="p">(</span><span class="n">nuevocli</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param nuevocli: array con los datos del cliente</span>
+<span class="sd">        :type nuevocli: list</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que inserta un nuevo cliente en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                <span class="s2">&quot;INSERT INTO CLIENTES (dnicli, altacli, apelcli, nomecli, emailcli, movilcli, dircli, provcli, municli) &quot;</span>
+                <span class="s2">&quot;VALUES (:dnicli, :altacli, :apelcli, :nomecli, :emailcli, :movilcli, :dircli, :provcli, :municli)&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dnicli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevocli</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:altacli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevocli</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:apelcli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevocli</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:nomecli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevocli</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:emailcli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevocli</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:movilcli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevocli</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dircli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevocli</span><span class="p">[</span><span class="mi">6</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:provcli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevocli</span><span class="p">[</span><span class="mi">7</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:municli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevocli</span><span class="p">[</span><span class="mi">8</span><span class="p">]))</span>
+
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error altaCliente en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.listadoClientes">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.listadoClientes">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listadoClientes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param self: None</span>
+<span class="sd">        :type self: None</span>
+<span class="sd">        :return: listado de clientes</span>
+<span class="sd">        :rtype: list</span>
+
+<span class="sd">        Query que obtiene listado de clientes en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listado</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="n">numRows</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">rowsClientes</span>
+
+            <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">numRows</span> <span class="o">-</span> <span class="mi">15</span><span class="p">)</span> <span class="k">if</span> <span class="n">numRows</span> <span class="o">&gt;=</span> <span class="mi">15</span> <span class="k">else</span> <span class="mi">0</span>
+
+            <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">historicoCli</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+                <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM clientes ORDER BY apelcli, nomecli ASC LIMIT 15 OFFSET :offset&quot;</span><span class="p">)</span>
+                <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                    <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                        <span class="n">fila</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+                        <span class="n">listado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+                <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                    <span class="s2">&quot;SELECT * FROM clientes WHERE bajacli IS NULL ORDER BY apelcli, nomecli ASC LIMIT 15 OFFSET :offset&quot;</span><span class="p">)</span>
+                <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                    <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                        <span class="n">fila</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+                        <span class="n">listado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">listado</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">rowsClientes</span> <span class="o">-=</span> <span class="mi">15</span>
+
+            <span class="k">return</span> <span class="n">listado</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error al listar clientes&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.datosOneCliente">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.datosOneCliente">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">datosOneCliente</span><span class="p">(</span><span class="n">dni</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param dni: dni del cliente</span>
+<span class="sd">        :type dni: str</span>
+<span class="sd">        :return: datos del cliente</span>
+<span class="sd">        :rtype: list</span>
+
+<span class="sd">        Query que obtiene los datos de un cliente en la base de datos a partir de un dni</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">registro</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM CLIENTES WHERE dnicli = :dni&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dni&quot;</span><span class="p">,</span> <span class="n">dni</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+                        <span class="n">registro</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">registro</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error datosOneCliente en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.modifCliente">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.modifCliente">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">modifCliente</span><span class="p">(</span><span class="n">registro</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param registro: datos del cliente</span>
+<span class="sd">        :type registro: list</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que modifica los datos de un cliente en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;select count(*) from clientes where dnicli = :dni&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dni&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="ow">and</span> <span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                        <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+                        <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                            <span class="s2">&quot;UPDATE clientes SET altacli = :altacli, apelcli = :apelcli, nomecli = :nomecli, emailcli = :emailcli, &quot;</span>
+                            <span class="s2">&quot; movilcli = :movilcli, dircli = :dircli, provcli = :provcli, municli = :municli, bajacli = :bajacli WHERE dnicli = :dnicli&quot;</span><span class="p">)</span>
+                        <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dnicli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                        <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:altacli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                        <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:apelcli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                        <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:nomecli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+                        <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:emailcli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+                        <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:movilcli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span>
+                        <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dircli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">6</span><span class="p">]))</span>
+                        <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:provcli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">7</span><span class="p">]))</span>
+                        <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:municli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">8</span><span class="p">]))</span>
+                        <span class="k">if</span> <span class="n">registro</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:bajacli&quot;</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QVariant</span><span class="p">())</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:bajacli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">9</span><span class="p">]))</span>
+                        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error modificar cliente&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.bajaCliente">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.bajaCliente">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bajaCliente</span><span class="p">(</span><span class="n">datos</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param datos: datos del cliente</span>
+<span class="sd">        :type datos: list</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que da de baja a un cliente en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;UPDATE clientes SET bajacli = :bajacli WHERE dnicli = :dni&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dni&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datos</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:bajacli&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datos</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error bajaCliente en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    ZONA PROPIEDADES</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="Conexion.altaTipoPropiedad">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.altaTipoPropiedad">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">altaTipoPropiedad</span><span class="p">(</span><span class="n">tipo</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param tipo: tipo de propiedad</span>
+<span class="sd">        :type tipo: str</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que da de alta un nuevo tipo de propiedad en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;INSERT INTO tipoprop (tipo) VALUES (:tipo)&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:tipo&quot;</span><span class="p">,</span> <span class="n">tipo</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error en alta tipo propiedad: &quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.bajaTipoPropiedad">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.bajaTipoPropiedad">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bajaTipoPropiedad</span><span class="p">(</span><span class="n">tipo</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param tipo: tipo de propiedad</span>
+<span class="sd">        :type tipo: str</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que borra un tipo de propiedad en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;DELETE FROM tipoprop WHERE tipo = :tipo&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:tipo&quot;</span><span class="p">,</span> <span class="n">tipo</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error en baja tipo propiedad: &quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.cargarTipoProp">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.cargarTipoProp">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cargarTipoProp</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: tipos de propiedad</span>
+<span class="sd">        :rtype: list</span>
+
+<span class="sd">        Query que obtiene los tipos de propiedad de la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT tipo FROM tipoprop&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="n">registro</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="n">registro</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+                <span class="k">return</span> <span class="n">registro</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error cargarTipoProp en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.altaPropiedad">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.altaPropiedad">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">altaPropiedad</span><span class="p">(</span><span class="n">propiedad</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param propiedad: array con los datos de la propiedad</span>
+<span class="sd">        :type propiedad: list</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que da de alta una nueva propiedad en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">campos_obligatorios</span> <span class="o">=</span> <span class="p">[</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">propiedad</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">propiedad</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">propiedad</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">propiedad</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">propiedad</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span>
+                                   <span class="n">propiedad</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">propiedad</span><span class="p">[</span><span class="mi">15</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">campo</span> <span class="k">for</span> <span class="n">campo</span> <span class="ow">in</span> <span class="n">campos_obligatorios</span><span class="p">)</span> <span class="ow">or</span> <span class="n">propiedad</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;telefono no válido&quot;</span><span class="p">:</span>
+                <span class="n">mbox</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+                <span class="n">mbox</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Icon</span><span class="o">.</span><span class="n">Critical</span><span class="p">)</span>
+                <span class="n">mbox</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Aviso&#39;</span><span class="p">)</span>
+                <span class="n">mbox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                    <span class="s1">&#39;Los campos Dirección, Provincia, Municipio, Tipo de Propiedad, Superficie, CP, Propietario y Teléfono son obligatorios y el teléfono no puede ser &quot;telefono no válido&quot;.&#39;</span><span class="p">)</span>
+                <span class="n">mbox</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+                <span class="n">mbox</span><span class="o">.</span><span class="n">setDefaultButton</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+                <span class="n">mbox</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Aceptar&#39;</span><span class="p">)</span>
+                <span class="n">mbox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot; INSERT into PROPIEDADES (altaprop, dirprop, provprop, muniprop, tipoprop, habprop, banprop, &quot;</span>
+                          <span class="s2">&quot; superprop, prealquiprop, prevenprop, cpprop, obserprop, tipooper, estadoprop, nomeprop, movilprop) &quot;</span>
+                          <span class="s2">&quot; VALUES (:altaprop, :dirprop, :provprop, :muniprop, :tipoprop, :habprop, :banprop, :superprop, &quot;</span>
+                          <span class="s2">&quot; :prealquiprop, :prevenprop, :cpprop, :obserprop, :tipooper, :estadoprop, :nomeprop, :movilprop)&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:altaprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dirprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:provprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:muniprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:tipoprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:habprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:banprop&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">6</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:superprop&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">7</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:prealquiprop&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span> <span class="k">if</span> <span class="n">propiedad</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="k">else</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QVariant</span><span class="p">())</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:prevenprop&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span> <span class="k">if</span> <span class="n">propiedad</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="k">else</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QVariant</span><span class="p">())</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:cpprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">10</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:obserprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">11</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:tipooper&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">12</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:estadoprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">13</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:nomeprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">14</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:movilprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">propiedad</span><span class="p">[</span><span class="mi">15</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">mbox</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">mbox</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Icon</span><span class="o">.</span><span class="n">Critical</span><span class="p">)</span>
+            <span class="n">mbox</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Aviso&#39;</span><span class="p">)</span>
+            <span class="n">mbox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Error en dar de alta&#39;</span><span class="p">)</span>
+            <span class="n">mbox</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="n">mbox</span><span class="o">.</span><span class="n">setDefaultButton</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="n">mbox</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Aceptar&#39;</span><span class="p">)</span>
+            <span class="n">mbox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error altaPropiedad en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.listadoPropiedades">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.listadoPropiedades">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listadoPropiedades</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param self: None</span>
+<span class="sd">        :type self: None</span>
+<span class="sd">        :return: listado de propiedades</span>
+<span class="sd">        :rtype: list</span>
+
+<span class="sd">        Query que obtiene listado de propiedades en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listado</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="n">numRows</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">rowsPropiedades</span>
+
+            <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">numRows</span> <span class="o">-</span> <span class="mi">11</span><span class="p">)</span> <span class="k">if</span> <span class="n">numRows</span> <span class="o">&gt;=</span> <span class="mi">11</span> <span class="k">else</span> <span class="mi">0</span>
+
+            <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">historicoProp</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+                <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM propiedades ORDER BY muniprop ASC LIMIT 11 OFFSET :offset&quot;</span><span class="p">)</span>
+                <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                    <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                        <span class="n">fila</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+                        <span class="n">listado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+                <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                    <span class="s2">&quot;SELECT * FROM propiedades WHERE bajaprop IS NULL ORDER BY muniprop ASC LIMIT 11 OFFSET :offset&quot;</span><span class="p">)</span>
+                <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                    <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                        <span class="n">fila</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+                        <span class="n">listado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">listado</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">rowsPropiedades</span> <span class="o">-=</span> <span class="mi">11</span>
+
+            <span class="k">return</span> <span class="n">listado</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error al abrir el archivo:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.datosOnePropiedad">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.datosOnePropiedad">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">datosOnePropiedad</span><span class="p">(</span><span class="n">codigo</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param codigo: código de la propiedad</span>
+<span class="sd">        :type codigo: str</span>
+<span class="sd">        :return: datos de la propiedad</span>
+<span class="sd">        :rtype: list</span>
+
+<span class="sd">        Query que obtiene los datos de una propiedad en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">registro</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM PROPIEDADES WHERE codigo = :codigo&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:codigo&quot;</span><span class="p">,</span> <span class="n">codigo</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+                        <span class="n">registro</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">registro</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error datosOnePropiedad en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.modifPropiedades">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.modifPropiedades">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">modifPropiedades</span><span class="p">(</span><span class="n">registro</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param registro: datos de la propiedad</span>
+<span class="sd">        :type registro: list</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que modifica los datos de una propiedad en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">registro</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;telefono no válido&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;select count(*) from propiedades where codigo = :codigo&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:codigo&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">16</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="ow">and</span> <span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                        <span class="s2">&quot;UPDATE propiedades SET altaprop = :altaprop, dirprop = :dirprop, provprop = :provprop, muniprop = :muniprop, &quot;</span>
+                        <span class="s2">&quot;tipoprop = :tipoprop, habprop = :habprop, banprop = :banprop, superprop = :superprop, prealquiprop = :prealquiprop, &quot;</span>
+                        <span class="s2">&quot;prevenprop = :prevenprop, cpprop = :cpprop, obserprop = :obserprop, tipooper = :tipooper, estadoprop = :estadoprop, &quot;</span>
+                        <span class="s2">&quot;nomeprop = :nomeprop, movilprop = :movilprop, bajaprop = :bajaprop WHERE codigo = :codigo&quot;</span><span class="p">)</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:altaprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dirprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:provprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:muniprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:tipoprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:habprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:banprop&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">6</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:superprop&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">7</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:prealquiprop&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span> <span class="k">if</span> <span class="n">registro</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="k">else</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QVariant</span><span class="p">())</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:prevenprop&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span> <span class="k">if</span> <span class="n">registro</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="k">else</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QVariant</span><span class="p">())</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:cpprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">10</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:obserprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">11</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:tipooper&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">12</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:estadoprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">13</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:nomeprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">14</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:movilprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">15</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:codigo&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">16</span><span class="p">]))</span>
+                    <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:bajaprop&quot;</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QVariant</span><span class="p">()</span> <span class="k">if</span> <span class="n">registro</span><span class="p">[</span><span class="mi">17</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">17</span><span class="p">]))</span>
+                    <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error modificar propiedad&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.bajaPropiedad">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.bajaPropiedad">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bajaPropiedad</span><span class="p">(</span><span class="n">datos</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param datos: datos de la propiedad</span>
+<span class="sd">        :type datos: list</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que da de baja una propiedad en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;UPDATE propiedades SET bajaprop = :bajaprop WHERE codigo = :codigo&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:codigo&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datos</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:bajaprop&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datos</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error bajaPropiedad en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.listadoFiltrado">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.listadoFiltrado">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listadoFiltrado</span><span class="p">(</span><span class="n">datos</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param datos: datos</span>
+<span class="sd">        :type datos: list</span>
+<span class="sd">        :return: listado de propiedades</span>
+<span class="sd">        :rtype: list</span>
+
+<span class="sd">        Query que obtiene un listado de propiedades filtrado por tipo de propiedad y municipio.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listado</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM propiedades WHERE tipoprop = :tipoprop and muniprop = :muniprop&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:tipoprop&quot;</span><span class="p">,</span> <span class="n">datos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:muniprop&quot;</span><span class="p">,</span> <span class="n">datos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="n">fila</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+                    <span class="n">listado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">listado</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error listadoFiltrado en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.ponerDisponiblePropiedad">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.ponerDisponiblePropiedad">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ponerDisponiblePropiedad</span><span class="p">(</span><span class="n">idProp</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param datos: id de la propiedad</span>
+<span class="sd">        :type datos: int</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que pone una propiedad como disponible</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;UPDATE propiedades SET estadoprop = :estadoprop WHERE codigo = :codigo&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:codigo&quot;</span><span class="p">,</span> <span class="n">idProp</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:estadoprop&quot;</span><span class="p">,</span> <span class="s2">&quot;disponible&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error ponerDisponiblePropiedad en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.ponerVendidaPropiedad">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.ponerVendidaPropiedad">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ponerVendidaPropiedad</span><span class="p">(</span><span class="n">idProp</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param datos: id de la propiedad</span>
+<span class="sd">        :type datos: int</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que pone una propiedad como vendida</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;UPDATE propiedades SET estadoprop = :estadoprop WHERE codigo = :codigo&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:codigo&quot;</span><span class="p">,</span> <span class="n">idProp</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:estadoprop&quot;</span><span class="p">,</span> <span class="s2">&quot;vendida&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error ponerVendidaPropiedad en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    ZONA VENDEDORES</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="Conexion.altaVendedor">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.altaVendedor">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">altaVendedor</span><span class="p">(</span><span class="n">nuevoVendedor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param nuevoVendedor: datos del vendedor</span>
+<span class="sd">        :type nuevoVendedor: list</span>
+<span class="sd">        :return: true o false</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que da de alta un nuevo vendedor en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                <span class="s2">&quot;INSERT INTO VENDEDORES (dniVendedor, nombreVendedor, altaVendedor, movilVendedor, mailVendedor, delegacionVendedor) &quot;</span>
+                <span class="s2">&quot;VALUES (:dniVend, :nombreVend, :altaVend, :movilVend, :mailVend, :delegacionVend)&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dniVend&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevoVendedor</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:nombreVend&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevoVendedor</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:altaVend&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevoVendedor</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:movilVend&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevoVendedor</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:mailVend&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevoVendedor</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:delegacionVend&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevoVendedor</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span>
+
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error altaVendedor en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.listadoVendedores">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.listadoVendedores">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listadoVendedores</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param self: None</span>
+<span class="sd">        :type self: None</span>
+<span class="sd">        :return: listado de vendedores</span>
+<span class="sd">        :rtype: bytearray</span>
+
+<span class="sd">        Query que obtiene un listado de vendedores en la base de datos con los distintos filtrados</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listado</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1">#numRows = var.rowsVendedores</span>
+
+            <span class="c1">#offset = (numRows - 10) if numRows &gt;= 10 else 0</span>
+
+            <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">historicoVend</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+                <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT idVendedo, nombreVendedor, movilVendedor, delegacionVendedor &quot;</span>
+                             <span class="s2">&quot;FROM vendedores ORDER BY idVendedo ASC&quot;</span><span class="p">)</span>
+                <span class="c1">#query.prepare(&quot;SELECT idVendedo, nombreVendedor, movilVendedor, delegacionVendedor &quot;</span>
+                <span class="c1">#              &quot;FROM vendedores ORDER BY idVendedo ASC LIMIT 10 OFFSET :offset&quot;)</span>
+                <span class="c1">#query.bindValue(&quot;:offeset&quot;, offset)</span>
+                <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                    <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                        <span class="n">fila</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+                        <span class="n">listado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+                <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                    <span class="s2">&quot;SELECT idVendedo, nombreVendedor, movilVendedor, delegacionVendedor &quot;</span>
+                    <span class="s2">&quot;FROM vendedores WHERE bajaVendedor IS NULL or bajaVendedor = &#39;&#39; ORDER BY idVendedo ASC&quot;</span><span class="p">)</span>
+                <span class="c1">#query.prepare(</span>
+                <span class="c1">#    &quot;SELECT idVendedo, nombreVendedor, movilVendedor, delegacionVendedor &quot;</span>
+                <span class="c1">#    &quot;FROM vendedores WHERE bajaVendedor IS NULL or bajaVendedor = &#39;&#39; ORDER BY idVendedo ASC LIMIT 10 OFFSET :offset&quot;)</span>
+                <span class="c1">#query.bindValue(&quot;:offeset&quot;, offset)</span>
+                <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                    <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                        <span class="n">fila</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+                        <span class="n">listado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+
+            <span class="c1">#if not listado:</span>
+            <span class="c1">#   var.rowsVendedores -= 10</span>
+
+            <span class="k">return</span> <span class="n">listado</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error al listar vendedores&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.listadoVendedoresNormal">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.listadoVendedoresNormal">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listadoVendedoresNormal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param self: None</span>
+<span class="sd">        :type self: None</span>
+<span class="sd">        :return: listado de vendedores</span>
+<span class="sd">        :rtype: bytearray</span>
+
+<span class="sd">        Query que obtiene un listado de vendedores en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listado</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                <span class="s2">&quot;SELECT idVendedo, nombreVendedor, movilVendedor, delegacionVendedor, dniVendedor, altaVendedor, bajaVendedor, mailVendedor &quot;</span>
+                <span class="s2">&quot;FROM vendedores ORDER BY idVendedo ASC&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="n">fila</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+                    <span class="n">listado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">listado</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error al listar vendedores&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.datosOneVendedor">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.datosOneVendedor">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">datosOneVendedor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idVendedor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param self: None</span>
+<span class="sd">        :type self: None</span>
+<span class="sd">        :param idVendedor: id del vendedor</span>
+<span class="sd">        :type idVendedor: str</span>
+<span class="sd">        :return: datos del vendedor</span>
+<span class="sd">        :rtype: bytearray</span>
+
+<span class="sd">        Query que obtiene los datos de un vendedor en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">registro</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM VENDEDORES WHERE idVendedo = :idVendedo&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:idVendedo&quot;</span><span class="p">,</span> <span class="n">idVendedor</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+                        <span class="n">registro</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">registro</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error datosOneVendedor en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.datosVendedoresByTelefono">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.datosVendedoresByTelefono">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">datosVendedoresByTelefono</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">telefono</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param self: None</span>
+<span class="sd">        :type self: None</span>
+<span class="sd">        :param telefono: teléfono del vendedor</span>
+<span class="sd">        :type telefono: str</span>
+<span class="sd">        :return: datos del vendedor</span>
+<span class="sd">        :rtype: bytearray</span>
+
+<span class="sd">        Query que obtiene los datos de un vendedor en la base de datos a partir de un teléfono.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">registro</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT idVendedo, nombreVendedor, movilVendedor, delegacionVendedor FROM VENDEDORES WHERE movilVendedor = :movilVendedor&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:movilVendedor&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">telefono</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+                        <span class="n">registro</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">registro</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error datosOneVendedor en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.modifVendedor">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.modifVendedor">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">modifVendedor</span><span class="p">(</span><span class="n">registro</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param registro: datos del vendedor</span>
+<span class="sd">        :type registro: list</span>
+<span class="sd">        :return: operacion exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que modifica los datos de un vendedor en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                <span class="s2">&quot;UPDATE vendedores SET nombreVendedor = :nombreVendedor, altaVendedor = :altaVendedor, movilVendedor = :movilVendedor, &quot;</span>
+                <span class="s2">&quot; mailVendedor = :mailVendedor, delegacionVendedor = :delegacionVendedor, bajaVendedor = :bajaVendedor WHERE idVendedo = :idVendedo&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:idVendedo&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:nombreVendedor&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:altaVendedor&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:movilVendedor&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:mailVendedor&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:delegacionVendedor&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:bajaVendedor&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">6</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error modificar cliente&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Conexion.bajaVendedor">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.bajaVendedor">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bajaVendedor</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">fecha</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param id: id del vendedor</span>
+<span class="sd">        :type id: str</span>
+<span class="sd">        :param fecha: fecha de baja del vendedor</span>
+<span class="sd">        :type fecha: date</span>
+<span class="sd">        :return: operacion exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que da de baja a un vendedor en la base de datos.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;UPDATE vendedores SET bajaVendedor = :bajaVendedor WHERE idVendedo = :idVendedo&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:idVendedo&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:bajaVendedor&quot;</span><span class="p">,</span> <span class="n">fecha</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error bajaVendedor en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    ZONA FACTURACIÓN</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="Conexion.guardarFactura">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.guardarFactura">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">guardarFactura</span><span class="p">(</span><span class="n">nuevaFactura</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param nuevaFactura: datos de la factura a grabar</span>
+<span class="sd">        :type nuevaFactura: list</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: booleano</span>
+
+<span class="sd">        Query que inserta una nueva factura en la base de datos</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                <span class="s2">&quot;INSERT INTO FACTURAS (fechafac, dnifac) &quot;</span>
+                <span class="s2">&quot;VALUES (:fechafac, :dnifac)&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:fechafac&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevaFactura</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:dnifac&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevaFactura</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error altaFactura en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.listadoFacturas">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.listadoFacturas">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listadoFacturas</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: listado de las facturas</span>
+<span class="sd">        :rtype: list</span>
+
+<span class="sd">        Query que obtiene un listado de todas las facturas en la base de datos</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listado</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM facturas ORDER BY id ASC&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="n">fila</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+                    <span class="n">listado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">listado</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error listadoFacturas en conexion&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.deleteFactura">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.deleteFactura">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deleteFactura</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param id: id de la factura a borrar</span>
+<span class="sd">        :type id: int</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: boolean</span>
+
+<span class="sd">        Query que borra una factura de la base de datos a partir de la id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;Delete from facturas where id = :id&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:id&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error al eliminar la factura&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.getLastIdFactura">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.getLastIdFactura">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getLastIdFactura</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: id de la última factura guardada</span>
+<span class="sd">        :rtype: int</span>
+
+<span class="sd">        Query que obtiene el id de la última factura guardada en la base de datos</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;select id from facturas order by id desc&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span> <span class="ow">and</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">lastError</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exec</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error al guardar la factura&quot;</span><span class="p">,</span> <span class="n">exec</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.grabarVenta">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.grabarVenta">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">grabarVenta</span><span class="p">(</span><span class="n">nuevaVenta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param nuevaVenta: datos de la venta a grabar</span>
+<span class="sd">        :type nuevaVenta: list</span>
+<span class="sd">        :return: operación exitosa</span>
+<span class="sd">        :rtype: boolean</span>
+
+<span class="sd">        Query que inserta una nueva venta en la base de datos</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;INSERT INTO VENTAS (facventa, codprop, agente) &quot;</span>
+                <span class="s2">&quot;VALUES (:factura, :propiedad, :vendedor)&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:factura&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevaVenta</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:propiedad&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevaVenta</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:vendedor&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuevaVenta</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exec</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error al guardar la venta&quot;</span><span class="p">,</span> <span class="n">exec</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.cargarTablaVentas">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.cargarTablaVentas">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cargarTablaVentas</span><span class="p">(</span><span class="n">idFactura</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param idFactura: id de la factura</span>
+<span class="sd">        :type idFactura: int</span>
+<span class="sd">        :return: lista de ventas de la factura</span>
+<span class="sd">        :rtype: list</span>
+
+<span class="sd">        Query que recupera la información de todas las ventas cuya factura es</span>
+<span class="sd">        la identificada por el id pasado por parámetro</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listado</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                <span class="s2">&quot;select v.idventa, v.codprop, p.dirprop, p.muniprop, p.tipoprop, p.prevenprop &quot;</span>
+                <span class="s2">&quot;from ventas as v inner join propiedades as p on v.codprop = p.codigo &quot;</span>
+                <span class="s2">&quot;where v.facventa = :idFactura&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:idFactura&quot;</span><span class="p">,</span> <span class="n">idFactura</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+                <span class="k">while</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                    <span class="n">fila</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())]</span>
+                    <span class="n">listado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">listado</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error al recuperar el listado de ventas&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.obtenerTotalFactura">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.obtenerTotalFactura">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">obtenerTotalFactura</span><span class="p">(</span><span class="n">idFactura</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param idFactura: id de la factura</span>
+<span class="sd">        :type idFactura: int</span>
+<span class="sd">        :return: total de la factura</span>
+<span class="sd">        :rtype: float</span>
+
+<span class="sd">        Query que recupera el total de la factura identificada por el id pasado por parámetro</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+                <span class="s2">&quot;select sum(p.prevenprop) &quot;</span>
+                <span class="s2">&quot;from ventas as v inner join propiedades as p on v.codprop = p.codigo &quot;</span>
+                <span class="s2">&quot;where v.facventa = :idFactura&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:idFactura&quot;</span><span class="p">,</span> <span class="n">idFactura</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span> <span class="ow">and</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error al recuperar el total de la factura&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.checkFacturaTieneVenta">
+<a class="viewcode-back" href="../src/conexion.html#conexion.Conexion.checkFacturaTieneVenta">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">checkFacturaTieneVenta</span><span class="p">(</span><span class="n">idFactura</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param idFactura: id de la factura</span>
+<span class="sd">        :type idFactura: int</span>
+<span class="sd">        :return: comprobar si tiene o no ventas</span>
+<span class="sd">        :rtype: boolean</span>
+
+<span class="sd">        Query que comprueba si una factura tiene ventas asociadas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">QtSql</span><span class="o">.</span><span class="n">QSqlQuery</span><span class="p">()</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="s2">&quot;select count(*) from ventas where facventa = :idFactura&quot;</span><span class="p">)</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">bindValue</span><span class="p">(</span><span class="s2">&quot;:idFactura&quot;</span><span class="p">,</span> <span class="n">idFactura</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span> <span class="ow">and</span> <span class="n">query</span><span class="o">.</span><span class="n">next</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error al comprobar si la factura tiene ventas&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">LAMAVILARINO</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navegación</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Código de módulo</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Aman Lama Vilarino.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,6 +1,8 @@
 from ctypes.wintypes import VARIANT_BOOL
 
+import alquileres
 import clientes
+import eventos
 import facturas
 import styles
 import vendedores
@@ -19,8 +21,8 @@ class Main(QtWidgets.QMainWindow):
         var.dlgabrir = FileDialogAbrir()
         var.dlggestion = dlgGestionProp()
         var.dlgAbout = dlgAbout()
-        conexion.Conexion.db_conexion(self)
-        listado = conexion.Conexion.listaTodosMunicipios(self)
+        conexion.Conexion.db_conexion()
+        listado = conexion.Conexion.listaTodosMunicipios()
         var.dlgLocalidad = dlgBuscarProp(listado)
         self.setStyleSheet(styles.load_stylesheet())
         var.historicoCli = 0
@@ -29,23 +31,34 @@ class Main(QtWidgets.QMainWindow):
         var.lupaState = 0
         var.rowsClientes = 15
         var.rowsPropiedades = 11
+        var.rowsVendedores = 10
         #conexionserver.ConexionServer.crear_conexion(self)
-        propiedades.Propiedades.manageCheckbox(self)
-        propiedades.Propiedades.manageRadioButtons(self)
+        propiedades.Propiedades.manageCheckbox()
+        propiedades.Propiedades.manageRadioButtons()
+        facturas.Facturas.checkDatosFacturas()
 
         '''
         EVENTOS DE TABLAS
         '''
 
-        clientes.Clientes.cargaTablaClientes(self)
-        eventos.Eventos.resizeTablaClientes(self)
-        eventos.Eventos.resizeTablaPropiedades(self)
-        eventos.Eventos.resizeTablaVendedores(self)
+        clientes.Clientes.cargaTablaClientes()
+        propiedades.Propiedades.cargarTablaPropiedades(0)
+        vendedores.Vendedores.cargarTablaVendedores()
+        facturas.Facturas.cargarTablaFacturas()
+        alquileres.Alquileres.cargarTablaAlquileres()
+        eventos.Eventos.resizeTablaClientes()
+        eventos.Eventos.resizeTablaPropiedades()
+        eventos.Eventos.resizeTablaVendedores()
+        eventos.Eventos.resizeTablaFacturas()
+        eventos.Eventos.resizeTablaMensualidades()
+        eventos.Eventos.resizeTablaVentas()
+        eventos.Eventos.resizeTablaContratos()
         var.ui.tablaClientes.clicked.connect(clientes.Clientes.cargaOneCliente)
         var.ui.tablaPropiedades.clicked.connect(propiedades.Propiedades.cargaOnePropiedad)
         var.ui.tablaVendedores.clicked.connect(vendedores.Vendedores.cargarOneVendedor)
-        propiedades.Propiedades.cargarTablaPropiedades(self, 0)
-        vendedores.Vendedores.cargarTablaVendedores(self)
+        var.ui.tablaFacturas.clicked.connect(facturas.Facturas.cargaOneFactura)
+        var.ui.tablaContratos.clicked.connect(alquileres.Alquileres.cargarOneContrato)
+        var.ui.tablaContratos.clicked.connect(alquileres.Alquileres.cargarTablaMensualidades)
 
         '''
         EVENTOS DEL MENUBAR
@@ -61,6 +74,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionExportar_Vendedores_JSON.triggered.connect(eventos.Eventos.exportJSONvendedores)
         var.ui.actionListado_Clientes.triggered.connect(informes.Informes.reportClientes)
         var.ui.actionListado_Propiedades.triggered.connect(eventos.Eventos.abrirBuscarLocalidad)
+        var.ui.actionListado_Vendedores.triggered.connect(eventos.Eventos.checkFactura)
 
         '''
         EVENTOS DE BOTONES
@@ -76,11 +90,11 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnGrabarPro.clicked.connect(propiedades.Propiedades.altaPropiedad)
         var.ui.btnModificarPro.clicked.connect(propiedades.Propiedades.modifPropiedad)
         var.ui.btnEliminarPro.clicked.connect(propiedades.Propiedades.bajaPropiedad)
-        var.ui.btnFiltrar.clicked.connect(lambda: clientes.Clientes.cargaClienteDni(self))
-        var.ui.btnAnteriorCli.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(self,0, "Clientes"))
-        var.ui.btnSiguienteCli.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(self,1, "Clientes"))
-        var.ui.btnAnteriorPro.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(self,0, "Propiedades"))
-        var.ui.btnSiguientePro.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(self,1, "Propiedades"))
+        var.ui.btnFiltrar.clicked.connect(lambda: clientes.Clientes.cargaClienteDni())
+        var.ui.btnAnteriorCli.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(0, "Clientes"))
+        var.ui.btnSiguienteCli.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(1, "Clientes"))
+        var.ui.btnAnteriorPro.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(0, "Propiedades"))
+        var.ui.btnSiguientePro.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(1, "Propiedades"))
         var.ui.btnGrabarVend.clicked.connect(vendedores.Vendedores.altaVendedor)
         var.ui.btnModificarVend.clicked.connect(vendedores.Vendedores.modificarVendedor)
         var.ui.btnBajaVend.clicked.connect(vendedores.Vendedores.bajaVendedor)
@@ -88,7 +102,14 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnBajaCalVend.clicked.connect(lambda: eventos.Eventos.abrirCalendar(4))
         var.ui.btnFiltrarVend.clicked.connect(vendedores.Vendedores.filtrarPorTelefono)
         var.ui.btnCalendarVentas.clicked.connect(lambda: eventos.Eventos.abrirCalendar(6))
-        var.ui.btnGrabarVenta.clicked.connect(lambda: facturas.Facturas.altaVenta(self))
+        var.ui.btnFechaInicioMensualidad.clicked.connect(lambda: eventos.Eventos.abrirCalendar(7))
+        var.ui.btnFechaFinMensualidad.clicked.connect(lambda: eventos.Eventos.abrirCalendar(8))
+        var.ui.btnGrabarFactura.clicked.connect(facturas.Facturas.altaFactura)
+        var.ui.btnGrabarVenta.clicked.connect(facturas.Facturas.altaVenta)
+        var.ui.btnInformeVentas.clicked.connect(eventos.Eventos.checkFactura)
+        var.ui.btnAltaContrato.clicked.connect(alquileres.Alquileres.altaContrato)
+        #var.ui.btnAnteriorVend.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(0, "Vendedores"))
+        #var.ui.btnSiguienteVend.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(1, "Vendedores"))
 
 
         '''
@@ -99,21 +120,18 @@ class Main(QtWidgets.QMainWindow):
         var.ui.txtEmailcli.editingFinished.connect(lambda : clientes.Clientes.checkEmail(var.ui.txtEmailcli.text()))
         var.ui.txtMovilcli.editingFinished.connect(lambda : clientes.Clientes.checkTelefono(var.ui.txtMovilcli.text()))
         var.ui.txtMovilPro.editingFinished.connect(lambda : propiedades.Propiedades.checkTelefono(var.ui.txtMovilPro.text()))
-        var.ui.txtPrecioAlquilerPro.textChanged.connect(lambda : propiedades.Propiedades.manageCheckbox(self))
-        var.ui.txtPrecioVentaPro.textChanged.connect(lambda : propiedades.Propiedades.manageCheckbox(self))
-        var.ui.txtFechabajaPro.textChanged.connect(lambda : propiedades.Propiedades.manageRadioButtons(self))
-        var.ui.txtDniVend.editingFinished.connect(lambda: clientes.Clientes.checkDNI(var.ui.txtDniVend.text()))
-        var.ui.txtEmailVend.editingFinished.connect(lambda: clientes.Clientes.checkEmail(var.ui.txtEmailVend.text()))
-        var.ui.txtTelefonoVend.editingFinished.connect(lambda: clientes.Clientes.checkTelefono(var.ui.txtTelefonoVend.text()))
+        var.ui.txtPrecioAlquilerPro.textChanged.connect(lambda : propiedades.Propiedades.manageCheckbox())
+        var.ui.txtPrecioVentaPro.textChanged.connect(lambda : propiedades.Propiedades.manageCheckbox())
+        var.ui.txtFechabajaPro.textChanged.connect(lambda : propiedades.Propiedades.manageRadioButtons())
 
         '''
         EVENTOS COMBOBOX
         '''
 
-        eventos.Eventos.cargarProv(self)
+        eventos.Eventos.cargarProv()
         var.ui.cmbProvinciacli.currentIndexChanged.connect(eventos.Eventos.cargarMunicipiosCli)
         var.ui.cmbProvinciaPro.currentIndexChanged.connect(eventos.Eventos.cargarMunicipiosPro)
-        eventos.Eventos.cargarTipoPropiedad(self)
+        eventos.Eventos.cargarTipoPropiedad()
 
         '''
         EVENTOS TOOLBAR
@@ -131,6 +149,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.chkHistoriacli.stateChanged.connect(clientes.Clientes.historicoCli)
         var.ui.chkHistoricoPro.stateChanged.connect(propiedades.Propiedades.historicoProp)
         var.ui.chkHistoricoVend.stateChanged.connect(vendedores.Vendedores.historicoVend)
+        var.ui.chkHistoricoMensualidades.stateChanged.connect(alquileres.Alquileres.cargarTablaMensualidades)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

@@ -1,5 +1,6 @@
 import conexion
 import eventos
+import facturas
 import var
 import vendedores
 from datetime import datetime
@@ -25,7 +26,6 @@ class Vendedores:
                 eventos.Eventos.crearMensajeError("Dni mal", "Escriba un DNI válido")
                 return False
 
-        # Validación de correo
         if var.ui.txtEmailVend.text() != "":
             if not eventos.Eventos.validarMail(var.ui.txtEmailVend.text()):  # Corregido aquí
                 eventos.Eventos.crearMensajeError("Email mal", "Escriba un email válido")
@@ -34,9 +34,9 @@ class Vendedores:
         return True
 
     @staticmethod
-    def cargarTablaVendedores(self):
+    def cargarTablaVendedores():
         try:
-            listado = conexion.Conexion.listadoVendedores(self)
+            listado = conexion.Conexion.listadoVendedores()
             if listado is None:
                 listado = []
             index = 0
@@ -52,11 +52,21 @@ class Vendedores:
                 var.ui.tablaVendedores.item(index, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                 index += 1
 
+            if var.rowsVendedores == 10:
+                var.ui.btnAnteriorVend.setEnabled(False)
+            else:
+                var.ui.btnAnteriorVend.setEnabled(True)
+
+            if len(listado) < 10:
+                var.ui.btnSiguienteVend.setEnabled(False)
+            else:
+                var.ui.btnSiguienteVend.setEnabled(True)
+
         except Exception as e:
             print("error cargaTablaClientes", e)
 
     @staticmethod
-    def altaVendedor(self):
+    def altaVendedor():
         try:
             if vendedores.Vendedores.comprobarCamposObligatorios():
                 nuevoVendedor = [var.ui.txtDniVend.text(), var.ui.txtNombreVend.text(), var.ui.txtAltaVend.text(),
@@ -64,17 +74,17 @@ class Vendedores:
                 if conexion.Conexion.altaVendedor(nuevoVendedor):
                     eventos.Eventos.crearMensajeInfo("Operacion exitosa", "El vendedor se ha dado de alta correctamente")
                 else:
-                    eventos.Eventos.crearMensajeError("Error", "Error al dar de alta al vendedor, comprueba si ya existe uno con tu mismo dni")
-                Vendedores.cargarTablaVendedores(self)
+                    eventos.Eventos.crearMensajeError("Error", "Error al dar de alta al vendedor, comprueba si ya existe uno con tu mismo dni o teléfono")
+                Vendedores.cargarTablaVendedores()
         except Exception as e:
             print(e)
 
     @staticmethod
-    def cargarOneVendedor(self):
+    def cargarOneVendedor():
         try:
             fila = var.ui.tablaVendedores.selectedItems()
             datos = [dato.text() for dato in fila]
-            registro = conexion.Conexion.datosOneVendedor(self, str(datos[0]))
+            registro = conexion.Conexion.datosOneVendedor(str(datos[0]))
             listado = [var.ui.txtIdVend, var.ui.txtDniVend, var.ui.txtNombreVend, var.ui.txtAltaVend,
                        var.ui.txtBajaVend, var.ui.txtTelefonoVend, var.ui.txtEmailVend,
                              var.ui.cmbDelegacionVend]
@@ -83,11 +93,15 @@ class Vendedores:
                     listado[i].setCurrentText(str(registro[i]))
                 else:
                     listado[i].setText(registro[i])
+            facturas.Facturas.cargaVendedorVenta(var.ui.txtIdVend.text())
+
+            var.ui.txtVendedorContrato.setText(var.ui.txtIdVend.text())
+
         except Exception as e:
             print("error cargarOneVendedor en vendedores", e)
 
     @staticmethod
-    def modificarVendedor(self):
+    def modificarVendedor():
         try:
             if vendedores.Vendedores.comprobarCamposObligatorios():
                 datosModificar = [var.ui.txtIdVend.text(), var.ui.txtNombreVend.text(), var.ui.txtAltaVend.text(),
@@ -96,15 +110,19 @@ class Vendedores:
                 if conexion.Conexion.modifVendedor(datosModificar):
                     eventos.Eventos.crearMensajeInfo("Operacion exitosa", "El vendedor se ha modificado correctamente")
                 else:
-                    eventos.Eventos.crearMensajeError("Error", "Error al modificado al vendedor, comprueba si ya existe uno con tu mismo dni")
-                Vendedores.cargarTablaVendedores(self)
-            Vendedores.cargarTablaVendedores(self)
+                    eventos.Eventos.crearMensajeError("Error", "Error al modificado al vendedor, comprueba si ya existe uno con tu mismo dni o teléfono")
+                Vendedores.cargarTablaVendedores()
+            Vendedores.cargarTablaVendedores()
+            facturas.Facturas.limpiarFactura()
         except Exception as e:
             print(e)
 
     @staticmethod
-    def bajaVendedor(self):
+    def bajaVendedor():
         try:
+            if var.ui.txtDniVend.text() == '':
+                eventos.Eventos.crearMensajeError("Error", "Falta escribir el DNI del vendendor")
+                return
             if var.ui.txtBajaVend.text() != '':
                 eventos.Eventos.crearMensajeError("Error", "Error el vendedor ya está de baja")
                 return
@@ -115,18 +133,19 @@ class Vendedores:
                 eventos.Eventos.crearMensajeInfo("Bien", "Vendedor dato de baja correctamente")
             else:
                 eventos.Eventos.crearMensajeError("Mal", "Error al dar de baja")
-            Vendedores.cargarTablaVendedores(self)
+            Vendedores.cargarTablaVendedores()
+            facturas.Facturas.limpiarFactura()
         except Exception as e:
             print("error bajaCliente en clientes", e)
 
     @staticmethod
-    def filtrarPorTelefono(self):
+    def filtrarPorTelefono():
         try:
             if var.ui.txtTelefonoVend.text() == "":
                 eventos.Eventos.crearMensajeError("Faltan datos", "Debes ingresar un telefono valido")
                 return
 
-            listado = conexion.Conexion.datosVendedoresByTelefono(self, var.ui.txtTelefonoVend.text())
+            listado = conexion.Conexion.datosVendedoresByTelefono(var.ui.txtTelefonoVend.text())
             if len(listado) == 0:
                 eventos.Eventos.crearMensajeError("Error", "No se han encontrado datos con ese numero de telefono")
                 return
@@ -145,12 +164,12 @@ class Vendedores:
             print("error cargaTablaClientes", e)
 
     @staticmethod
-    def historicoVend(self):
+    def historicoVend():
         try:
             if var.ui.chkHistoricoVend.isChecked():
                 var.historicoVend = 1
             else:
                 var.historicoVend = 0
-            Vendedores.cargarTablaVendedores(self)
+            Vendedores.cargarTablaVendedores()
         except Exception as e:
             print("checkbox historico error ", e)

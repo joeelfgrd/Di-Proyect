@@ -12,12 +12,14 @@ import re
 import clientes
 import conexion
 import eventos
+import informes
 import propiedades
 import var
 import locale
 import zipfile
 import shutil
 import conexionserver
+import vendedores
 
 # Establecer configuración regional
 
@@ -50,10 +52,11 @@ class Eventos():
         mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
         mbox.exec()
 
-    def mensajeSalir(self=None):
+    @staticmethod
+    def mensajeSalir():
         mbox = QtWidgets.QMessageBox()
         mbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
-        mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+        mbox.setWindowIcon(QtGui.QIcon('./img/icono.ico'))
         mbox.setWindowTitle('Salir')
         mbox.setText('Desea usted Salir?')
         mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
@@ -66,28 +69,30 @@ class Eventos():
         else:
             mbox.hide()
 
-    def cargarProv(self):
+    @staticmethod
+    def cargarProv():
         var.ui.cmbProvinciacli.clear()
-        listado = conexion.Conexion.listaProv(self)
-        #listado = conexionserver.ConexionServer.listaProv(self)
+        listado = conexion.Conexion.listaProv()
+        #listado = conexionserver.ConexionServer.listaProv()
         var.ui.cmbProvinciacli.addItems(listado)
         var.ui.cmbProvinciaPro.addItems(listado)
         var.ui.cmbDelegacionVend.addItems(listado)
 
-    def cargarMunicipiosCli(self):
+    @staticmethod
+    def cargarMunicipiosCli():
         var.ui.cmbMunicipiocli.clear()
         provincia = var.ui.cmbProvinciacli.currentText()
         listado = conexion.Conexion.listaMunicipios(provincia)
         #listado = conexionserver.ConexionServer.listaMuniProv(provincia)
         var.ui.cmbMunicipiocli.addItems(listado)
 
-    def cargarMunicipiosPro(self):
+    @staticmethod
+    def cargarMunicipiosPro():
         var.ui.cmbMunicipioPro.clear()
         provincia = var.ui.cmbProvinciaPro.currentText()
         listado = conexion.Conexion.listaMunicipios(provincia)
         #listado = conexionserver.ConexionServer.listaMuniProv(provincia)
         var.ui.cmbMunicipioPro.addItems(listado)
-
 
     def validarDNIcli(dni):
         try:
@@ -129,7 +134,7 @@ class Eventos():
             elif var.btn == 1:
                 var.ui.txtBajacli.setText(str(data))
             elif var.btn == 2:
-                var.ui.txtPublicacionPro .setText(str(data))
+                var.ui.txtPublicacionPro.setText(str(data))
             elif var.btn == 3:
                 var.ui.txtFechabajaPro.setText(str(data))
             elif var.btn == 4:
@@ -138,20 +143,22 @@ class Eventos():
                 var.ui.txtAltaVend.setText(str(data))
             elif var.btn == 6:
                 var.ui.txtFechaFactura.setText(str(data))
+            elif var.btn == 7:
+                var.ui.txtFechaInicioMensualidad.setText(str(data))
+            elif var.btn == 8:
+                var.ui.txtFechaFinMensualidad.setText(str(data))
             time.sleep(0.125)
             var.uicalendar.hide()
             return data
         except Exception as error:
             print("error en cargar fecha: ", error)
 
-
     def validarMail(mail):
-        try:
-            mail = mail.lower()
-            regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-            return bool(re.match(regex, mail))
-        except Exception as e:
-            print("Error al validar el email:", e)
+        mail = mail.lower()
+        regex = r'^([a-z0-9]+[\._])*[a-z0-9]+[@](\w+[.])*\w+$'
+        if re.match(regex, mail) or mail == "":
+            return True
+        else:
             return False
 
     def validarTelefono(telefono):
@@ -165,8 +172,11 @@ class Eventos():
             print("error en validar telefono: ", error)
             return False
 
-
-    def resizeTablaClientes(self):
+    @staticmethod
+    def resizeTablaClientes():
+        """
+        Función que se encarga de redimensionar las columnas de la tabla de clientes
+        """
         try:
             header = var.ui.tablaClientes.horizontalHeader()
             for i in range(header.count()):
@@ -181,7 +191,11 @@ class Eventos():
         except Exception as e:
             print("error en resize tabla clientes: ", e)
 
-    def resizeTablaPropiedades(self):
+    @staticmethod
+    def resizeTablaPropiedades():
+        """
+        Función que se encarga de redimensionar las columnas de la tabla de propiedades
+        """
         try:
             header = var.ui.tablaPropiedades.horizontalHeader()
             for i in range(header.count()):
@@ -196,7 +210,11 @@ class Eventos():
         except Exception as e:
             print("error en resize tabla clientes: ", e)
 
-    def resizeTablaVendedores(self):
+    @staticmethod
+    def resizeTablaVendedores():
+        """
+        Función que se encarga de redimensionar las columnas de la tabla de vendedores
+        """
         try:
             header = var.ui.tablaVendedores.horizontalHeader()
             for i in range(header.count()):
@@ -208,7 +226,84 @@ class Eventos():
         except Exception as e:
             print("error en resize tabla clientes: ", e)
 
-    def crearBackup(self):
+    @staticmethod
+    def resizeTablaFacturas():
+        """
+        Función que se encarga de redimensionar las columnas de la tabla de facturas
+        """
+        try:
+            header = var.ui.tablaFacturas.horizontalHeader()
+            for i in range(header.count()):
+                if i not in (0, 3):
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+                header_item = var.ui.tablaFacturas.horizontalHeaderItem(i)
+                font = header_item.font()
+                font.setBold(True)
+                header_item.setFont(font)
+        except Exception as e:
+            print("error en resize tabla clientes: ", e)
+
+    @staticmethod
+    def resizeTablaVentas():
+        """
+        Función que se encarga de redimensionar las columnas de la tabla de ventas
+        """
+        try:
+            header = var.ui.tablaVentas.horizontalHeader()
+            for i in range(header.count()):
+                if i in (2,3,4):
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+                header_item = var.ui.tablaVentas.horizontalHeaderItem(i)
+                font = header_item.font()
+                font.setBold(True)
+                header_item.setFont(font)
+        except Exception as e:
+            print("error en resize tabla clientes: ", e)
+
+    @staticmethod
+    def resizeTablaContratos():
+        """
+        Función que se encarga de redimensionar las columnas de la tabla de contratos
+        """
+        try:
+            header = var.ui.tablaContratos.horizontalHeader()
+            for i in range(header.count()):
+                if i == 1:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+                header_item = var.ui.tablaContratos.horizontalHeaderItem(i)
+                font = header_item.font()
+                font.setBold(True)
+                header_item.setFont(font)
+        except Exception as e:
+            print("error en resize tabla clientes: ", e)
+
+    @staticmethod
+    def resizeTablaMensualidades():
+        """
+        Función que se encarga de redimensionar las columnas de la tabla de mensualidades
+        """
+        try:
+            header = var.ui.tablaMensualidades.horizontalHeader()
+            for i in range(header.count()):
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+                header_item = var.ui.tablaMensualidades.horizontalHeaderItem(i)
+                font = header_item.font()
+                font.setBold(True)
+                header_item.setFont(font)
+        except Exception as e:
+            print("error en resize tabla clientes: ", e)
+
+    @staticmethod
+    def crearBackup():
         try:
             fecha = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
             copia = str(fecha) + '_backup.zip'
@@ -220,7 +315,7 @@ class Eventos():
                 shutil.move(fichero, directorio)
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                mbox.setWindowIcon(QtGui.QIcon('./img/icono.ico'))
                 mbox.setWindowTitle('Copia Seguridad')
                 mbox.setText('Copia Seguridad Creada')
                 mbox.setStandardButtons(
@@ -232,7 +327,8 @@ class Eventos():
         except Exception as error:
             print("error en crear backup: ", error)
 
-    def restaurarBackup(self):
+    @staticmethod
+    def restaurarBackup():
         try:
             filename = var.dlgabrir.getOpenFileName(None, "Restaurar Copia Seguridad", '', '*.zip;;All Files(*)')
             file = filename[0]
@@ -242,7 +338,7 @@ class Eventos():
                 bbdd.close()
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                mbox.setWindowIcon(QtGui.QIcon('./img/icono.ico'))
                 mbox.setWindowTitle('Copia Seguridad')
                 mbox.setText('Copia Seguridad Restaurada')
                 mbox.setStandardButtons(
@@ -250,26 +346,32 @@ class Eventos():
                 mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
                 mbox.exec()
-                conexion.Conexion.db_conexion(self)
-                eventos.Eventos.cargarProv(self)
-                clientes.Clientes.cargaTablaClientes(self)
+                conexion.Conexion.db_conexion()
+                eventos.Eventos.cargarProv()
+                clientes.Clientes.cargaTablaClientes()
         except Exception as error:
             print("error en restaurar backup: ", error)
 
-    def limpiarPanel(self):
+    @staticmethod
+    def limpiarPanel():
+
+        # BORRAR PANEL CLIENTES
+
         objetosPanelcli = [
             var.ui.txtDnicli, var.ui.txtAltacli, var.ui.txtApelcli, var.ui.txtNomcli, var.ui.txtEmailcli,
             var.ui.txtMovilcli, var.ui.txtDireccioncli, var.ui.cmbProvinciacli, var.ui.cmbMunicipiocli,
             var.ui.txtBajacli
         ]
 
-        objetosPanelvend = [var.ui.txtIdVend, var.ui.txtDniVend, var.ui.txtNombreVend, var.ui.txtAltaVend,
-                   var.ui.txtBajaVend, var.ui.txtTelefonoVend, var.ui.txtEmailVend,
-                   var.ui.cmbDelegacionVend]
-
         for i, dato in enumerate(objetosPanelcli):
             if i not in (7, 8):
                 dato.setText("")
+
+        # BORRAR PANEL VENDEDORES
+
+        objetosPanelvend = [var.ui.txtIdVend, var.ui.txtDniVend, var.ui.txtNombreVend, var.ui.txtAltaVend,
+                            var.ui.txtBajaVend, var.ui.txtTelefonoVend, var.ui.txtEmailVend,
+                            var.ui.cmbDelegacionVend]
 
         for i, dato in enumerate(objetosPanelvend):
             if i not in (0, 7):
@@ -277,7 +379,10 @@ class Eventos():
             elif i == 0:
                 var.ui.txtIdVend.setText("")
 
-        eventos.Eventos.cargarProv(self)
+
+        # BORRAR PANEL PROPIEDADES
+
+        eventos.Eventos.cargarProv()
         var.ui.cmbMunicipiocli.clear()
 
         objetospanelprop = [var.ui.txtPublicacionPro, var.ui.txtFechabajaPro, var.ui.txtDireccionPro,
@@ -300,18 +405,41 @@ class Eventos():
             var.ui.cbxVentaPro.setChecked(False)
         if var.ui.cbxIntercambioPro.isChecked():
             var.ui.cbxIntercambioPro.setChecked(False)
-        eventos.Eventos.cargarProv(self)
-        eventos.Eventos.cargarTipoPropiedad(self)
-        clientes.Clientes.cargaTablaClientes(self)
-        propiedades.Propiedades.cargarTablaPropiedades(self, 0)
+        eventos.Eventos.cargarProv()
+        eventos.Eventos.cargarTipoPropiedad()
+        eventos.Eventos.cargarTipoPropiedad()
 
-    def abrirTipoProp(self):
+        # BORRAR PANEL VENTAS
+
+        objetosPanelVentas = [var.ui.lblNumFactura, var.ui.txtFechaFactura, var.ui.txtDniFactura,
+                              var.ui.txtApelClieVentas, var.ui.txtNomCliVentas, var.ui.lblCodigoPropVentas,
+                              var.ui.txtTipoPropVentas, var.ui.txtPrecioVentas, var.ui.txtDireccionPropVentas,
+                              var.ui.txtLocalidadVentas, var.ui.lblSubtotalVentas, var.ui.lblImpuestosVentas,
+                              var.ui.lblTotalVentas, var.ui.txtVendedorVentas]
+        
+        for i, dato in enumerate(objetosPanelVentas):
+            dato.setText("")
+
+        # BORRAR PANEL CONTRATOS
+
+        objetosPanelContratos = [var.ui.lblNumContrato, var.ui.txtPropiedadContrato, var.ui.txtDniClienteContrato,
+                                 var.ui.txtVendedorContrato, var.ui.txtFechaInicioMensualidad, var.ui.txtFechaFinMensualidad]
+
+        var.ui.chkHistoricoMensualidades.setChecked(False)
+        var.ui.chkHistoricoMensualidades.setEnabled(False)
+
+        for i, dato in enumerate(objetosPanelContratos):
+            dato.setText("")
+
+    @staticmethod
+    def abrirTipoProp():
         try:
             var.dlggestion.show()
         except Exception as error:
             print("error en abrir gestion propiedades ", error)
 
-    def cargarTipoPropiedad(self):
+    @staticmethod
+    def cargarTipoPropiedad():
         try:
             registro = conexion.Conexion.cargarTipoProp()
             if registro:
@@ -320,7 +448,8 @@ class Eventos():
         except Exception as error:
             print("Error en cargar tipo propiedad: ", error)
 
-    def exportCSVprop(self):
+    @staticmethod
+    def exportCSVprop():
         try:
             fecha = datetime.today()
             fecha = fecha.strftime('%Y_%m_%d_%H_%M_%S')
@@ -329,7 +458,7 @@ class Eventos():
             if fichero:
                 historicoGuardar = var.historicoProp
                 var.historicoProp = 1
-                registros = conexion.Conexion.listadoPropiedades(self)
+                registros = conexion.Conexion.listadoPropiedades()
                 var.historicoProp = historicoGuardar
                 with open(fichero, "w", newline="", encoding="utf-8") as csvfile:
                     writer = csv.writer(csvfile)
@@ -343,7 +472,7 @@ class Eventos():
             else:
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
-                mbox.setWindowIcon(QtGui.QIcon("img/icono.ico"))
+                mbox.setWindowIcon(QtGui.QIcon("./img/logo.ico"))
                 mbox.setWindowTitle('Error')
                 mbox.setText('Error en la exportacion de csv')
                 mbox.setStandardButtons(
@@ -354,7 +483,8 @@ class Eventos():
         except Exception as e:
             print(e)
 
-    def exportJSONprop(self):
+    @staticmethod
+    def exportJSONprop():
         try:
             fecha = datetime.today()
             fecha = fecha.strftime('%Y_%m_%d_%H_%M_%S')
@@ -366,7 +496,7 @@ class Eventos():
                         "Codigo Postal", "Observaciones", "Operacion", "Estado", "Propietario", "Movil"]
                 historicoGuardar = var.historicoProp
                 var.historicoProp = 1
-                registros = conexion.Conexion.listadoPropiedades(self)
+                registros = conexion.Conexion.listadoPropiedades()
                 var.historicoProp = historicoGuardar
                 listapropiedades = [dict(zip(keys, registro)) for registro in registros]
                 with open(fichero, "w", newline="", encoding="utf-8") as jsonfile:
@@ -375,7 +505,7 @@ class Eventos():
             else:
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
-                mbox.setWindowIcon(QtGui.QIcon("img/icono.ico"))
+                mbox.setWindowIcon(QtGui.QIcon("./img/logo.ico"))
                 mbox.setWindowTitle('Error')
                 mbox.setText('Error en la exportacion de csv')
                 mbox.setStandardButtons(
@@ -386,19 +516,22 @@ class Eventos():
         except Exception as e:
             print(e)
 
-    def abrirAbout(self):
+    @staticmethod
+    def abrirAbout():
         try:
             var.dlgAbout.show()
         except Exception as error:
             print("error en abrir about ", error)
 
-    def abrirBuscarLocalidad(self):
+    @staticmethod
+    def abrirBuscarLocalidad():
         try:
             var.dlgLocalidad.show()
         except Exception as error:
             print("error en abrir BuscarLocalidad ", error)
 
-    def movimientoPaginas(self, avance, tabla):
+    @staticmethod
+    def movimientoPaginas(avance, tabla):
         try:
             if tabla == "Clientes":
                 if avance == 0:
@@ -406,18 +539,26 @@ class Eventos():
                         var.rowsClientes -= 15
                 else:
                     var.rowsClientes += 15
-                clientes.Clientes.cargaTablaClientes(self)
+                clientes.Clientes.cargaTablaClientes()
             elif tabla == "Propiedades":
                 if avance == 0:
                     if var.rowsPropiedades >= 11:
                         var.rowsPropiedades -= 11
                 else:
                     var.rowsPropiedades += 11
-                propiedades.Propiedades.cargarTablaPropiedades(self, 0)
+                propiedades.Propiedades.cargarTablaPropiedades(0)
+            elif tabla == "Vendedores":
+                if avance == 0:
+                    if var.rowsVendedores >= 10:
+                        var.rowsVendedores -= 10
+                else:
+                    var.rowsVendedores += 10
+                vendedores.Vendedores.cargarTablaVendedores()
         except Exception as error:
             print("error en pagina clientes: ", error)
 
-    def exportJSONvendedores(self):
+    @staticmethod
+    def exportJSONvendedores():
         try:
             fecha = datetime.today()
             fecha = fecha.strftime('%Y_%m_%d_%H_%M_%S')
@@ -427,7 +568,7 @@ class Eventos():
                 keys = ["Id", "Nombre", "Movil", "Delegacion", "Dni", "Alta", "Baja", "Mail"]
                 historicoGuardar = var.historicoVend
                 var.historicoVend = 1
-                registros = conexion.Conexion.listadoDatosVendedores(self)
+                registros = conexion.Conexion.listadoVendedoresNormal()
                 var.historicoVend = historicoGuardar
                 listadoVendedores = [dict(zip(keys, registro)) for registro in registros]
                 with open(fichero, "w", newline="", encoding="utf-8") as jsonfile:
@@ -438,3 +579,27 @@ class Eventos():
                 eventos.Eventos.crearMensajeError("Error", "Error al exportar los datos")
         except Exception as e:
             print(e)
+
+    @staticmethod
+    def mostrarMensajeConfimarcion(mbox, titulo, mensaje):
+        mbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
+        mbox.setModal(True)
+        mbox.setWindowTitle(titulo)
+        mbox.setWindowIcon(QtGui.QIcon("./img/logo.svg"))
+        mbox.setText(mensaje)
+        mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+        mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
+        mbox.button(QtWidgets.QMessageBox.StandardButton.Yes).setText('Sí')
+        mbox.button(QtWidgets.QMessageBox.StandardButton.No).setText('No')
+        return mbox.exec()
+
+    @staticmethod
+    def checkFactura():
+        if var.ui.lblNumFactura.text() == "":
+            eventos.Eventos.crearMensajeError("Advertencia", "Debes seleccionar una factura para poder generar el informe de ventas")
+            return
+        elif var.ui.tablaVentas.rowCount() == 0:
+            eventos.Eventos.crearMensajeError("Advertencia", "La factura seleccionada no tiene ventas asociadas")
+            return
+        else:
+            informes.Informes.reportVentas(var.ui.lblNumFactura.text())

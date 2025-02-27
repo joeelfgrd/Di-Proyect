@@ -17,4 +17,5 @@ global dlgAbout
 global dlgLocalidad
 global rowsClientes
 global rowsPropiedades
+global rowsVendedores
 global report

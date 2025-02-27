@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="es" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>facturas module &#8212; documentación de LAMAVILARINO - v.0.0.1</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=8ee129b9"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=f85f4cfb"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-facturas">
+<span id="facturas-module"></span><h1>facturas module<a class="headerlink" href="#module-facturas" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="facturas.Facturas">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">facturas.</span></span><span class="sig-name descname"><span class="pre">Facturas</span></span><a class="reference internal" href="../_modules/facturas.html#Facturas"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.altaFactura">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">altaFactura</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.altaFactura"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.altaFactura" title="Link to this definition">¶</a></dt>
+<dd><p>Función que recoge los datos de la interfaz y los guarda en la base de datos como una nueva factura, así mismo valida si los campos son correctos y devuelve un mensaje
+conforme la operación se haya realizado correctamente o no</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.altaVenta">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">altaVenta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.altaVenta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.altaVenta" title="Link to this definition">¶</a></dt>
+<dd><p>Función que graba una venta en la base de datos, devolviendo un mensaje conforme si la operación se ha realizado correctamente o no</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="facturas.Facturas.botonesdel">
+<span class="sig-name descname"><span class="pre">botonesdel</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#facturas.Facturas.botonesdel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.cargaClienteVenta">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cargaClienteVenta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.cargaClienteVenta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.cargaClienteVenta" title="Link to this definition">¶</a></dt>
+<dd><p>Función que carga los datos de un cliente en la interfaz</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.cargaOneFactura">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cargaOneFactura</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.cargaOneFactura"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.cargaOneFactura" title="Link to this definition">¶</a></dt>
+<dd><p>Función que carga los datos de una factura en la interfaz</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.cargaPropiedadVenta">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cargaPropiedadVenta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">propiedad</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.cargaPropiedadVenta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.cargaPropiedadVenta" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>propiedad</strong> (<em>list</em>) – datos de una propiedad</p>
+</dd>
+</dl>
+<p>Función que carga los datos de una propiedad en la interfaz y comprueba si es posible venderla</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.cargaVendedorVenta">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cargaVendedorVenta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.cargaVendedorVenta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.cargaVendedorVenta" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – id del vendedor</p>
+</dd>
+</dl>
+<p>Función que carga los datos de un vendedor en la interfaz</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.cargarBottomFactura">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cargarBottomFactura</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idFactura</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.cargarBottomFactura"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.cargarBottomFactura" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idFactura</strong> (<em>int</em>) – id de la factura</p>
+</dd>
+</dl>
+<p>Función que calcula y carga los totales de una factura en la interfaz</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.cargarTablaFacturas">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cargarTablaFacturas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.cargarTablaFacturas"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.cargarTablaFacturas" title="Link to this definition">¶</a></dt>
+<dd><p>Función que carga la tabla de facturas con los datos de la base de datos, añade un botón para borrar cada factura</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.cargarTablaVentasFactura">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cargarTablaVentasFactura</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.cargarTablaVentasFactura"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.cargarTablaVentasFactura" title="Link to this definition">¶</a></dt>
+<dd><p>Función que recupera la lista de ventas cuya factura es la indicada en la interfaz
+y las muestra en la tabla de ventas</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.checkDatosFacturas">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">checkDatosFacturas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.checkDatosFacturas"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.checkDatosFacturas" title="Link to this definition">¶</a></dt>
+<dd><p>Función que comprueba si los datos de la factura son correctos para habilitar el botón de grabar venta</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="facturas.Facturas.current_cliente">
+<span class="sig-name descname"><span class="pre">current_cliente</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#facturas.Facturas.current_cliente" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="facturas.Facturas.current_factura">
+<span class="sig-name descname"><span class="pre">current_factura</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#facturas.Facturas.current_factura" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="facturas.Facturas.current_propiedad">
+<span class="sig-name descname"><span class="pre">current_propiedad</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#facturas.Facturas.current_propiedad" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="facturas.Facturas.current_vendedor">
+<span class="sig-name descname"><span class="pre">current_vendedor</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#facturas.Facturas.current_vendedor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.deleteFactura">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deleteFactura</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idFactura</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.deleteFactura"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.deleteFactura" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idFactura</strong> (<em>int</em>) – id de la factura a borrar</p>
+</dd>
+</dl>
+<p>Función que borra una factura de la base de datos, preguntando si deseamos confirmar la operación o no y comprobando
+que no tenga ninguna venta asociada</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.deleteVenta">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deleteVenta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idVenta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.deleteVenta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.deleteVenta" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="facturas.Facturas.limpiarFactura">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">limpiarFactura</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/facturas.html#Facturas.limpiarFactura"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#facturas.Facturas.limpiarFactura" title="Link to this definition">¶</a></dt>
+<dd><p>Función que limpia los campos de la interfaz y los atributos de la clase Facturas,
+dejando únicamente los datos de la factura seleccionada</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">LAMAVILARINO</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navegación</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Aman Lama Vilarino.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/src/facturas.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="es" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vendedores &#8212; documentación de LAMAVILARINO - v.0.0.1</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=8ee129b9"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=f85f4cfb"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Código fuente para vendedores</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">conexion</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">eventos</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">facturas</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">var</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">vendedores</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyQt6</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtWidgets</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtCore</span>
+
+
+<div class="viewcode-block" id="Vendedores">
+<a class="viewcode-back" href="../src/vendedores.html#vendedores.Vendedores">[documentos]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Vendedores</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Vendedores.comprobarCamposObligatorios">
+<a class="viewcode-back" href="../src/vendedores.html#vendedores.Vendedores.comprobarCamposObligatorios">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">comprobarCamposObligatorios</span><span class="p">():</span>
+        <span class="n">campos</span> <span class="o">=</span> <span class="p">[</span><span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtDniVend</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtNombreVend</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtTelefonoVend</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">cmbDelegacionVend</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dato</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">campos</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">and</span> <span class="n">dato</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Comprueba los campos&quot;</span><span class="p">,</span>
+                                                  <span class="s2">&quot;Campo vacío, compruebe que los campos amarillos estén rellenados&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">validarTelefono</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtTelefonoVend</span><span class="o">.</span><span class="n">text</span><span class="p">()):</span>
+                <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Teléfono mal&quot;</span><span class="p">,</span> <span class="s2">&quot;Escriba un teléfono válido&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">validarDNIcli</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtDniVend</span><span class="o">.</span><span class="n">text</span><span class="p">()):</span>
+                <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Dni mal&quot;</span><span class="p">,</span> <span class="s2">&quot;Escriba un DNI válido&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtEmailVend</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">validarMail</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtEmailVend</span><span class="o">.</span><span class="n">text</span><span class="p">()):</span>  <span class="c1"># Corregido aquí</span>
+                <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Email mal&quot;</span><span class="p">,</span> <span class="s2">&quot;Escriba un email válido&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Vendedores.cargarTablaVendedores">
+<a class="viewcode-back" href="../src/vendedores.html#vendedores.Vendedores.cargarTablaVendedores">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cargarTablaVendedores</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listado</span> <span class="o">=</span> <span class="n">conexion</span><span class="o">.</span><span class="n">Conexion</span><span class="o">.</span><span class="n">listadoVendedores</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">listado</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">listado</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">registro</span> <span class="ow">in</span> <span class="n">listado</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="mi">3</span><span class="p">])))</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignLeft</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignLeft</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">rowsVendedores</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btnAnteriorVend</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btnAnteriorVend</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">listado</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btnSiguienteVend</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btnSiguienteVend</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error cargaTablaClientes&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Vendedores.altaVendedor">
+<a class="viewcode-back" href="../src/vendedores.html#vendedores.Vendedores.altaVendedor">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">altaVendedor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">vendedores</span><span class="o">.</span><span class="n">Vendedores</span><span class="o">.</span><span class="n">comprobarCamposObligatorios</span><span class="p">():</span>
+                <span class="n">nuevoVendedor</span> <span class="o">=</span> <span class="p">[</span><span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtDniVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtNombreVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtAltaVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                                 <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtTelefonoVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtEmailVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">cmbDelegacionVend</span><span class="o">.</span><span class="n">currentText</span><span class="p">()]</span>
+                <span class="k">if</span> <span class="n">conexion</span><span class="o">.</span><span class="n">Conexion</span><span class="o">.</span><span class="n">altaVendedor</span><span class="p">(</span><span class="n">nuevoVendedor</span><span class="p">):</span>
+                    <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeInfo</span><span class="p">(</span><span class="s2">&quot;Operacion exitosa&quot;</span><span class="p">,</span> <span class="s2">&quot;El vendedor se ha dado de alta correctamente&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Error al dar de alta al vendedor, comprueba si ya existe uno con tu mismo dni&quot;</span><span class="p">)</span>
+                <span class="n">Vendedores</span><span class="o">.</span><span class="n">cargarTablaVendedores</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Vendedores.cargarOneVendedor">
+<a class="viewcode-back" href="../src/vendedores.html#vendedores.Vendedores.cargarOneVendedor">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cargarOneVendedor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fila</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+            <span class="n">datos</span> <span class="o">=</span> <span class="p">[</span><span class="n">dato</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">for</span> <span class="n">dato</span> <span class="ow">in</span> <span class="n">fila</span><span class="p">]</span>
+            <span class="n">registro</span> <span class="o">=</span> <span class="n">conexion</span><span class="o">.</span><span class="n">Conexion</span><span class="o">.</span><span class="n">datosOneVendedor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datos</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">listado</span> <span class="o">=</span> <span class="p">[</span><span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtIdVend</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtDniVend</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtNombreVend</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtAltaVend</span><span class="p">,</span>
+                       <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtBajaVend</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtTelefonoVend</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtEmailVend</span><span class="p">,</span>
+                             <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">cmbDelegacionVend</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">listado</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+                    <span class="n">listado</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">listado</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">registro</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">facturas</span><span class="o">.</span><span class="n">Facturas</span><span class="o">.</span><span class="n">cargaVendedorVenta</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtIdVend</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error cargarOneVendedor en vendedores&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Vendedores.modificarVendedor">
+<a class="viewcode-back" href="../src/vendedores.html#vendedores.Vendedores.modificarVendedor">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">modificarVendedor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">vendedores</span><span class="o">.</span><span class="n">Vendedores</span><span class="o">.</span><span class="n">comprobarCamposObligatorios</span><span class="p">():</span>
+                <span class="n">datosModificar</span> <span class="o">=</span> <span class="p">[</span><span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtIdVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtNombreVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtAltaVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                                 <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtTelefonoVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtEmailVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">cmbDelegacionVend</span><span class="o">.</span><span class="n">currentText</span><span class="p">(),</span>
+                                  <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtBajaVend</span><span class="o">.</span><span class="n">text</span><span class="p">()]</span>
+                <span class="k">if</span> <span class="n">conexion</span><span class="o">.</span><span class="n">Conexion</span><span class="o">.</span><span class="n">modifVendedor</span><span class="p">(</span><span class="n">datosModificar</span><span class="p">):</span>
+                    <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeInfo</span><span class="p">(</span><span class="s2">&quot;Operacion exitosa&quot;</span><span class="p">,</span> <span class="s2">&quot;El vendedor se ha modificado correctamente&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Error al modificado al vendedor, comprueba si ya existe uno con tu mismo dni&quot;</span><span class="p">)</span>
+                <span class="n">Vendedores</span><span class="o">.</span><span class="n">cargarTablaVendedores</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">Vendedores</span><span class="o">.</span><span class="n">cargarTablaVendedores</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Vendedores.bajaVendedor">
+<a class="viewcode-back" href="../src/vendedores.html#vendedores.Vendedores.bajaVendedor">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bajaVendedor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtDniVend</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Falta escribir el DNI del vendendor&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtBajaVend</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Error el vendedor ya está de baja&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">formatted_date</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y&quot;</span><span class="p">)</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtBajacli</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">formatted_date</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">conexion</span><span class="o">.</span><span class="n">Conexion</span><span class="o">.</span><span class="n">bajaVendedor</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtIdVend</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">formatted_date</span><span class="p">):</span>
+                <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeInfo</span><span class="p">(</span><span class="s2">&quot;Bien&quot;</span><span class="p">,</span> <span class="s2">&quot;Vendedor dato de baja correctamente&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Mal&quot;</span><span class="p">,</span> <span class="s2">&quot;Error al dar de baja&quot;</span><span class="p">)</span>
+            <span class="n">Vendedores</span><span class="o">.</span><span class="n">cargarTablaVendedores</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error bajaCliente en clientes&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Vendedores.filtrarPorTelefono">
+<a class="viewcode-back" href="../src/vendedores.html#vendedores.Vendedores.filtrarPorTelefono">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filtrarPorTelefono</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtTelefonoVend</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Faltan datos&quot;</span><span class="p">,</span> <span class="s2">&quot;Debes ingresar un telefono valido&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="n">listado</span> <span class="o">=</span> <span class="n">conexion</span><span class="o">.</span><span class="n">Conexion</span><span class="o">.</span><span class="n">datosVendedoresByTelefono</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txtTelefonoVend</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">listado</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">eventos</span><span class="o">.</span><span class="n">Eventos</span><span class="o">.</span><span class="n">crearMensajeError</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;No se han encontrado datos con ese numero de telefono&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">listado</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">listado</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">listado</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">listado</span><span class="p">[</span><span class="mi">3</span><span class="p">])))</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignLeft</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignLeft</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tablaVendedores</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error cargaTablaClientes&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Vendedores.historicoVend">
+<a class="viewcode-back" href="../src/vendedores.html#vendedores.Vendedores.historicoVend">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">historicoVend</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">chkHistoricoVend</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">historicoVend</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">historicoVend</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">Vendedores</span><span class="o">.</span><span class="n">cargarTablaVendedores</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;checkbox historico error &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">LAMAVILARINO</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navegación</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Código de módulo</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Aman Lama Vilarino.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

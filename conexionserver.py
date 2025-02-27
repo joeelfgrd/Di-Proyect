@@ -2,7 +2,9 @@ import mysql.connector
 from mysql.connector import Error
 
 class ConexionServer():
-    def crear_conexion(self):
+
+    @staticmethod
+    def crear_conexion():
 
         try:
             conexion = mysql.connector.connect(
@@ -22,7 +24,7 @@ class ConexionServer():
         return None
 
     @staticmethod
-    def listaProv(self=None):
+    def listaProv():
         listaprov = []
         conexion = ConexionServer().crear_conexion()
 
@@ -58,7 +60,7 @@ class ConexionServer():
         except Exception as error:
             print("error lista muni", error)
 
-    def listadoClientes(self):
+    def listadoClientes():
         try:
             conexion = ConexionServer().crear_conexion()
             listadoclientes = []

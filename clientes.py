@@ -11,6 +11,12 @@ class Clientes:
 
     @staticmethod
     def checkDNI(dni):
+        """
+        :param dni: dni del cliente
+        :type dni: str
+
+        Función que se encarga de comprobar si un dni es correcto y cambiar el color del texto en caso de que sea inválido
+        """
         try:
             dni = str(dni).upper()
             var.ui.txtDnicli.setText(str(dni))
@@ -26,7 +32,10 @@ class Clientes:
             print("error en check cliente ", e)
 
     @staticmethod
-    def altaCliente(self):
+    def altaCliente():
+        """
+        Función que se encarga de dar de alta un cliente en la base de datos
+        """
 
         try:
             nuevoCli = [var.ui.txtDnicli.text(), var.ui.txtAltacli.text(), var.ui.txtApelcli.text(),
@@ -83,7 +92,7 @@ class Clientes:
                     mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
                     mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
                     mbox.exec()
-                    Clientes.cargaTablaClientes(self)
+                    Clientes.cargaTablaClientes()
             except Exception as e:
                 print(e)
                 mbox = QtWidgets.QMessageBox()
@@ -99,6 +108,12 @@ class Clientes:
 
     @staticmethod
     def checkEmail(mail):
+        """
+        :param mail: email del cliente
+        :type mail: string
+
+        Función que comprueba si un email es válido o no, cambiando el color de la caja de texto en caso de que sea incorrecto
+        """
         try:
             mail = str(var.ui.txtEmailcli.text())
             if eventos.Eventos.validarMail(mail):
@@ -116,6 +131,12 @@ class Clientes:
 
     @staticmethod
     def checkTelefono(telefono):
+        """
+        :param telefono: teléfono del cliente
+        :type telefono: str
+
+        Función que comprueba si un teléfono es válido o no, cambiando el color de la caja de texto en caso de que sea incorrecto
+        """
         try:
             telefono = str(var.ui.txtMovilcli.text())
             if eventos.Eventos.validarTelefono(telefono):
@@ -129,9 +150,12 @@ class Clientes:
             print("error check cliente", error)
 
     @staticmethod
-    def cargaTablaClientes(self):
+    def cargaTablaClientes():
+        """
+        Función que carga la tabla de clientes, implementando la función de avanzar entre páginas
+        """
         try:
-            listado = conexion.Conexion.listadoClientes(self)
+            listado = conexion.Conexion.listadoClientes()
             if listado is None:
                 listado = []
             index = 0
@@ -167,7 +191,10 @@ class Clientes:
             print("error cargaTablaClientes", e)
 
     @staticmethod
-    def cargaOneCliente(self):
+    def cargaOneCliente():
+        """
+        Función que carga los datos del cliente en pantalla al seleccionar uno en la tabla
+        """
         try:
             fila = var.ui.tablaClientes.selectedItems()
             datos = [dato.text() for dato in fila]
@@ -179,17 +206,24 @@ class Clientes:
                     listado[i].setCurrentText(registro[i])
                 else:
                     listado[i].setText(registro[i])
-            var.ui.txtDniVentas.setText(registro[0])
+            var.ui.txtDniFactura.setText(registro[0])
+            var.ui.txtDniClienteContrato.setText(registro[0])
         except Exception as e:
             print("error cargaOneCliente en clientes", e)
 
     @staticmethod
-    def modifCliente(self):
+    def modifCliente():
+        """
+        Función que modifica los datos de un cliente y valida que todos los campos sean correctos. En caso de que la operación falle por cualquier
+        motivo mandará un mensaje especificando el error
+        """
         try:
             modifCli = [var.ui.txtDnicli.text(), var.ui.txtAltacli.text(), var.ui.txtApelcli.text(),
                         var.ui.txtNomcli.text(), var.ui.txtEmailcli.text(), var.ui.txtMovilcli.text(),
                         var.ui.txtDireccioncli.text(), var.ui.cmbProvinciacli.currentText(),
                         var.ui.cmbMunicipiocli.currentText(), var.ui.txtBajacli.text()]
+
+            print(modifCli)
 
             mensajes_error = [
                 "Falta ingresar DNI",
@@ -207,7 +241,7 @@ class Clientes:
             for i, dato in enumerate(modifCli):
                 if i == 4:  # Saltamos la validación para el email (índice 4)
                     continue
-                if dato == '' and i != 5:
+                if dato == '' and i != 5 and i != 9:
                     mbox = QtWidgets.QMessageBox()
                     mbox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
                     mbox.setWindowTitle("Error en los datos")
@@ -227,7 +261,7 @@ class Clientes:
             if conexion.Conexion.modifCliente(modifCli):
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                mbox.setWindowIcon(QtGui.QIcon('./img/icono.ico'))
                 mbox.setWindowTitle('Aviso')
                 mbox.setText('Datos del cliente modificados')
                 mbox.setStandardButtons(
@@ -235,11 +269,11 @@ class Clientes:
                 mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
                 mbox.exec()
-                Clientes.cargaTablaClientes(self)
+                Clientes.cargaTablaClientes()
             else:
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                mbox.setWindowIcon(QtGui.QIcon('./img/icono.ico'))
                 mbox.setWindowTitle('Aviso')
                 mbox.setText('Error en actualizacion Datos del cliente')
                 mbox.setStandardButtons(
@@ -251,8 +285,15 @@ class Clientes:
             print("error modifCliente en clientes", e)
 
     @staticmethod
-    def bajaCliente(self):
+    def bajaCliente():
+        """
+        Función que da de baja a un cliente a partir del dni que esté seleccionado en la interfaz. Si la operación
+        falla o funciona mandará un mensaje informativo
+        """
         try:
+            if var.ui.txtBajacli.text() == '':
+                eventos.Eventos.crearMensajeError("Error", "Falta escribir el DNI del cliente")
+                return
             now = datetime.now()
             formatted_date = now.strftime("%d/%m/%Y")
             var.ui.txtBajacli.setText(formatted_date)
@@ -260,7 +301,7 @@ class Clientes:
             if conexion.Conexion.bajaCliente(datos):
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                mbox.setWindowIcon(QtGui.QIcon('./img/icono.ico'))
                 mbox.setWindowTitle('Aviso')
                 mbox.setText('Cliente dado de baja')
                 mbox.setStandardButtons(
@@ -271,7 +312,7 @@ class Clientes:
             else:
                 mbox = QtWidgets.QMessageBox()
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                mbox.setWindowIcon(QtGui.QIcon('img/icono.ico'))
+                mbox.setWindowIcon(QtGui.QIcon('./img/icono.ico'))
                 mbox.setWindowTitle('Aviso')
                 mbox.setText('Error en dar de baja al cliente')
                 mbox.setStandardButtons(
@@ -279,23 +320,31 @@ class Clientes:
                 mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
                 mbox.exec()
-            Clientes.cargaTablaClientes(self)
+            Clientes.cargaTablaClientes()
         except Exception as e:
             print("error bajaCliente en clientes", e)
 
     @staticmethod
-    def historicoCli(self):
+    def historicoCli():
+        """
+        Función que gestiona el botón de histórico y el cambio de páginas
+        """
         try:
             if var.ui.chkHistoriacli.isChecked():
                 var.historicoCli = 1
             else:
                 var.historicoCli = 0
             var.rowsClientes = 15
-            Clientes.cargaTablaClientes(self)
+            Clientes.cargaTablaClientes()
         except Exception as e:
             print("checkbox historico error ", e)
 
-    def cargaClienteDni(self):
+    @staticmethod
+    def cargaClienteDni():
+        """
+        Función que carga un cliente a partir de su dni, si lo encuentra carga sus datos y si no lo encuentra
+        salta un mensaje emergente diciendo que no se encontró
+        """
         try:
             dni = var.ui.txtDnicli.text()
             registro = conexion.Conexion.datosOneCliente(dni)
