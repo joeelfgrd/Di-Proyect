@@ -29,7 +29,8 @@ class Alquileres:
                             var.ui.txtDniClienteContrato.text(),
                             var.ui.txtVendedorContrato.text(),
                             var.ui.txtFechaInicioMensualidad.text(),
-                            var.ui.txtFechaFinMensualidad.text()]
+                            var.ui.txtFechaFinMensualidad.text(),
+                            var.ui.txtMetodoPago.text()]
             if conexion.Conexion.grabarContrato(infoContrato):
                 eventos.Eventos.crearMensajeInfo("Informacion", "El contrato se ha grabado exitosamente")
             else:
@@ -163,6 +164,7 @@ class Alquileres:
                 var.ui.txtVendedorContrato.setText(str(contrato[3]))
                 var.ui.txtFechaInicioMensualidad.setText(str(contrato[4]))
                 var.ui.txtFechaFinMensualidad.setText(str(contrato[5]))
+                var.ui.txtMetodoPago.setText(str(contrato[7]))
         except Exception as error:
             print('Error cargarOneContrato: %s' % str(error))
 

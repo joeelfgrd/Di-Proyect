@@ -1061,6 +1061,9 @@
             </item>
             <item row="1" column="5">
              <widget class="QComboBox" name="cmbMunicipioPro">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>150</width>
@@ -3386,10 +3389,13 @@
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_14">
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_36">
-              <property name="text">
-               <string>Num Contrato:</string>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="txtPropiedadContrato">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 255);</string>
               </property>
              </widget>
             </item>
@@ -3397,6 +3403,13 @@
              <widget class="QLabel" name="label_38">
               <property name="text">
                <string>DNI Cliente:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_36">
+              <property name="text">
+               <string>Num Contrato:</string>
               </property>
              </widget>
             </item>
@@ -3410,13 +3423,20 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="txtPropiedadContrato">
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="txtDniClienteContrato">
               <property name="enabled">
                <bool>false</bool>
               </property>
               <property name="styleSheet">
                <string notr="true">background-color: rgb(255, 255, 255);</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_43">
+              <property name="text">
+               <string>Vendedor:</string>
               </property>
              </widget>
             </item>
@@ -3446,27 +3466,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="txtDniClienteContrato">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(255, 255, 255);</string>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_42">
               <property name="text">
                <string>Propiedad:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_43">
-              <property name="text">
-               <string>Vendedor:</string>
               </property>
              </widget>
             </item>
@@ -3477,6 +3480,23 @@
               </property>
               <property name="styleSheet">
                <string notr="true">background-color: rgb(255, 255, 255);</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLineEdit" name="txtMetodoPago">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 255);</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_45">
+              <property name="text">
+               <string>Metodo pago:</string>
               </property>
              </widget>
             </item>

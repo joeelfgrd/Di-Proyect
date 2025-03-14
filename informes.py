@@ -285,6 +285,7 @@ class Informes:
             var.report.drawString(355, 540, 'Precio Alquiler: ' + str(propiedad[11]) + " €")
             estado = "pagado" if mensualidad[4] else "no pagado"
             var.report.drawString(355, 520, 'Estado: ' + estado)
+            var.report.drawString(55, 510, 'Metodo de pago: ' + str(alquiler[7]))
 
             var.report.save()
 

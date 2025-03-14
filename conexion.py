@@ -1000,14 +1000,15 @@ class Conexion:
         try:
             query = QtSql.QSqlQuery()
             query.prepare(
-                "INSERT INTO ALQUILERES (idPropiedad, clienteDNI, idAgente, fechaInicio, fechaFin, precioAlquiler) "
-                "VALUES (:idPropiedad, :clienteDNI, :idAgente, :fechaInicio, :fechaFin, :precioAlquiler)")
+                "INSERT INTO ALQUILERES (idPropiedad, clienteDNI, idAgente, fechaInicio, fechaFin, precioAlquiler,metodo_pago) "
+                "VALUES (:idPropiedad, :clienteDNI, :idAgente, :fechaInicio, :fechaFin, :precioAlquiler, :metodo_pago)")
             query.bindValue(":idPropiedad", str(infoContrato[0]))
             query.bindValue(":clienteDNI", str(infoContrato[1]))
             query.bindValue(":idAgente", str(infoContrato[2]))
             query.bindValue(":fechaInicio", str(infoContrato[3]))
             query.bindValue(":fechaFin", str(infoContrato[4]))
             query.bindValue(":precioAlquiler", str(Conexion.datosOnePropiedad(infoContrato[0])[10]))
+            query.bindValue(":metodo_pago", str(infoContrato[5]))
             return query.exec()
         except Exception as exec:
             print("Error al guardar el contrato", exec)
