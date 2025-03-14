@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'LAMAVILARINO'
-copyright = '2025, Aman Lama Vilarino'
-author = 'Aman Lama Vilarino'
+project = 'FIGUEIRIDOMOLARES'
+copyright = '2025, Joel Figueirido Molares'
+author = 'Joel Figueirido Molares'
 release = 'v.0.0.1'
 
 # -- General configuration ---------------------------------------------------

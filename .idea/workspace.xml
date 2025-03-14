@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b138e9cf-b85a-43cb-9048-15798344b753" name="Changes" comment="feat():creado .exe">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="b138e9cf-b85a-43cb-9048-15798344b753" name="Changes" comment="feat():creado .exe" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -234,7 +232,7 @@
       <workItem from="1740404138379" duration="615000" />
       <workItem from="1740467616131" duration="4701000" />
       <workItem from="1740640891302" duration="7324000" />
-      <workItem from="1741610701061" duration="452000" />
+      <workItem from="1741610701061" duration="1115000" />
     </task>
     <task id="LOCAL-00001" summary="feat():delete button">
       <option name="closed" value="true" />
