@@ -865,8 +865,8 @@ class Conexion:
         """
         try:
             query = QtSql.QSqlQuery()
-            query.prepare("INSERT INTO VENTAS (facventa, codprop, agente) "
-                          "VALUES (:factura, :propiedad, :vendedor)")
+            query.prepare("INSERT INTO VENTAS (facventa, codprop, agente,comision,descuento) "
+                          "VALUES (:factura, :propiedad, :vendedor,:comision,:descuento)")
             query.bindValue(":factura", str(nuevaVenta[0]))
             query.bindValue(":propiedad", str(nuevaVenta[2]))
             query.bindValue(":vendedor", str(nuevaVenta[1]))
@@ -963,6 +963,19 @@ class Conexion:
             return query.exec()
         except Exception as error:
             print("Error al eliminar la venta", error)
+
+    @staticmethod
+    def datosOneVenta(id):
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM facturas where id = :id")
+            query.bindValue(":id", str(id))
+            if query.exec() and query.next():
+                registro = [query.value(i) for i in range(query.record().count())]
+            return registro
+        except Exception as error:
+            print("Error al abrir el archivo")
 
     @staticmethod
     def datosOneFactura(id):

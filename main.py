@@ -110,6 +110,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnAltaContrato.clicked.connect(alquileres.Alquileres.altaContrato)
         #var.ui.btnAnteriorVend.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(0, "Vendedores"))
         #var.ui.btnSiguienteVend.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(1, "Vendedores"))
+        var.ui.tablaVentas.clicked.connect(facturas.Facturas.cargarDescuentoVenta)
 
 
         '''
@@ -150,6 +151,8 @@ class Main(QtWidgets.QMainWindow):
         var.ui.chkHistoricoPro.stateChanged.connect(propiedades.Propiedades.historicoProp)
         var.ui.chkHistoricoVend.stateChanged.connect(vendedores.Vendedores.historicoVend)
         var.ui.chkHistoricoMensualidades.stateChanged.connect(alquileres.Alquileres.cargarTablaMensualidades)
+
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

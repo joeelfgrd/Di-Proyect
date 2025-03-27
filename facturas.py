@@ -232,7 +232,7 @@ class Facturas:
         Función que graba una venta en la base de datos, devolviendo un mensaje conforme si la operación se ha realizado correctamente o no
         """
         try:
-            infoVenta = [var.ui.lblNumFactura.text(), Facturas.current_vendedor, Facturas.current_propiedad]
+            infoVenta = [var.ui.lblNumFactura.text(),Facturas.current_vendedor, Facturas.current_propiedad,var.ui.txtDescuento.text()]
             if conexion.Conexion.grabarVenta(infoVenta):
                 eventos.Eventos.crearMensajeInfo("Informacion", "La venta se ha grabado exitosamente")
                 conexion.Conexion.cambiarEstadoPropiedad(Facturas.current_propiedad, 1)
@@ -244,6 +244,7 @@ class Facturas:
 
         except Exception as error:
             print('Error altaVenta: %s' % str(error))
+
 
     @staticmethod
     def cargarTablaVentasFactura():
@@ -300,8 +301,11 @@ class Facturas:
             if subtotal:
                 impuestos = subtotal * 0.1
                 total = subtotal + impuestos
+                comisiones = total * 0.1
                 var.ui.lblSubtotalVentas.setText(str(subtotal) + " €")
                 var.ui.lblImpuestosVentas.setText(str(impuestos) + "€")
+                var.ui.txtComisionVentas_2.setText(str(comisiones) + "€")
+
                 var.ui.lblTotalVentas.setText(str(total) + " €")
             else:
                 var.ui.lblSubtotalVentas.setText("- €")
@@ -309,6 +313,23 @@ class Facturas:
                 var.ui.lblTotalVentas.setText("- €")
         except Exception as e:
             print("Error al cargar los totales" + e)
+
+    @staticmethod
+    def cargarDescuentoVenta():
+        try:
+            factura = var.ui.tablaVentas.selectedItems()
+            propiedad = conexion.Conexion.datosOnePropiedad(factura[0].text())
+            precioPropiedad = propiedad[11]
+            precioDescuento = var.ui.txtDescuento.text()
+
+            if precioDescuento != "":
+                precioDescontado = (float(precioPropiedad) * float(precioDescuento) / 100)
+                var.ui.txtDescuento_aplicado.setText(str(precioDescontado) + "€")
+
+
+        except Exception as e:
+            print("Error al cargar el descuento" + e)
+
 
     @staticmethod
     def deleteVenta(idVenta, idprop):
