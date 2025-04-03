@@ -352,6 +352,3 @@ class Facturas:
         except Exception as e:
             print("Error al eliminar la venta", e)
 
-    # Arreglar páginas del informe propiedades
-
-    # https://github.com/BuaTeijeiro/ProyectoDI/blob/main/facturas.py#L143
