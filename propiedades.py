@@ -62,31 +62,23 @@ class Propiedades():
     @staticmethod
     def altaPropiedad():
         try:
-            # var.ui.txtFechabajaPro.text(), var.ui.txtPropietarioPro.text(), var.ui.txtMovilPro.text()
             propiedad = [var.ui.txtPublicacionPro.text(), var.ui.txtDireccionPro.text(),
-                        var.ui.cmbProvinciaPro.currentText(), var.ui.cmbMunicipioPro.currentText(),
-                        var.ui.cmbTipoPro.currentText(), var.ui.spbHabitacionesPro.text(),
-                        var.ui.spbBanosPro.text(), var.ui.txtSuperficiePro.text(),
-                        var.ui.txtPrecioAlquilerPro.text(), var.ui.txtPrecioVentaPro.text(),
-                        var.ui.txtCpPro.text(), var.ui.artxtDescripcionPro.toPlainText()]
+                         var.ui.cmbProvinciaPro.currentText(), var.ui.cmbMunicipioPro.currentText(),
+                         var.ui.cmbTipoPro.currentText(), var.ui.spbHabitacionesPro.text(),
+                         var.ui.spbBanosPro.text(), var.ui.txtSuperficiePro.text(),
+                         var.ui.txtPrecioAlquilerPro.text(), var.ui.txtPrecioVentaPro.text(),
+                         var.ui.txtCpPro.text(), var.ui.artxtDescripcionPro.toPlainText()]
 
             obligatorios = [var.ui.txtDireccionPro.text(), var.ui.txtPropietarioPro, var.ui.txtMovilPro,
                             var.ui.cmbProvinciaPro.currentText(), var.ui.cmbMunicipioPro.currentText(),
                             var.ui.cmbTipoPro.currentText(), var.ui.txtSuperficiePro.text(), var.ui.txtCpPro.text()]
 
-            for i in obligatorios:
-                if i == "":
-                    mbox = QtWidgets.QMessageBox()
-                    mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                    mbox.setWindowIcon(QtGui.QIcon('./img/icono.ico'))
-                    mbox.setWindowTitle('Aviso')
-                    mbox.setText('Rellena los campos obligatorios (los amarillos)')
-                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
-                    mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-                    mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
-                    mbox.exec()
+            for campo in obligatorios:
+                if campo == "":
+                    QtWidgets.QMessageBox.critical(None, "Error", "Rellena los campos obligatorios (los amarillos)")
                     return
 
+            # Tipo de operación
             tipoper = []
             if var.ui.cbxAlquilerPro.isChecked():
                 tipoper.append(var.ui.cbxAlquilerPro.text())
@@ -95,20 +87,30 @@ class Propiedades():
             if var.ui.cbxIntercambioPro.isChecked():
                 tipoper.append(var.ui.cbxIntercambioPro.text())
             propiedad.append(", ".join(tipoper))
+
+            # Estado: por defecto lo marcamos como Disponible si no hay ninguno seleccionado
+            if not (
+                    var.ui.rbtnDisponiblePro.isChecked() or var.ui.rbtnAlquiladoPro.isChecked() or var.ui.rbtnVendidoPro.isChecked()):
+                var.ui.rbtnDisponiblePro.setChecked(True)
+
             if var.ui.rbtnDisponiblePro.isChecked():
                 propiedad.append(var.ui.rbtnDisponiblePro.text())
-            if var.ui.rbtnAlquiladoPro.isChecked():
+            elif var.ui.rbtnAlquiladoPro.isChecked():
                 propiedad.append(var.ui.rbtnAlquiladoPro.text())
-            if var.ui.rbtnVendidoPro.isChecked():
+            elif var.ui.rbtnVendidoPro.isChecked():
                 propiedad.append(var.ui.rbtnVendidoPro.text())
+
             propiedad.append(var.ui.txtPropietarioPro.text())
             propiedad.append(var.ui.txtMovilPro.text())
 
-            conexion.Conexion.altaPropiedad(propiedad)
-            Propiedades.cargarTablaPropiedades(0)
+            if conexion.Conexion.altaPropiedad(propiedad):
+                QtWidgets.QMessageBox.information(None, "Éxito", "Propiedad registrada correctamente")
+                Propiedades.cargarTablaPropiedades(0)
+            else:
+                QtWidgets.QMessageBox.critical(None, "Error", "No se pudo registrar la propiedad")
 
         except Exception as error:
-            print(error)
+            print("Error altaPropiedad:", error)
 
     @staticmethod
     def cargarTablaPropiedades(contexto):

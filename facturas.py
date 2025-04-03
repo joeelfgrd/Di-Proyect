@@ -232,19 +232,36 @@ class Facturas:
         Función que graba una venta en la base de datos, devolviendo un mensaje conforme si la operación se ha realizado correctamente o no
         """
         try:
-            infoVenta = [var.ui.lblNumFactura.text(),Facturas.current_vendedor, Facturas.current_propiedad,var.ui.txtDescuento.text()]
+            precio_texto = var.ui.txtPrecioVentas.text().replace("€", "").strip()
+            if not precio_texto:
+                eventos.Eventos.crearMensajeError("Error", "No se ha indicado el precio de la propiedad")
+                return
+
+            precio = float(precio_texto)
+            comision = round(precio * 0.10)
+            var.ui.txtComisionVentas_2.setText(f"{comision} €")
+
+
+            infoVenta = [
+                var.ui.lblNumFactura.text(),
+                Facturas.current_vendedor,
+                Facturas.current_propiedad,
+                var.ui.txtDescuento.text(),
+                comision
+            ]
+
             if conexion.Conexion.grabarVenta(infoVenta):
                 eventos.Eventos.crearMensajeInfo("Informacion", "La venta se ha grabado exitosamente")
                 conexion.Conexion.cambiarEstadoPropiedad(Facturas.current_propiedad, 1)
                 propiedades.Propiedades.cargarTablaPropiedades(0)
             else:
                 eventos.Eventos.crearMensajeError("Error", "La venta no se ha podido grabar")
+
             Facturas.limpiarFactura()
             Facturas.cargarTablaVentasFactura()
 
         except Exception as error:
             print('Error altaVenta: %s' % str(error))
-
 
     @staticmethod
     def cargarTablaVentasFactura():
@@ -291,45 +308,67 @@ class Facturas:
     @staticmethod
     def cargarBottomFactura(idFactura):
         """
-        :param idFactura: id de la factura
-        :type idFactura: int
-
-        Función que calcula y carga los totales de una factura en la interfaz
+        Calcula el subtotal, aplica el descuento antes de impuestos y comisiones,
+        y actualiza los campos visuales de la factura.
         """
         try:
-            subtotal = conexion.Conexion.obtenerTotalFactura(idFactura)
-            if subtotal:
-                impuestos = subtotal * 0.1
-                total = subtotal + impuestos
-                comisiones = total * 0.1
-                var.ui.lblSubtotalVentas.setText(str(subtotal) + " €")
-                var.ui.lblImpuestosVentas.setText(str(impuestos) + "€")
-                var.ui.txtComisionVentas_2.setText(str(comisiones) + "€")
+            ventas = conexion.Conexion.cargarTablaVentas(idFactura)
+            subtotal = 0.0
+            descuento_total = 0.0
 
-                var.ui.lblTotalVentas.setText(str(total) + " €")
-            else:
-                var.ui.lblSubtotalVentas.setText("- €")
-                var.ui.lblImpuestosVentas.setText("- €")
-                var.ui.lblTotalVentas.setText("- €")
+            for venta in ventas:
+                try:
+                    # venta[5] → precio de la propiedad
+                    # venta[6] → descuento aplicado (en %)
+                    precio = float(str(venta[5]).replace("€", "").strip())
+                    descuento_pct = float(venta[6]) if venta[6] is not None else 0.0
+                    descuento_aplicado = precio * descuento_pct / 100
+
+                    subtotal += precio
+                    descuento_total += descuento_aplicado
+
+                except Exception as e:
+                    print("Error procesando fila de venta:", venta, e)
+
+            subtotal_con_descuento = subtotal - descuento_total
+            impuestos = subtotal_con_descuento * 0.10
+            comisiones = subtotal_con_descuento * 0.10
+            total = subtotal_con_descuento + impuestos + comisiones
+
+            # Mostrar en interfaz
+            var.ui.lblSubtotalVentas.setText(f"{subtotal:.2f} €")
+            var.ui.txtDescuento_aplicado.setText(f"{descuento_total:.2f} €")
+            var.ui.lblImpuestosVentas.setText(f"{impuestos:.2f} €")
+            var.ui.txtComisionVentas_2.setText(f"{comisiones:.2f} €")
+            var.ui.lblTotalVentas.setText(f"{total:.2f} €")
+
         except Exception as e:
-            print("Error al cargar los totales" + e)
+            print("Error al cargar los totales:", e)
 
     @staticmethod
     def cargarDescuentoVenta():
         try:
-            factura = var.ui.tablaVentas.selectedItems()
-            propiedad = conexion.Conexion.datosOnePropiedad(factura[0].text())
-            precioPropiedad = propiedad[11]
-            precioDescuento = var.ui.txtDescuento.text()
+            fila = var.ui.tablaVentas.currentRow()
+            if fila == -1:
+                return
 
-            if precioDescuento != "":
-                precioDescontado = (float(precioPropiedad) * float(precioDescuento) / 100)
-                var.ui.txtDescuento_aplicado.setText(str(precioDescontado) + "€")
+            id_venta = var.ui.tablaVentas.item(fila, 0).text()
 
+            venta = conexion.Conexion.datosOneVenta(id_venta)
+            if not venta:
+                return
+
+            id_propiedad = venta[2]
+            descuento = venta[5] if venta[5] is not None else 0
+
+            propiedad = conexion.Conexion.datosOnePropiedad(id_propiedad)
+            precio = float(propiedad[11])
+
+            precio_descontado = precio - (precio * float(descuento) / 100)
+            var.ui.txtDescuento_aplicado.setText(f"{precio_descontado:.2f} €")
 
         except Exception as e:
-            print("Error al cargar el descuento" + e)
-
+            print("Error al cargar el descuento:", e)
 
     @staticmethod
     def deleteVenta(idVenta, idprop):

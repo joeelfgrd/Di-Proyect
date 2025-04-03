@@ -4,6 +4,7 @@ from PyQt6 import QtWidgets, QtGui, QtCore
 import conexion
 import conexionserver
 import eventos
+import facturas
 import var
 
 
@@ -200,14 +201,19 @@ class Clientes:
             datos = [dato.text() for dato in fila]
             registro = conexion.Conexion.datosOneCliente(str(datos[0]))
             listado = [var.ui.txtDnicli, var.ui.txtAltacli, var.ui.txtApelcli, var.ui.txtNomcli, var.ui.txtEmailcli,
-                       var.ui.txtMovilcli, var.ui.txtDireccioncli, var.ui.cmbProvinciacli, var.ui.cmbMunicipiocli, var.ui.txtBajacli]
+                       var.ui.txtMovilcli, var.ui.txtDireccioncli, var.ui.cmbProvinciacli, var.ui.cmbMunicipiocli,
+                       var.ui.txtBajacli]
             for i in range(len(listado)):
-                if i in (7,8):
+                if i in (7, 8):
                     listado[i].setCurrentText(registro[i])
                 else:
                     listado[i].setText(registro[i])
+
+            # 🔥 Esta parte es la que actualiza también la pestaña de ventas:
             var.ui.txtDniFactura.setText(registro[0])
             var.ui.txtDniClienteContrato.setText(registro[0])
+            facturas.Facturas.cargaClienteVenta()
+
         except Exception as e:
             print("error cargaOneCliente en clientes", e)
 

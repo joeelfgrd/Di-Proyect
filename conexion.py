@@ -865,14 +865,19 @@ class Conexion:
         """
         try:
             query = QtSql.QSqlQuery()
-            query.prepare("INSERT INTO VENTAS (facventa, codprop, agente,comision,descuento) "
-                          "VALUES (:factura, :propiedad, :vendedor,:comision,:descuento)")
-            query.bindValue(":factura", str(nuevaVenta[0]))
-            query.bindValue(":propiedad", str(nuevaVenta[2]))
-            query.bindValue(":vendedor", str(nuevaVenta[1]))
+            query.prepare("""
+                INSERT INTO VENTAS (facventa, codprop, agente, comision, descuento)
+                VALUES (:factura, :propiedad, :vendedor, :comision, :descuento)
+            """)
+            query.bindValue(":factura", str(nuevaVenta[0]))  # facventa
+            query.bindValue(":vendedor", str(nuevaVenta[1]))  # agente
+            query.bindValue(":propiedad", str(nuevaVenta[2]))  # codprop
+            query.bindValue(":descuento", str(nuevaVenta[3]))  # descuento
+            query.bindValue(":comision", str(nuevaVenta[4]))  # comisión
             return query.exec()
         except Exception as exec:
             print("Error al guardar la venta", exec)
+            return False
 
     @staticmethod
     def cargarTablaVentas(idFactura):
@@ -889,9 +894,9 @@ class Conexion:
             listado = []
             query = QtSql.QSqlQuery()
             query.prepare(
-                "select v.idventa, v.codprop, p.dirprop, p.muniprop, p.tipoprop, p.prevenprop "
-                "from ventas as v inner join propiedades as p on v.codprop = p.codigo "
-                "where v.facventa = :idFactura")
+                "SELECT v.idventa, v.codprop, p.dirprop, p.muniprop, p.tipoprop, p.prevenprop, v.descuento "
+                "FROM ventas AS v INNER JOIN propiedades AS p ON v.codprop = p.codigo "
+                "WHERE v.facventa = :idFactura")
             query.bindValue(":idFactura", idFactura)
             if query.exec():
                 while query.next():
@@ -899,7 +904,7 @@ class Conexion:
                     listado.append(fila)
             return listado
         except Exception as error:
-            print("Error al recuperar el listado de ventas")
+            print("Error al recuperar el listado de ventas", error)
 
     @staticmethod
     def obtenerTotalFactura(idFactura):
