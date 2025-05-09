@@ -771,6 +771,37 @@ class Conexion:
         except Exception as e:
             print("error bajaVendedor en conexion", e)
 
+    @staticmethod
+    def comisionesPorVendedor():
+        """
+        :return: listado con el ID, nombre, móvil y suma total de comisiones por vendedor
+        :rtype: list
+        """
+        try:
+            listado = []
+            query = QtSql.QSqlQuery()
+            query.prepare(
+                """
+                SELECT 
+                    v.idVendedo,
+                    v.nombreVendedor,
+                    v.movilVendedor,
+                    IFNULL(SUM(ve.comision), 0) AS total_comisiones
+                FROM vendedores v
+                LEFT JOIN ventas ve ON ve.agente = v.idVendedo
+                GROUP BY v.idVendedo
+                ORDER BY v.idVendedo ASC
+                """
+            )
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    listado.append(fila)
+            return listado
+        except Exception as e:
+            print("Error al obtener las comisiones por vendedor", e)
+            return []
+
     '''
     ZONA FACTURACIÓN
     '''
@@ -981,6 +1012,45 @@ class Conexion:
             return registro
         except Exception as error:
             print("Error al abrir el archivo")
+
+    @staticmethod
+    def datosOneVentaJoin(idventa):
+        """
+        Devuelve los datos de una venta incluyendo la propiedad asociada.
+
+        :param idventa: ID de la venta
+        :return: lista con los campos de la venta y la propiedad asociada
+        """
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare("""
+                SELECT 
+                    v.idventa,
+                    v.facventa,
+                    v.codprop,
+                    v.agente,
+                    v.comision,
+                    v.descuento,
+                    p.codigo,
+                    p.dirprop,
+                    p.muniprop,
+                    p.tipoprop,
+                    p.prevenprop,
+                    p.estadoProp,
+                    p.cpprop
+                FROM ventas v
+                INNER JOIN propiedades p ON v.codprop = p.codigo
+                WHERE v.idventa = :idventa
+            """)
+            query.bindValue(":idventa", str(idventa))
+
+            if query.exec() and query.next():
+                registro = [query.value(i) for i in range(query.record().count())]
+            return registro
+        except Exception as error:
+            print("Error al recuperar la venta con JOIN:", error)
+            return []
 
     @staticmethod
     def datosOneFactura(id):

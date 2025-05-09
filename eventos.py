@@ -411,14 +411,23 @@ class Eventos():
 
         # BORRAR PANEL VENTAS
 
+
         objetosPanelVentas = [var.ui.lblNumFactura, var.ui.txtFechaFactura, var.ui.txtDniFactura,
                               var.ui.txtApelClieVentas, var.ui.txtNomCliVentas, var.ui.lblCodigoPropVentas,
                               var.ui.txtTipoPropVentas, var.ui.txtPrecioVentas, var.ui.txtDireccionPropVentas,
                               var.ui.txtLocalidadVentas, var.ui.lblSubtotalVentas, var.ui.lblImpuestosVentas,
                               var.ui.lblTotalVentas, var.ui.txtVendedorVentas]
-        
-        for i, dato in enumerate(objetosPanelVentas):
+
+        for dato in objetosPanelVentas:
             dato.setText("")
+
+        # 🔄 Restaurar campos de descuento
+        var.ui.txtDescuento.setText("")
+        var.ui.txtDescuento.setReadOnly(False)
+        var.ui.txtDescuento_aplicado.setText("")
+
+        # 🔓 Reactivar el botón de grabar venta
+        var.ui.btnGrabarVenta.setEnabled(True)
 
         # BORRAR PANEL CONTRATOS
 

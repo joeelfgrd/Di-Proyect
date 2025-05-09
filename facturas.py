@@ -165,7 +165,13 @@ class Facturas:
             if "venta" in str(propiedad[14]).lower() and str(propiedad[15]).lower() == "disponible":
                 var.ui.lblCodigoPropVentas.setText(str(propiedad[0]))
                 var.ui.txtTipoPropVentas.setText(str(propiedad[7]))
-                var.ui.txtPrecioVentas.setText(str(propiedad[12]) + " €")
+
+                precio_venta = propiedad[11]
+                if precio_venta is not None and str(precio_venta).strip() != "":
+                    var.ui.txtPrecioVentas.setText(f"{float(precio_venta):,.2f} €")
+                else:
+                    var.ui.txtPrecioVentas.setText("0.00 €")
+
                 var.ui.txtDireccionPropVentas.setText(str(propiedad[4]).title())
                 var.ui.txtLocalidadVentas.setText(str(propiedad[6]))
                 var.ui.lblMensajeError.setText("")
@@ -184,7 +190,66 @@ class Facturas:
                 else:
                     var.ui.lblMensajeError.setText("La última propiedad seleccionada ya está vendida")
         except Exception as e:
-            eventos.Eventos.crearMensajeError("Error", "Error al cargar el cliente: " + e)
+            eventos.Eventos.crearMensajeError("Error", "Error al cargar la propiedad en ventas: " + str(e))
+
+    @staticmethod
+    def cargarDetallesVentaSeleccionada():
+        """
+        Al hacer clic en una venta en la tabla, carga los detalles de esa venta
+        (propiedad, precio, tipo, localidad, descuento) en los cuadros superiores
+        y bloquea la edición para evitar duplicados.
+        """
+        try:
+            fila = var.ui.tablaVentas.selectedItems()
+            if not fila or len(fila) < 1:
+                return
+
+            idventa = fila[0].text()
+            datos = conexion.Conexion.datosOneVentaJoin(idventa)
+            if not datos:
+                eventos.Eventos.crearMensajeError("Error", "No se pudo recuperar la venta seleccionada.")
+                return
+
+            # Extraer campos
+            id_propiedad = datos[6]
+            tipo = datos[9]
+            direccion = datos[7]
+            localidad = datos[8]
+            precio = datos[10]
+            descuento = datos[5]
+
+            # Asignar a la interfaz
+            var.ui.lblCodigoPropVentas.setText(str(id_propiedad))
+            var.ui.txtTipoPropVentas.setText(str(tipo))
+            var.ui.txtDireccionPropVentas.setText(str(direccion).title())
+            var.ui.txtLocalidadVentas.setText(str(localidad))
+
+            # Precio
+            if precio is not None:
+                var.ui.txtPrecioVentas.setText(f"{float(precio):,.2f} €")
+            else:
+                var.ui.txtPrecioVentas.setText("0.00 €")
+
+            # Descuento
+            if descuento:
+                var.ui.txtDescuento.setText(str(descuento))
+                var.ui.txtDescuento.setReadOnly(True)
+                descuento_valor = round(float(precio) * (float(descuento) / 100), 2)
+                var.ui.txtDescuento_aplicado.setText(f"{descuento_valor:,.2f} €")
+            else:
+                var.ui.txtDescuento.setText("")
+                var.ui.txtDescuento.setReadOnly(True)
+                var.ui.txtDescuento_aplicado.setText("0.00 €")
+
+            # Guardar estado
+            Facturas.current_propiedad = str(id_propiedad)
+            Facturas.current_vendedor = datos[3]
+
+            # 🔒 Desactivar botón de grabar venta para evitar duplicados
+            var.ui.btnGrabarVenta.setEnabled(False)
+
+        except Exception as e:
+            print("Error al cargar detalles de la venta:", e)
 
     @staticmethod
     def cargaVendedorVenta(id):
@@ -220,11 +285,14 @@ class Facturas:
         var.ui.lblNumFactura.setText("")
         var.ui.txtFechaFactura.setText("")
         var.ui.txtDniFactura.setText("")
+        var.ui.txtDescuento.setReadOnly(False)
+        var.ui.btnGrabarVenta.setEnabled(True)
         Facturas.current_factura = None
         Facturas.current_cliente = None
         Facturas.current_vendedor = None
         Facturas.current_propiedad = None
         Facturas.checkDatosFacturas()
+
 
     @staticmethod
     def altaVenta():
@@ -232,26 +300,40 @@ class Facturas:
         Función que graba una venta en la base de datos, devolviendo un mensaje conforme si la operación se ha realizado correctamente o no
         """
         try:
-            precio_texto = var.ui.txtPrecioVentas.text().replace("€", "").strip()
+            # Procesar el precio
+            precio_texto = var.ui.txtPrecioVentas.text().replace("€", "").replace(",", "").strip()
             if not precio_texto:
                 eventos.Eventos.crearMensajeError("Error", "No se ha indicado el precio de la propiedad")
                 return
 
             precio = float(precio_texto)
-            comision = round(precio * 0.10)
-            var.ui.txtComisionVentas_2.setText(f"{comision} €")
 
+            # Procesar el descuento
+            descuento_texto = var.ui.txtDescuento.text().strip()
+            descuento = float(descuento_texto) if descuento_texto else 0.0
+
+            if descuento < 0 or descuento > 100:
+                eventos.Eventos.crearMensajeError("Error", "El descuento debe estar entre 0 y 100")
+                return
+
+            # Calcular precio con descuento
+            precio_descuento = precio * (1 - descuento / 100)
+            var.ui.txtDescuento_aplicado.setText(f"{precio_descuento:.2f} €")
+
+            # Calcular comisión sobre precio con descuento
+            comision = round(precio_descuento * 0.10)
+            var.ui.txtComisionVentas_2.setText(f"{comision} €")
 
             infoVenta = [
                 var.ui.lblNumFactura.text(),
                 Facturas.current_vendedor,
                 Facturas.current_propiedad,
-                var.ui.txtDescuento.text(),
+                descuento,
                 comision
             ]
 
             if conexion.Conexion.grabarVenta(infoVenta):
-                eventos.Eventos.crearMensajeInfo("Informacion", "La venta se ha grabado exitosamente")
+                eventos.Eventos.crearMensajeInfo("Información", "La venta se ha grabado exitosamente")
                 conexion.Conexion.cambiarEstadoPropiedad(Facturas.current_propiedad, 1)
                 propiedades.Propiedades.cargarTablaPropiedades(0)
             else:
@@ -262,6 +344,7 @@ class Facturas:
 
         except Exception as error:
             print('Error altaVenta: %s' % str(error))
+            eventos.Eventos.crearMensajeError("Error", f"Fallo al grabar la venta: {error}")
 
     @staticmethod
     def cargarTablaVentasFactura():
@@ -308,8 +391,8 @@ class Facturas:
     @staticmethod
     def cargarBottomFactura(idFactura):
         """
-        Calcula el subtotal, aplica el descuento antes de impuestos y comisiones,
-        y actualiza los campos visuales de la factura.
+        Calcula correctamente el subtotal con descuentos aplicados,
+        y luego calcula impuestos y comisiones sobre ese subtotal.
         """
         try:
             ventas = conexion.Conexion.cargarTablaVentas(idFactura)
@@ -320,27 +403,27 @@ class Facturas:
                 try:
                     # venta[5] → precio de la propiedad
                     # venta[6] → descuento aplicado (en %)
-                    precio = float(str(venta[5]).replace("€", "").strip())
+                    precio = float(str(venta[5]).replace("€", "").replace(",", "").strip())
                     descuento_pct = float(venta[6]) if venta[6] is not None else 0.0
                     descuento_aplicado = precio * descuento_pct / 100
 
-                    subtotal += precio
+                    precio_final = precio - descuento_aplicado
+                    subtotal += precio_final
                     descuento_total += descuento_aplicado
 
                 except Exception as e:
                     print("Error procesando fila de venta:", venta, e)
 
-            subtotal_con_descuento = subtotal - descuento_total
-            impuestos = subtotal_con_descuento * 0.10
-            comisiones = subtotal_con_descuento * 0.10
-            total = subtotal_con_descuento + impuestos + comisiones
+            impuestos = subtotal * 0.10
+            comisiones = subtotal * 0.10
+            total = subtotal + impuestos + comisiones
 
             # Mostrar en interfaz
-            var.ui.lblSubtotalVentas.setText(f"{subtotal:.2f} €")
-            var.ui.txtDescuento_aplicado.setText(f"{descuento_total:.2f} €")
-            var.ui.lblImpuestosVentas.setText(f"{impuestos:.2f} €")
-            var.ui.txtComisionVentas_2.setText(f"{comisiones:.2f} €")
-            var.ui.lblTotalVentas.setText(f"{total:.2f} €")
+            var.ui.lblSubtotalVentas.setText(f"{subtotal:,.2f} €")
+            var.ui.txtDescuento_aplicado.setText(f"{descuento_total:,.2f} €")
+            var.ui.lblImpuestosVentas.setText(f"{impuestos:,.2f} €")
+            var.ui.txtComisionVentas_2.setText(f"{comisiones:,.2f} €")
+            var.ui.lblTotalVentas.setText(f"{total:,.2f} €")
 
         except Exception as e:
             print("Error al cargar los totales:", e)

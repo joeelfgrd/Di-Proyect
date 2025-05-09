@@ -62,7 +62,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="pClientres">
        <attribute name="title">
@@ -2884,18 +2884,21 @@
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 252, 220);</string>
            </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
           </widget>
           <widget class="QLabel" name="label_28">
            <property name="geometry">
             <rect>
-             <x>240</x>
+             <x>260</x>
              <y>460</y>
-             <width>121</width>
+             <width>111</width>
              <height>20</height>
             </rect>
            </property>
            <property name="text">
-            <string>Precio con descuento</string>
+            <string>Descuento Aplicado</string>
            </property>
           </widget>
          </widget>
@@ -3731,6 +3734,7 @@
     <addaction name="actionListado_Clientes"/>
     <addaction name="actionListado_Propiedades"/>
     <addaction name="actionListado_Vendedores"/>
+    <addaction name="actionListado_Comisiones"/>
    </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuGesti_n"/>
@@ -3858,6 +3862,11 @@
   <action name="actionListado_Vendedores">
    <property name="text">
     <string>Listado Ventas</string>
+   </property>
+  </action>
+  <action name="actionListado_Comisiones">
+   <property name="text">
+    <string>Listado Comisiones</string>
    </property>
   </action>
  </widget>

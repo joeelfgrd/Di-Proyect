@@ -59,6 +59,8 @@ class Main(QtWidgets.QMainWindow):
         var.ui.tablaFacturas.clicked.connect(facturas.Facturas.cargaOneFactura)
         var.ui.tablaContratos.clicked.connect(alquileres.Alquileres.cargarOneContrato)
         var.ui.tablaContratos.clicked.connect(alquileres.Alquileres.cargarTablaMensualidades)
+        var.ui.tablaVentas.clicked.connect(facturas.Facturas.cargarDetallesVentaSeleccionada)
+
 
         '''
         EVENTOS DEL MENUBAR
@@ -75,6 +77,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionListado_Clientes.triggered.connect(informes.Informes.reportClientes)
         var.ui.actionListado_Propiedades.triggered.connect(eventos.Eventos.abrirBuscarLocalidad)
         var.ui.actionListado_Vendedores.triggered.connect(eventos.Eventos.checkFactura)
+        var.ui.actionListado_Comisiones.triggered.connect(informes.Informes.reportComisionesVendedores)
 
         '''
         EVENTOS DE BOTONES

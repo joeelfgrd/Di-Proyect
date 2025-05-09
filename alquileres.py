@@ -1,5 +1,4 @@
 import calendar
-from calendar import Month
 from datetime import datetime
 from PyQt6 import QtWidgets, QtCore, QtGui
 
