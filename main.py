@@ -4,6 +4,7 @@ import alquileres
 import clientes
 import eventos
 import facturas
+import informes
 import styles
 import vendedores
 from venAux import *
@@ -145,6 +146,8 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionbarLimpiar.triggered.connect(eventos.Eventos.limpiarPanel)
         var.ui.actionTipoPropiedad.triggered.connect(eventos.Eventos.abrirTipoProp)
         var.ui.actionBuscar.triggered.connect(propiedades.Propiedades.filtrarPropiedades)
+        var.ui.actionListado_Alquileres.triggered.connect(informes.Informes.reportPropiedadesAlquiladas)
+        var.ui.actionListado_Prop_Vendidas.triggered.connect(informes.Informes.reportPropiedadesVendidas)
 
         '''
         EVENTOS DE CHECKBOX

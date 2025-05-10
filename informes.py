@@ -201,7 +201,8 @@ class Informes:
             var.report.setFont("Helvetica-Bold", size=10)
             for i, item in enumerate(items):
                 var.report.drawString(x_positions[i], 650, item)
-            var.report.line(50, 645, 545, 645)
+            var.report.line(50, 645, 525, 645)
+
 
             # Cuerpo
             y = 630
@@ -326,15 +327,13 @@ class Informes:
             ruta_logo = '.\\img\\icono.png'
             logo = Image.open(ruta_logo)
 
-            # Asegúrate de que el objeto 'logo' sea de tipo 'PngImageFile'
             if isinstance(logo, Image.Image):
                 var.report.line(50, 800, 525, 800)
                 var.report.setFont('Helvetica-Bold', size=14)
                 var.report.drawString(55, 785, 'Inmobiliaria Teis')
-                var.report.drawString(230, 670, titulo)
+                var.report.drawCentredString(297.5, 670, titulo)  # Título centrado
                 var.report.line(50, 665, 525, 665)
 
-                # Dibuja la imagen en el informe
                 var.report.drawImage(ruta_logo, 480, 725, width=40, height=40)
 
                 var.report.setFont('Helvetica', size=9)
@@ -476,3 +475,135 @@ class Informes:
 
         except Exception as e:
             print("Error al generar informe de comisiones por vendedor:", e)
+
+    @staticmethod
+    def reportPropiedadesAlquiladas():
+        """
+        Genera un informe PDF con las propiedades alquiladas incluyendo:
+        código propiedad, nombre del inquilino, fecha de contrato y mensualidad.
+        """
+        try:
+            rootPath = '.\\informes'
+            if not os.path.exists(rootPath):
+                os.makedirs(rootPath)
+
+            fecha = datetime.today().strftime("%Y_%m_%d_%H_%M_%S")
+            nomepdf = f"{fecha}_propiedades_alquiladas.pdf"
+            pdf_path = os.path.join(rootPath, nomepdf)
+
+            var.report = canvas.Canvas(pdf_path)
+            titulo = "Listado de Propiedades Alquiladas"
+            Informes.topInforme(titulo)
+            Informes.footInforme(titulo, 1)
+
+            # Cabecera de tabla
+            var.report.setFont('Helvetica-Bold', size=10)
+            y = 650
+            var.report.drawString(55, y, "Código")
+            var.report.drawString(120, y, "Inquilino")
+            var.report.drawString(280, y, "Fecha Contrato")
+            var.report.drawString(400, y, "Mensualidad (€)")
+            var.report.line(50, y - 5, 525, y - 5)
+
+            # Contenido
+            listado = conexion.Conexion.listadoPropiedadesAlquiladas()
+            y -= 25
+            var.report.setFont('Helvetica', size=9)
+
+            for fila in listado:
+                if y < 90:
+                    var.report.showPage()
+                    Informes.topInforme(titulo)
+                    Informes.footInforme(titulo, 1)
+                    y = 650
+                    var.report.setFont('Helvetica-Bold', size=10)
+                    var.report.drawString(55, y, "Código")
+                    var.report.drawString(120, y, "Inquilino")
+                    var.report.drawString(280, y, "Fecha Contrato")
+                    var.report.drawString(400, y, "Mensualidad (€)")
+                    var.report.line(50, y - 5, 525, y - 5)
+                    y -= 25
+                    var.report.setFont('Helvetica', size=9)
+
+                var.report.drawString(55, y, str(fila[0]))
+                var.report.drawString(120, y, str(fila[1]))
+                var.report.drawString(280, y, str(fila[2]))
+                var.report.drawRightString(480, y, f"{float(fila[3]):,.2f} €")
+                y -= 20
+
+            var.report.save()
+
+            for file in os.listdir(rootPath):
+                if file.endswith(nomepdf):
+                    os.startfile(pdf_path)
+
+        except Exception as e:
+            print("Error al generar informe de propiedades alquiladas:", e)
+
+    @staticmethod
+    def reportPropiedadesVendidas():
+        """
+        Genera un informe PDF con el listado de propiedades vendidas,
+        incluyendo: código, comprador, vendedor, fecha de venta y precio.
+        """
+        try:
+            from datetime import datetime
+            import os
+
+            rootPath = ".\\informes"
+            if not os.path.exists(rootPath):
+                os.makedirs(rootPath)
+
+            fecha = datetime.today().strftime("%Y_%m_%d_%H_%M_%S")
+            nombre_pdf = f"{fecha}_propiedades_vendidas.pdf"
+            pdf_path = os.path.join(rootPath, nombre_pdf)
+
+            var.report = canvas.Canvas(pdf_path)
+            titulo = "Listado de Propiedades Vendidas"
+            Informes.topInforme(titulo)
+            Informes.footInforme(titulo, 1)
+
+            var.report.setFont("Helvetica-Bold", 10)
+            var.report.drawString(55, 650, "Código")
+            var.report.drawString(110, 650, "Comprador")
+            var.report.drawString(260, 650, "Vendedor")
+            var.report.drawString(400, 650, "Fecha Venta")
+            var.report.drawString(480, 650, "Precio (€)")
+            var.report.line(50, 645, 525, 645)
+
+
+            y = 630
+            listado = conexion.Conexion.listadoPropiedadesVendidas()
+            var.report.setFont("Helvetica", 9)
+
+            for fila in listado:
+                if y <= 80:
+                    var.report.showPage()
+                    Informes.topInforme(titulo)
+                    Informes.footInforme(titulo, 1)
+                    var.report.setFont("Helvetica-Bold", 10)
+                    var.report.drawString(55, 650, "Código")
+                    var.report.drawString(110, 650, "Comprador")
+                    var.report.drawString(260, 650, "Vendedor")
+                    var.report.drawString(400, 650, "Fecha Venta")
+                    var.report.drawString(480, 650, "Precio (€)")
+                    var.report.line(50, 645, 525, 645)
+
+                    y = 630
+                    var.report.setFont("Helvetica", 9)
+
+                var.report.drawString(55, y, str(fila[0]))
+                var.report.drawString(110, y, str(fila[1]))
+                var.report.drawString(260, y, str(fila[2]))
+                var.report.drawString(400, y, str(fila[3]))
+                var.report.drawRightString(540, y, f"{float(fila[4]):,.2f} €")
+                y -= 20
+
+            var.report.save()
+
+            for file in os.listdir(rootPath):
+                if file.endswith(nombre_pdf):
+                    os.startfile(pdf_path)
+
+        except Exception as error:
+            print("Error al generar informe de propiedades vendidas:", error)

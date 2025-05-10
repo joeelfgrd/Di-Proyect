@@ -3735,6 +3735,8 @@
     <addaction name="actionListado_Propiedades"/>
     <addaction name="actionListado_Vendedores"/>
     <addaction name="actionListado_Comisiones"/>
+    <addaction name="actionListado_Alquileres"/>
+    <addaction name="actionListado_Prop_Vendidas"/>
    </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuGesti_n"/>
@@ -3867,6 +3869,16 @@
   <action name="actionListado_Comisiones">
    <property name="text">
     <string>Listado Comisiones</string>
+   </property>
+  </action>
+  <action name="actionListado_Alquileres">
+   <property name="text">
+    <string>Listado Alquileres</string>
+   </property>
+  </action>
+  <action name="actionListado_Prop_Vendidas">
+   <property name="text">
+    <string>Listado Prop Vendidas</string>
    </property>
   </action>
  </widget>

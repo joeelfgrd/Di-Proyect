@@ -1053,6 +1053,38 @@ class Conexion:
             return []
 
     @staticmethod
+    def listadoPropiedadesVendidas():
+        """
+        Devuelve un listado de propiedades vendidas con los datos:
+        código_propiedad, comprador, vendedor, fecha_venta y precio_venta.
+        """
+        try:
+            listado = []
+            query = QtSql.QSqlQuery()
+            query.prepare("""
+                SELECT 
+                    p.codigo,
+                    c.nomecli || ' ' || c.apelcli AS comprador,
+                    v.nombreVendedor AS vendedor,
+                    f.fechafac AS fecha_venta,
+                    p.prevenprop AS precio_venta
+                FROM ventas AS vt
+                INNER JOIN propiedades AS p ON vt.codprop = p.codigo
+                INNER JOIN facturas AS f ON vt.facventa = f.id
+                INNER JOIN clientes AS c ON f.dnifac = c.dnicli
+                INNER JOIN vendedores AS v ON vt.agente = v.idVendedo
+                ORDER BY f.fechafac DESC
+            """)
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    listado.append(fila)
+            return listado
+        except Exception as error:
+            print("Error al obtener propiedades vendidas:", error)
+            return []
+
+    @staticmethod
     def datosOneFactura(id):
         """
         :param id: id de la factura
@@ -1321,4 +1353,36 @@ class Conexion:
             return registro
         except Exception as error:
             print("Error al obtener mensualidad por id: ", error)
+            return []
+
+    @staticmethod
+    def listadoPropiedadesAlquiladas():
+        """
+        :return: listado de propiedades alquiladas con código, inquilino, fecha contrato y mensualidad
+        :rtype: list
+
+        Obtiene los datos de propiedades alquiladas para generar informe.
+        """
+        try:
+            listado = []
+            query = QtSql.QSqlQuery()
+            query.prepare("""
+                SELECT 
+                    p.codigo, 
+                    c.nomecli || ' ' || c.apelcli AS inquilino,
+                    a.fechaInicio,
+                    a.precioAlquiler
+                FROM alquileres a
+                JOIN clientes c ON c.dnicli = a.clienteDNI
+                JOIN propiedades p ON p.codigo = a.idPropiedad
+            """)
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    listado.append(fila)
+            else:
+                print("Error SQL en listadoPropiedadesAlquiladas:", query.lastError().text())
+            return listado
+        except Exception as error:
+            print("Error al recuperar el listado de propiedades alquiladas:", error)
             return []
