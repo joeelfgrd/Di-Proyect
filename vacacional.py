@@ -24,12 +24,10 @@ class Vacacional:
                 eventos.Eventos.crearMensajeError("Error", "Todos los campos obligatorios deben estar cubiertos")
                 return
 
-            # ✅ Comprobar si la propiedad está disponible
             if not conexion.Conexion.propiedadDisponibleParaVacacional(id_prop):
                 eventos.Eventos.crearMensajeError("Error", "La propiedad no está disponible para alquiler vacacional")
                 return
 
-            # ✅ Comprobar rango de fechas
             dias = Vacacional.calcularDias(fecha_inicio, fecha_fin)
             subtotal = dias * float(precio_dia) + float(gastos_limpieza or 0.0)
             precio_total = round(subtotal * 1.21, 2)  # Incluye IVA
@@ -45,12 +43,11 @@ class Vacacional:
                 var.ui.chkCocina.isChecked(),
                 var.ui.chkTV.isChecked(),
                 id_agente,
-                precio_total,  # Con IVA incluido
+                precio_total,
                 dias
             ]
 
             if conexion.Conexion.grabarAlquilerVacacional(info):
-                # ✅ Marcar propiedad como 'Alquilado'
                 conexion.Conexion.cambiarEstadoPropiedad(id_prop, 2)
                 eventos.Eventos.crearMensajeInfo("Correcto", "El alquiler vacacional se ha registrado correctamente")
                 Vacacional.cargarTablaVacacional()
@@ -140,7 +137,6 @@ class Vacacional:
                     item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                     var.ui.tablaVacacional.setItem(index, col, item)
 
-            # Activar o desactivar botones de paginación
             var.ui.btnAnteriorVacacional.setEnabled(var.rowsVacacional > 10)
             var.ui.btnSiguienteVacacional.setEnabled(len(datos) == 10)
 
@@ -184,7 +180,6 @@ class Vacacional:
             var.ui.txtApelClieVacacional.setText(str(datos["apelcli"]))
             var.ui.txtNomCliVacacional.setText(str(datos["nomecli"]))
 
-            # Cargar datos extra de la propiedad
             propiedad = conexion.Conexion.datosOnePropiedad(datos["idPropiedad"])
             if propiedad:
                 var.ui.txtTipoPropVacacional.setText(str(propiedad[7]))
@@ -208,7 +203,6 @@ class Vacacional:
                 eventos.Eventos.crearMensajeError("Error", "No se pudo recuperar la información del alquiler")
                 return
 
-            # Calcular factura correctamente
             subtotal = float(datos['precio_total'])
             iva = subtotal * 0.21
             total = subtotal + iva
@@ -218,7 +212,7 @@ class Vacacional:
                 'cliente': datos['cliente'],
                 'dni': datos['dni'],
                 'direccion': datos['direccion'],
-                'propiedad': datos['propiedad'],  # ✅ AÑADIDO AQUÍ
+                'propiedad': datos['propiedad'],
                 'fechaEntrada': datos['fechaEntrada'],
                 'fechaSalida': datos['fechaSalida'],
                 'dias': datos['dias'],

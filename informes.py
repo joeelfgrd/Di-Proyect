@@ -625,7 +625,6 @@ class Informes:
             pdf_path = os.path.join(rootPath, nombre_pdf)
             var.report = canvas.Canvas(pdf_path, pagesize=A4)
 
-            # Título y estructura base
             titulo = f"Factura Vacacional Nº {factura['id']}"
             Informes.topInforme(titulo)
             Informes.footInforme(titulo, 1)
@@ -634,7 +633,6 @@ class Informes:
             var.report.setFont("Helvetica-Bold", 9)
             var.report.drawString(55, 695, f"Cliente: {factura['cliente']}")
 
-            # Cabecera de tabla
             var.report.setFont("Helvetica-Bold", 10)
             y = 650
             var.report.drawString(55, y, "Propiedad")
@@ -645,7 +643,6 @@ class Informes:
             var.report.drawString(500, y, "Subtotal")
             var.report.line(50, y - 5, 550, y - 5)
 
-            # Datos del alquiler
             var.report.setFont("Helvetica", 9)
             y -= 20
             var.report.drawString(55, y, str(factura['propiedad']))
@@ -655,7 +652,6 @@ class Informes:
             var.report.drawRightString(470, y, f"{float(factura['precioDia']):,.2f} €")
             var.report.drawRightString(545, y, f"{float(factura['subtotal']):,.2f} €")
 
-            # Extras incluidos
             y -= 30
             extras = [k.capitalize() for k, v in factura['extras'].items() if v]
             extras_str = ", ".join(extras) if extras else "Ninguno"
@@ -680,7 +676,6 @@ class Informes:
 
             var.report.save()
 
-            # Abrir automáticamente
             for file in os.listdir(rootPath):
                 if file.endswith(nombre_pdf):
                     os.startfile(pdf_path)
