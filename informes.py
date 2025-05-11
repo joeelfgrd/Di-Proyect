@@ -7,6 +7,7 @@ from PIL import Image
 import os
 
 import conexion
+import eventos
 import var
 
 
@@ -607,3 +608,88 @@ class Informes:
 
         except Exception as error:
             print("Error al generar informe de propiedades vendidas:", error)
+
+    @staticmethod
+    def reportFacturaVacacional(factura):
+        try:
+            from reportlab.pdfgen import canvas
+            from reportlab.lib.pagesizes import A4
+            import os
+
+            rootPath = '.\\informes'
+            if not os.path.exists(rootPath):
+                os.makedirs(rootPath)
+
+            fecha = datetime.today().strftime('%Y_%m_%d_%H_%M_%S')
+            nombre_pdf = f"{fecha}_factura_vacacional_{factura['id']}.pdf"
+            pdf_path = os.path.join(rootPath, nombre_pdf)
+            var.report = canvas.Canvas(pdf_path, pagesize=A4)
+
+            # Título y estructura base
+            titulo = f"Factura Vacacional Nº {factura['id']}"
+            Informes.topInforme(titulo)
+            Informes.footInforme(titulo, 1)
+
+            # Cliente
+            var.report.setFont("Helvetica-Bold", 9)
+            var.report.drawString(55, 695, f"Cliente: {factura['cliente']}")
+
+            # Cabecera de tabla
+            var.report.setFont("Helvetica-Bold", 10)
+            y = 650
+            var.report.drawString(55, y, "Propiedad")
+            var.report.drawString(230, y, "Entrada")
+            var.report.drawString(300, y, "Salida")
+            var.report.drawString(370, y, "Días")
+            var.report.drawString(420, y, "Precio/Día")
+            var.report.drawString(500, y, "Subtotal")
+            var.report.line(50, y - 5, 550, y - 5)
+
+            # Datos del alquiler
+            var.report.setFont("Helvetica", 9)
+            y -= 20
+            var.report.drawString(55, y, str(factura['propiedad']))
+            var.report.drawString(230, y, str(factura['fechaEntrada']))
+            var.report.drawString(300, y, str(factura['fechaSalida']))
+            var.report.drawRightString(395, y, str(factura['dias']))
+            var.report.drawRightString(470, y, f"{float(factura['precioDia']):,.2f} €")
+            var.report.drawRightString(545, y, f"{float(factura['subtotal']):,.2f} €")
+
+            # Extras incluidos
+            y -= 30
+            extras = [k.capitalize() for k, v in factura['extras'].items() if v]
+            extras_str = ", ".join(extras) if extras else "Ninguno"
+            var.report.setFont("Helvetica-Oblique", 9)
+            var.report.drawString(55, y, f"Extras incluidos: {extras_str}")
+
+            # Totales (abajo a la derecha)
+            y = 200
+            x_label = 450
+            x_value = 545
+            var.report.setFont("Helvetica-Bold", 10)
+            var.report.drawRightString(x_label, y, "Subtotal:")
+            var.report.drawRightString(x_value, y, f"{float(factura['subtotal']):,.2f} €")
+
+            y -= 20
+            var.report.drawRightString(x_label, y, "IVA (21%):")
+            var.report.drawRightString(x_value, y, f"{float(factura['iva']):,.2f} €")
+
+            y -= 20
+            var.report.drawRightString(x_label, y, "Total factura:")
+            var.report.drawRightString(x_value, y, f"{float(factura['total']):,.2f} €")
+
+            var.report.save()
+
+            # Abrir automáticamente
+            for file in os.listdir(rootPath):
+                if file.endswith(nombre_pdf):
+                    os.startfile(pdf_path)
+
+        except Exception as e:
+            print("Error al generar informe PDF vacacional:", e)
+
+
+
+
+
+

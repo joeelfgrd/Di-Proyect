@@ -178,6 +178,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnFechaFinVacacional.clicked.connect(lambda: eventos.Eventos.abrirCalendar(10))
         var.ui.tablaVacacional.clicked.connect(vacacional.Vacacional.limpiarFormulario)
         var.ui.tablaVacacional.clicked.connect(vacacional.Vacacional.cargarOneAlquilerVacacional)
+        var.ui.btnInformeVacacional.clicked.connect(vacacional.Vacacional.generarFacturaVacacional)
 
 
 if __name__ == '__main__':

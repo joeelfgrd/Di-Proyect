@@ -3,6 +3,7 @@ from datetime import datetime
 from PyQt6 import QtWidgets, QtCore
 import conexion
 import eventos
+import informes
 import propiedades
 import var
 
@@ -30,7 +31,8 @@ class Vacacional:
 
             # ✅ Comprobar rango de fechas
             dias = Vacacional.calcularDias(fecha_inicio, fecha_fin)
-            precio_total = dias * float(precio_dia) + float(gastos_limpieza or 0.0)
+            subtotal = dias * float(precio_dia) + float(gastos_limpieza or 0.0)
+            precio_total = round(subtotal * 1.21, 2)  # Incluye IVA
 
             info = [
                 id_prop,
@@ -43,8 +45,8 @@ class Vacacional:
                 var.ui.chkCocina.isChecked(),
                 var.ui.chkTV.isChecked(),
                 id_agente,
-                precio_total,  # nuevo campo
-                dias  # nuevo campo
+                precio_total,  # Con IVA incluido
+                dias
             ]
 
             if conexion.Conexion.grabarAlquilerVacacional(info):
@@ -191,6 +193,49 @@ class Vacacional:
 
         except Exception as e:
             print("Error al cargar datos de alquiler vacacional:", e)
+
+    @staticmethod
+    def generarFacturaVacacional():
+        try:
+            fila = var.ui.tablaVacacional.currentRow()
+            if fila == -1:
+                eventos.Eventos.crearMensajeError("Error", "Debes seleccionar un alquiler vacacional")
+                return
+
+            id_alquiler = var.ui.tablaVacacional.item(fila, 0).text()
+            datos = conexion.Conexion.datosAlquilerVacacional(id_alquiler)
+            if not datos:
+                eventos.Eventos.crearMensajeError("Error", "No se pudo recuperar la información del alquiler")
+                return
+
+            # Calcular factura correctamente
+            subtotal = float(datos['precio_total'])
+            iva = subtotal * 0.21
+            total = subtotal + iva
+
+            factura = {
+                'id': datos['id'],
+                'cliente': datos['cliente'],
+                'dni': datos['dni'],
+                'direccion': datos['direccion'],
+                'propiedad': datos['propiedad'],  # ✅ AÑADIDO AQUÍ
+                'fechaEntrada': datos['fechaEntrada'],
+                'fechaSalida': datos['fechaSalida'],
+                'dias': datos['dias'],
+                'precioDia': datos['precioDia'],
+                'gastosLimpieza': datos['gastosLimpieza'],
+                'extras': datos['extras'],
+                'subtotal': subtotal,
+                'iva': iva,
+                'total': total
+            }
+
+            informes.Informes.reportFacturaVacacional(factura)
+
+        except Exception as e:
+            print("Error al generar factura vacacional:", e)
+
+
 
 
 

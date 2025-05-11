@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b138e9cf-b85a-43cb-9048-15798344b753" name="Changes" comment="feat:ya se ven los datos de vacacional en la tabla">
+    <list default="true" id="b138e9cf-b85a-43cb-9048-15798344b753" name="Changes" comment="feat:solo falta el informe de vacacional">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conexion.py" beforeDir="false" afterPath="$PROJECT_DIR$/conexion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/informes.py" beforeDir="false" afterPath="$PROJECT_DIR$/informes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/venPrincipal.ui" beforeDir="false" afterPath="$PROJECT_DIR$/templates/venPrincipal.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vacacional.py" beforeDir="false" afterPath="$PROJECT_DIR$/vacacional.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/var.py" beforeDir="false" afterPath="$PROJECT_DIR$/var.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venPrincipal.py" beforeDir="false" afterPath="$PROJECT_DIR$/venPrincipal.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -251,7 +251,7 @@
       <workItem from="1746894870019" duration="998000" />
       <workItem from="1746910704102" duration="4034000" />
       <workItem from="1746917325670" duration="23000" />
-      <workItem from="1746983328736" duration="14395000" />
+      <workItem from="1746983328736" duration="17009000" />
     </task>
     <task id="LOCAL-00001" summary="feat():delete button">
       <option name="closed" value="true" />
@@ -309,7 +309,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747003665575</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="feat:solo falta el informe de vacacional">
+      <option name="closed" value="true" />
+      <created>1747005034170</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1747005034170</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -333,7 +341,8 @@
     <MESSAGE value="feat:creados ejercicios marzo" />
     <MESSAGE value="feat:creado panel vacacional con funcion de guardar en bbdd" />
     <MESSAGE value="feat:ya se ven los datos de vacacional en la tabla" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat:ya se ven los datos de vacacional en la tabla" />
+    <MESSAGE value="feat:solo falta el informe de vacacional" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat:solo falta el informe de vacacional" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/proyecto$main.coverage" NAME="main Coverage Results" MODIFIED="1743672277182" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -341,7 +350,7 @@
     <SUITE FILE_PATH="coverage/Di_Proyect$propiedades.coverage" NAME="propiedades Coverage Results" MODIFIED="1733841921604" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$eventos.coverage" NAME="eventos Coverage Results" MODIFIED="1728370697828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$main.coverage" NAME="main Coverage Results" MODIFIED="1730796540113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/Di_Proyect$main.coverage" NAME="main Coverage Results" MODIFIED="1747004650539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Di_Proyect$main.coverage" NAME="main Coverage Results" MODIFIED="1747007439837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Di_Proyect$conexion.coverage" NAME="conexion Coverage Results" MODIFIED="1737362527618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Di_Proyect$facturas.coverage" NAME="facturas Coverage Results" MODIFIED="1746821608740" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$kill.coverage" NAME="kill Coverage Results" MODIFIED="1729064725726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Y:/0_COMUN" />

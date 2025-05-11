@@ -1524,3 +1524,48 @@ class Conexion:
         except Exception as e:
             print("Error en datosOneAlquilerVacacional:", e)
             return None
+
+    @staticmethod
+    def datosAlquilerVacacional(id):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("""
+                SELECT 
+                    av.*, 
+                    c.apelcli || ' ' || c.nomecli AS cliente, 
+                    c.dnicli AS dni,
+                    p.dirprop AS direccion,
+                    p.codigo AS codigoProp,
+                    p.tipoprop AS tipoProp,
+                    p.muniprop AS localidad
+                FROM alquileres_vacacionales av
+                JOIN clientes c ON av.dniCliente = c.dnicli
+                JOIN propiedades p ON av.idPropiedad = p.codigo
+                WHERE av.id = :id
+            """)
+            query.bindValue(":id", id)
+            if query.exec() and query.next():
+                return {
+                    'id': query.value("id"),
+                    'cliente': query.value("cliente"),
+                    'dni': query.value("dni"),
+                    'direccion': query.value("direccion"),
+                    'propiedad': f"{query.value('codigoProp')} - {query.value('tipoProp')} ({query.value('localidad')})",
+                    'fechaEntrada': query.value("fechaEntrada"),
+                    'fechaSalida': query.value("fechaSalida"),
+                    'dias': query.value("dias"),
+                    'precioDia': query.value("precioDia"),
+                    'gastosLimpieza': query.value("gastosLimpieza"),
+                    'precio_total': query.value("precio_total"),
+                    'extras': {
+                        'wifi': query.value("wifi"),
+                        'tv': query.value("tv"),
+                        'cocina': query.value("cocina")
+                    }
+                }
+            return None
+        except Exception as e:
+            print("Error en datosAlquilerVacacional:", e)
+            return None
+
+
