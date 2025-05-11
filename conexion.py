@@ -1439,4 +1439,38 @@ class Conexion:
             print("Error al verificar disponibilidad vacacional:", e)
             return False
 
+    @staticmethod
+    def cargarTablaVacacional():
+        """
+        Devuelve todos los registros de alquileres vacacionales con nombre del cliente y precio total.
+        """
+        try:
+            datos = []
+            query = QtSql.QSqlQuery()
+            query.prepare("""
+                SELECT 
+                    a.id, 
+                    c.apelcli || ' ' || c.nomecli AS inquilino,
+                    a.fechaEntrada, 
+                    a.fechaSalida, 
+                    a.precio_total
+                FROM alquileres_vacacionales a
+                JOIN clientes c ON a.dniCliente = c.dnicli
+                ORDER BY a.id DESC
+            """)
+            if query.exec():
+                while query.next():
+                    fila = [
+                        query.value(0),
+                        query.value(1),
+                        query.value(2),
+                        query.value(3),
+                        query.value(4)
+                    ]
+                    datos.append(fila)
+            return datos
+        except Exception as e:
+            print("Error al cargar alquileres vacacionales:", e)
+            return []
+
 

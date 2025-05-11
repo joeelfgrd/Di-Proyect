@@ -307,6 +307,19 @@ class Eventos():
             print("error en resize tabla clientes: ", e)
 
     @staticmethod
+    def resizeTablaVacacional():
+        try:
+            header = var.ui.tablaVacacional.horizontalHeader()
+            for i in range(header.count()):
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+                header_item = var.ui.tablaVacacional.horizontalHeaderItem(i)
+                font = header_item.font()
+                font.setBold(True)
+                header_item.setFont(font)
+        except Exception as e:
+            print("Error en resize tabla vacacional:", e)
+
+    @staticmethod
     def crearBackup():
         try:
             fecha = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')

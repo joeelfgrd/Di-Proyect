@@ -1,6 +1,6 @@
 from datetime import datetime
-from PyQt6 import QtWidgets
 
+from PyQt6 import QtWidgets, QtCore
 import conexion
 import eventos
 import propiedades
@@ -51,6 +51,7 @@ class Vacacional:
                 # ✅ Marcar propiedad como 'Alquilado'
                 conexion.Conexion.cambiarEstadoPropiedad(id_prop, 2)
                 eventos.Eventos.crearMensajeInfo("Correcto", "El alquiler vacacional se ha registrado correctamente")
+                Vacacional.cargarTablaVacacional()
                 Vacacional.limpiarFormulario()
             else:
                 eventos.Eventos.crearMensajeError("Error", "No se pudo guardar el alquiler")
@@ -96,12 +97,45 @@ class Vacacional:
             print("Error al cargar cliente en vacacional:", e)
 
     @staticmethod
-    def cargarPropiedadVacacional(propiedad):
+    def cargarPropiedadVacacional():
         try:
-            var.ui.lblCodigoPropVacacional.setText(str(propiedad[0]))
-            var.ui.txtTipoPropVacacional.setText(str(propiedad[7]))
-            var.ui.txtPrecioVacacional.setText(str(propiedad[10]))
-            var.ui.txtDireccionPropVacacional.setText(str(propiedad[4]))
-            var.ui.txtLocalidadVacacional.setText(str(propiedad[6]))
+            fila = var.ui.tablaPropiedades.selectedItems()
+            if not fila or len(fila) < 1:
+                return
+
+            id_prop = fila[0].text()
+            datos = conexion.Conexion.datosOnePropiedad(id_prop)
+            if not datos:
+                return
+
+            var.ui.lblCodigoPropVacacional.setText(str(datos[0]))
+            var.ui.txtTipoPropVacacional.setText(str(datos[7]))
+
+            precio_mensual = datos[10]
+            if precio_mensual:
+                precio_dia = round(float(precio_mensual) / 30, 2)
+                var.ui.txtPrecioVacacional.setText(f"{precio_dia:.2f}")
+            else:
+                var.ui.txtPrecioVacacional.setText("")
+
+            var.ui.txtDireccionPropVacacional.setText(str(datos[4]))
+            var.ui.txtLocalidadVacacional.setText(str(datos[6]))
+
         except Exception as e:
             print("Error al cargar propiedad vacacional:", e)
+
+    @staticmethod
+    def cargarTablaVacacional():
+        try:
+            datos = conexion.Conexion.cargarTablaVacacional()
+            var.ui.tablaVacacional.setRowCount(len(datos))
+
+            for row_idx, fila in enumerate(datos):
+                for col_idx, valor in enumerate(fila):
+                    item = QtWidgets.QTableWidgetItem(str(valor))
+                    item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                    var.ui.tablaVacacional.setItem(row_idx, col_idx, item)
+
+        except Exception as e:
+            print("Error al cargar tabla vacacional:", e)
+

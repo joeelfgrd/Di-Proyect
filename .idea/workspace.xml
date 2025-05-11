@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b138e9cf-b85a-43cb-9048-15798344b753" name="Changes" comment="feat:creados ejercicios marzo">
-      <change afterPath="$PROJECT_DIR$/vacacional.py" afterDir="false" />
+    <list default="true" id="b138e9cf-b85a-43cb-9048-15798344b753" name="Changes" comment="feat:creado panel vacacional con funcion de guardar en bbdd">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bbdd.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/bbdd.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clientes.py" beforeDir="false" afterPath="$PROJECT_DIR$/clientes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conexion.py" beforeDir="false" afterPath="$PROJECT_DIR$/conexion.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eventos.py" beforeDir="false" afterPath="$PROJECT_DIR$/eventos.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propiedades.py" beforeDir="false" afterPath="$PROJECT_DIR$/propiedades.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/venPrincipal.ui" beforeDir="false" afterPath="$PROJECT_DIR$/templates/venPrincipal.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venPrincipal.py" beforeDir="false" afterPath="$PROJECT_DIR$/venPrincipal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendedores.py" beforeDir="false" afterPath="$PROJECT_DIR$/vendedores.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vacacional.py" beforeDir="false" afterPath="$PROJECT_DIR$/vacacional.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,7 +249,7 @@
       <workItem from="1746894870019" duration="998000" />
       <workItem from="1746910704102" duration="4034000" />
       <workItem from="1746917325670" duration="23000" />
-      <workItem from="1746983328736" duration="12264000" />
+      <workItem from="1746983328736" duration="12913000" />
     </task>
     <task id="LOCAL-00001" summary="feat():delete button">
       <option name="closed" value="true" />
@@ -297,7 +291,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746913996834</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="feat:creado panel vacacional con funcion de guardar en bbdd">
+      <option name="closed" value="true" />
+      <created>1747002934996</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1747002934996</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,18 +321,8 @@
     <MESSAGE value="feat():examen 1 evaluacion" />
     <MESSAGE value="feat():creado .exe" />
     <MESSAGE value="feat:creados ejercicios marzo" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat:creados ejercicios marzo" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/vacacional.py</url>
-          <line>31</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="feat:creado panel vacacional con funcion de guardar en bbdd" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat:creado panel vacacional con funcion de guardar en bbdd" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/proyecto$main.coverage" NAME="main Coverage Results" MODIFIED="1743672277182" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -338,7 +330,7 @@
     <SUITE FILE_PATH="coverage/Di_Proyect$propiedades.coverage" NAME="propiedades Coverage Results" MODIFIED="1733841921604" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$eventos.coverage" NAME="eventos Coverage Results" MODIFIED="1728370697828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$main.coverage" NAME="main Coverage Results" MODIFIED="1730796540113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/Di_Proyect$main.coverage" NAME="main Coverage Results" MODIFIED="1747002768773" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Di_Proyect$main.coverage" NAME="main Coverage Results" MODIFIED="1747003431590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Di_Proyect$conexion.coverage" NAME="conexion Coverage Results" MODIFIED="1737362527618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Di_Proyect$facturas.coverage" NAME="facturas Coverage Results" MODIFIED="1746821608740" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/figueiridomolares$kill.coverage" NAME="kill Coverage Results" MODIFIED="1729064725726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Y:/0_COMUN" />

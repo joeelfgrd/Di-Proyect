@@ -48,6 +48,7 @@ class Main(QtWidgets.QMainWindow):
         vendedores.Vendedores.cargarTablaVendedores()
         facturas.Facturas.cargarTablaFacturas()
         alquileres.Alquileres.cargarTablaAlquileres()
+        vacacional.Vacacional.cargarTablaVacacional()
         eventos.Eventos.resizeTablaClientes()
         eventos.Eventos.resizeTablaPropiedades()
         eventos.Eventos.resizeTablaVendedores()
@@ -55,6 +56,7 @@ class Main(QtWidgets.QMainWindow):
         eventos.Eventos.resizeTablaMensualidades()
         eventos.Eventos.resizeTablaVentas()
         eventos.Eventos.resizeTablaContratos()
+        eventos.Eventos.resizeTablaVacacional()
         var.ui.tablaClientes.clicked.connect(clientes.Clientes.cargaOneCliente)
         var.ui.tablaPropiedades.clicked.connect(propiedades.Propiedades.cargaOnePropiedad)
         var.ui.tablaPropiedades.clicked.connect(propiedades.Propiedades.cargarPropiedadParaVacacional)
@@ -171,6 +173,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnFechaInicioVacacional.clicked.connect(lambda: eventos.Eventos.abrirCalendar(9))
         var.ui.btnFechaFinVacacional.clicked.connect(lambda: eventos.Eventos.abrirCalendar(10))
         var.ui.tablaVacacional.clicked.connect(vacacional.Vacacional.limpiarFormulario)
+
 
 
 if __name__ == '__main__':
