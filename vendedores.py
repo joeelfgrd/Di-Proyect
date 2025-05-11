@@ -94,6 +94,11 @@ class Vendedores:
                 else:
                     listado[i].setText(registro[i])
             facturas.Facturas.cargaVendedorVenta(var.ui.txtIdVend.text())
+            # También cargar el ID del vendedor en el panel vacacional
+            try:
+                var.ui.txtVendedorVacacional.setText(var.ui.txtIdVend.text())
+            except Exception as ex:
+                print("Error al cargar vendedor en panel vacacional:", ex)
 
             var.ui.txtVendedorContrato.setText(var.ui.txtIdVend.text())
 

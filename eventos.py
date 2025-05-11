@@ -147,6 +147,10 @@ class Eventos():
                 var.ui.txtFechaInicioMensualidad.setText(str(data))
             elif var.btn == 8:
                 var.ui.txtFechaFinMensualidad.setText(str(data))
+            elif var.btn == 9:
+                var.ui.txtFechaInicioVacacional.setText(str(data))
+            elif var.btn == 10:
+                var.ui.txtFechaFinVacacional.setText(str(data))
             time.sleep(0.125)
             var.uicalendar.hide()
             return data
@@ -439,6 +443,22 @@ class Eventos():
 
         for i, dato in enumerate(objetosPanelContratos):
             dato.setText("")
+
+        # BORRAR PANEL VACACIONAL
+        camposVacacional = [
+            var.ui.lblCodigoPropVacacional, var.ui.txtTipoPropVacacional, var.ui.txtPrecioVacacional,
+            var.ui.txtDireccionPropVacacional, var.ui.txtLocalidadVacacional,
+            var.ui.txtApelClieVacacional, var.ui.txtNomCliVacacional,
+            var.ui.txtVendedorVacacional, var.ui.txtFechaInicioVacacional,
+            var.ui.txtFechaFinVacacional, var.ui.txtGastosLimpiezaVacacional
+        ]
+
+        for campo in camposVacacional:
+            campo.setText("")
+
+        var.ui.chkWifi.setChecked(False)
+        var.ui.chkCocina.setChecked(False)
+        var.ui.chkTV.setChecked(False)
 
     @staticmethod
     def abrirTipoProp():

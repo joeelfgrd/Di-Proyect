@@ -376,3 +376,20 @@ class Clientes:
 
         except Exception as e:
             print("Error cargar Clientes por dni", e)
+
+    @staticmethod
+    def cargarClienteVacacional():
+        try:
+            fila = var.ui.tablaClientes.selectedItems()
+            if not fila:
+                return
+
+            dni = fila[0].text()
+            cliente = conexion.Conexion.datosOneCliente(dni)
+
+            if cliente:
+                var.ui.txtApelClieVacacional.setText(cliente[2])
+                var.ui.txtNomCliVacacional.setText(cliente[3])
+                var.ui.txtDniFactura.setText(cliente[0])  # Reutilizado desde facturas
+        except Exception as e:
+            print("Error al cargar cliente en vacacional:", e)

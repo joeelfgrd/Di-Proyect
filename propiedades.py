@@ -178,6 +178,7 @@ class Propiedades():
                         var.ui.txtCpPro, var.ui.artxtDescripcionPro, var.ui.cbxAlquilerPro,
                         var.ui.rbtnDisponiblePro, var.ui.txtPropietarioPro, var.ui.txtMovilPro]
 
+
             for i, casilla in enumerate(listado):
                 if isinstance(casilla, QtWidgets.QComboBox):
                     casilla.setCurrentText(str(registro[i]))
@@ -190,7 +191,7 @@ class Propiedades():
                         var.ui.cbxVentaPro.setChecked(True)
                     else:
                         var.ui.cbxVentaPro.setChecked(False)
-                    if ("Intercambio") in registro[i]:
+                    if ("Vacacional") in registro[i]:
                         var.ui.cbxIntercambioPro.setChecked(True)
                     else:
                         var.ui.cbxIntercambioPro.setChecked(False)
@@ -455,3 +456,34 @@ class Propiedades():
                 var.ui.rbtnAlquiladoPro.setChecked(False)
                 var.ui.rbtnVendidoPro.setEnabled(True)
                 var.ui.rbtnVendidoPro.setChecked(True)
+
+    @staticmethod
+    def cargarPropiedadParaVacacional():
+        """
+        Carga la propiedad seleccionada en el panel vacacional,
+        incluyendo el cálculo del precio por día (precio mensual / 30).
+        """
+        try:
+            fila = var.ui.tablaPropiedades.selectedItems()
+            if not fila:
+                return
+            datos = [dato.text() for dato in fila]
+            registro = conexion.Conexion.datosOnePropiedad(str(datos[0]))
+
+            # Cargar campos relevantes en el panel vacacional
+            var.ui.lblCodigoPropVacacional.setText(str(registro[0]))
+            var.ui.txtTipoPropVacacional.setText(str(registro[7]))
+            var.ui.txtDireccionPropVacacional.setText(str(registro[4]))
+            var.ui.txtLocalidadVacacional.setText(str(registro[6]))
+
+            # Calcular precio por día (precio mensual / 30)
+            try:
+                precio_mensual = float(registro[10]) if registro[10] else 0.0
+                precio_diario = round(precio_mensual / 30, 2)
+                var.ui.txtPrecioVacacional.setText(f"{precio_diario:.2f}")
+            except Exception as e:
+                print("Error al calcular el precio por día:", e)
+                var.ui.txtPrecioVacacional.setText("0.00")
+
+        except Exception as e:
+            print("Error al cargar propiedad para vacacional:", e)

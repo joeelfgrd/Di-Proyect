@@ -6,6 +6,7 @@ import eventos
 import facturas
 import informes
 import styles
+import vacacional
 import vendedores
 from venAux import *
 from venPrincipal import *
@@ -56,12 +57,13 @@ class Main(QtWidgets.QMainWindow):
         eventos.Eventos.resizeTablaContratos()
         var.ui.tablaClientes.clicked.connect(clientes.Clientes.cargaOneCliente)
         var.ui.tablaPropiedades.clicked.connect(propiedades.Propiedades.cargaOnePropiedad)
+        var.ui.tablaPropiedades.clicked.connect(propiedades.Propiedades.cargarPropiedadParaVacacional)
         var.ui.tablaVendedores.clicked.connect(vendedores.Vendedores.cargarOneVendedor)
         var.ui.tablaFacturas.clicked.connect(facturas.Facturas.cargaOneFactura)
         var.ui.tablaContratos.clicked.connect(alquileres.Alquileres.cargarOneContrato)
         var.ui.tablaContratos.clicked.connect(alquileres.Alquileres.cargarTablaMensualidades)
         var.ui.tablaVentas.clicked.connect(facturas.Facturas.cargarDetallesVentaSeleccionada)
-
+        var.ui.tablaClientes.clicked.connect(clientes.Clientes.cargarClienteVacacional)
 
         '''
         EVENTOS DEL MENUBAR
@@ -158,6 +160,17 @@ class Main(QtWidgets.QMainWindow):
         var.ui.chkHistoricoVend.stateChanged.connect(vendedores.Vendedores.historicoVend)
         var.ui.chkHistoricoMensualidades.stateChanged.connect(alquileres.Alquileres.cargarTablaMensualidades)
 
+        '''
+        EVENTOS DE VACACIONAL
+        '''
+        # BOTONES VACACIONAL
+        var.ui.btnGrabarVacacional.clicked.connect(vacacional.Vacacional.grabarAlquiler)
+        var.ui.tablaVacacional.clicked.connect(vacacional.Vacacional.cargarPropiedadVacacional)
+        var.ui.tablaVacacional.clicked.connect(vacacional.Vacacional.cargarClienteDesdeFactura)
+
+        var.ui.btnFechaInicioVacacional.clicked.connect(lambda: eventos.Eventos.abrirCalendar(9))
+        var.ui.btnFechaFinVacacional.clicked.connect(lambda: eventos.Eventos.abrirCalendar(10))
+        var.ui.tablaVacacional.clicked.connect(vacacional.Vacacional.limpiarFormulario)
 
 
 if __name__ == '__main__':

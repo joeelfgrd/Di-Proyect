@@ -1386,3 +1386,57 @@ class Conexion:
         except Exception as error:
             print("Error al recuperar el listado de propiedades alquiladas:", error)
             return []
+
+    @staticmethod
+    def grabarAlquilerVacacional(info):
+        """
+        Graba un nuevo alquiler vacacional en la base de datos.
+        :param info: lista con los datos del alquiler
+        :return: True si se graba correctamente
+        """
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("""
+                INSERT INTO alquileres_vacacionales
+                (idPropiedad, dniCliente, fechaEntrada, fechaSalida, precioDia,
+                 gastosLimpieza, wifi, cocina, tv, disponible, idAgente, precio_total, dias)
+                VALUES (:idPropiedad, :dniCliente, :fechaEntrada, :fechaSalida, :precioDia,
+                        :gastosLimpieza, :wifi, :cocina, :tv, :disponible, :idAgente, :precio_total, :dias)
+            """)
+            query.bindValue(":idPropiedad", info[0])
+            query.bindValue(":dniCliente", info[1])
+            query.bindValue(":fechaEntrada", info[2])
+            query.bindValue(":fechaSalida", info[3])
+            query.bindValue(":precioDia", info[4])
+            query.bindValue(":gastosLimpieza", info[5])
+            query.bindValue(":wifi", 1 if info[6] else 0)
+            query.bindValue(":cocina", 1 if info[7] else 0)
+            query.bindValue(":tv", 1 if info[8] else 0)
+            query.bindValue(":disponible", 1)
+            query.bindValue(":idAgente", info[9])
+            query.bindValue(":precio_total", info[10])  # nuevo campo
+            query.bindValue(":dias", info[11])  # nuevo campo
+            return query.exec()
+        except Exception as e:
+            print("Error al grabar alquiler vacacional:", e)
+            return False
+
+    @staticmethod
+    def propiedadDisponibleParaVacacional(id_propiedad):
+        """
+        Verifica si una propiedad está disponible para alquiler vacacional.
+        Retorna True si su estado es 'Disponible', False en otro caso.
+        """
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT estadoProp FROM propiedades WHERE codigo = :id")
+            query.bindValue(":id", id_propiedad)
+            if query.exec() and query.next():
+                estado = query.value(0)
+                return str(estado).lower() == "disponible"
+            return False
+        except Exception as e:
+            print("Error al verificar disponibilidad vacacional:", e)
+            return False
+
+
