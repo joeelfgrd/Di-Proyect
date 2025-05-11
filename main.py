@@ -34,6 +34,8 @@ class Main(QtWidgets.QMainWindow):
         var.rowsClientes = 15
         var.rowsPropiedades = 11
         var.rowsVendedores = 10
+        var.rowsVacacional = 10
+
         #conexionserver.ConexionServer.crear_conexion(self)
         propiedades.Propiedades.manageCheckbox()
         propiedades.Propiedades.manageRadioButtons()
@@ -119,6 +121,8 @@ class Main(QtWidgets.QMainWindow):
         #var.ui.btnAnteriorVend.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(0, "Vendedores"))
         #var.ui.btnSiguienteVend.clicked.connect(lambda: eventos.Eventos.movimientoPaginas(1, "Vendedores"))
         var.ui.tablaVentas.clicked.connect(facturas.Facturas.cargarDescuentoVenta)
+        var.ui.btnAnteriorVacacional.clicked.connect(lambda: vacacional.Vacacional.paginarVacacional(0))
+        var.ui.btnSiguienteVacacional.clicked.connect(lambda: vacacional.Vacacional.paginarVacacional(1))
 
 
         '''
@@ -173,7 +177,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnFechaInicioVacacional.clicked.connect(lambda: eventos.Eventos.abrirCalendar(9))
         var.ui.btnFechaFinVacacional.clicked.connect(lambda: eventos.Eventos.abrirCalendar(10))
         var.ui.tablaVacacional.clicked.connect(vacacional.Vacacional.limpiarFormulario)
-
+        var.ui.tablaVacacional.clicked.connect(vacacional.Vacacional.cargarOneAlquilerVacacional)
 
 
 if __name__ == '__main__':

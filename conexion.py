@@ -1440,7 +1440,7 @@ class Conexion:
             return False
 
     @staticmethod
-    def cargarTablaVacacional():
+    def listadoAlquileresVacacionales():
         """
         Devuelve todos los registros de alquileres vacacionales con nombre del cliente y precio total.
         """
@@ -1473,4 +1473,54 @@ class Conexion:
             print("Error al cargar alquileres vacacionales:", e)
             return []
 
+    @staticmethod
 
+
+    def cargarTablaVacacional(offset=0):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("""
+                SELECT av.id, c.apelcli || ' ' || c.nomecli, av.fechaEntrada, av.fechaSalida, av.precio_total
+                FROM alquileres_vacacionales av
+                JOIN clientes c ON c.dnicli = av.dniCliente
+                ORDER BY av.id DESC
+                LIMIT 10 OFFSET :offset
+            """)
+            query.bindValue(":offset", offset)
+            if query.exec():
+                resultados = []
+                while query.next():
+                    fila = [query.value(i) for i in range(5)]
+                    resultados.append(fila)
+                return resultados
+            else:
+                return []
+        except Exception as e:
+            print("Error en listadoAlquileresVacacionales:", e)
+            return []
+
+    @staticmethod
+    def datosOneAlquilerVacacional(id_alquiler):
+        """
+        Devuelve todos los datos de un alquiler vacacional junto al nombre del cliente.
+        """
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("""
+                SELECT av.*, c.apelcli, c.nomecli
+                FROM alquileres_vacacionales av
+                JOIN clientes c ON c.dnicli = av.dniCliente
+                WHERE av.id = :id
+            """)
+            query.bindValue(":id", id_alquiler)
+
+            if query.exec() and query.next():
+                resultado = {}
+                for i in range(query.record().count()):
+                    nombre_columna = query.record().fieldName(i)
+                    resultado[nombre_columna] = query.value(i)
+                return resultado
+            return None
+        except Exception as e:
+            print("Error en datosOneAlquilerVacacional:", e)
+            return None

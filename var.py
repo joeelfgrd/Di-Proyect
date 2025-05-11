@@ -19,3 +19,4 @@ global rowsClientes
 global rowsPropiedades
 global rowsVendedores
 global report
+global rowsVacacional

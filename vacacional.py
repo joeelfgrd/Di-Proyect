@@ -127,15 +127,71 @@ class Vacacional:
     @staticmethod
     def cargarTablaVacacional():
         try:
-            datos = conexion.Conexion.cargarTablaVacacional()
-            var.ui.tablaVacacional.setRowCount(len(datos))
+            offset = var.rowsVacacional - 10 if var.rowsVacacional >= 10 else 0
+            datos = conexion.Conexion.cargarTablaVacacional(offset)
+            var.ui.tablaVacacional.setRowCount(0)
 
-            for row_idx, fila in enumerate(datos):
-                for col_idx, valor in enumerate(fila):
-                    item = QtWidgets.QTableWidgetItem(str(valor))
+            for index, fila in enumerate(datos):
+                var.ui.tablaVacacional.setRowCount(index + 1)
+                for col in range(5):
+                    item = QtWidgets.QTableWidgetItem(str(fila[col]))
                     item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                    var.ui.tablaVacacional.setItem(row_idx, col_idx, item)
+                    var.ui.tablaVacacional.setItem(index, col, item)
+
+            # Activar o desactivar botones de paginación
+            var.ui.btnAnteriorVacacional.setEnabled(var.rowsVacacional > 10)
+            var.ui.btnSiguienteVacacional.setEnabled(len(datos) == 10)
 
         except Exception as e:
             print("Error al cargar tabla vacacional:", e)
+
+    @staticmethod
+    def paginarVacacional(avance):
+        try:
+            if avance == 0 and var.rowsVacacional >= 10:
+                var.rowsVacacional -= 10
+            elif avance == 1:
+                var.rowsVacacional += 10
+            Vacacional.cargarTablaVacacional()
+        except Exception as e:
+            print("Error en paginación vacacional:", e)
+
+    @staticmethod
+    def cargarOneAlquilerVacacional():
+        try:
+            fila = var.ui.tablaVacacional.selectedItems()
+            if not fila or len(fila) < 1:
+                return
+
+            id_alquiler = fila[0].text()
+            datos = conexion.Conexion.datosOneAlquilerVacacional(id_alquiler)
+
+            if not datos:
+                return
+
+            var.ui.lblCodigoPropVacacional.setText(str(datos["idPropiedad"]))
+            var.ui.txtFechaInicioVacacional.setText(str(datos["fechaEntrada"]))
+            var.ui.txtFechaFinVacacional.setText(str(datos["fechaSalida"]))
+            var.ui.txtPrecioVacacional.setText(str(datos["precioDia"]))
+            var.ui.txtGastosLimpiezaVacacional.setText(str(datos["gastosLimpieza"]))
+            var.ui.chkWifi.setChecked(bool(datos["wifi"]))
+            var.ui.chkCocina.setChecked(bool(datos["cocina"]))
+            var.ui.chkTV.setChecked(bool(datos["tv"]))
+            var.ui.txtDniFactura.setText(str(datos["dniCliente"]))
+            var.ui.txtVendedorVacacional.setText(str(datos["idAgente"]))
+            var.ui.txtApelClieVacacional.setText(str(datos["apelcli"]))
+            var.ui.txtNomCliVacacional.setText(str(datos["nomecli"]))
+
+            # Cargar datos extra de la propiedad
+            propiedad = conexion.Conexion.datosOnePropiedad(datos["idPropiedad"])
+            if propiedad:
+                var.ui.txtTipoPropVacacional.setText(str(propiedad[7]))
+                var.ui.txtDireccionPropVacacional.setText(str(propiedad[4]))
+                var.ui.txtLocalidadVacacional.setText(str(propiedad[6]))
+
+        except Exception as e:
+            print("Error al cargar datos de alquiler vacacional:", e)
+
+
+
 
