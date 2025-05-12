@@ -1424,16 +1424,17 @@ class Conexion:
     @staticmethod
     def propiedadDisponibleParaVacacional(id_propiedad):
         """
-        Verifica si una propiedad está disponible para alquiler vacacional.
-        Retorna True si su estado es 'Disponible', False en otro caso.
+        Verifica si una propiedad está disponible y tiene tipo de operación 'Vacacional'.
+        Retorna True si cumple ambas condiciones, False en otro caso.
         """
         try:
             query = QtSql.QSqlQuery()
-            query.prepare("SELECT estadoProp FROM propiedades WHERE codigo = :id")
+            query.prepare("SELECT estadoProp, tipooper FROM propiedades WHERE codigo = :id")
             query.bindValue(":id", id_propiedad)
             if query.exec() and query.next():
-                estado = query.value(0)
-                return str(estado).lower() == "disponible"
+                estado = str(query.value(0)).lower()
+                tipooper = str(query.value(1)).lower()
+                return estado == "disponible" and "vacacional" in tipooper
             return False
         except Exception as e:
             print("Error al verificar disponibilidad vacacional:", e)
