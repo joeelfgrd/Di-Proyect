@@ -302,7 +302,7 @@ class Informes:
             var.report.drawString(355, 600, 'Fecha Mensualidad: ' + "1-" + str(mes) + "-" + str(anno))
             var.report.drawString(355, 580, 'Contrato : ' + str(alquiler[0]))
             var.report.drawString(355, 560, 'Recibo : ' + str(mensualidad[0]))
-            var.report.drawString(355, 540, 'Precio Alquiler: ' + str(propiedad[11]) + " €")
+            var.report.drawString(355, 540, 'Precio Alquiler: ' + str(propiedad[10]) + " €")
             estado = "pagado" if mensualidad[4] else "no pagado"
             var.report.drawString(355, 520, 'Estado: ' + estado)
             var.report.drawString(355, 500, 'Metodo de pago: ' + str(alquiler[7]))
